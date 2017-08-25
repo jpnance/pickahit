@@ -14,6 +14,7 @@ describe('POST to /user', function() {
 				.end(function(error, response) {
 					expect(error).to.not.be.null;
 					expect(error.status).to.be(400);
+					expect(error.response.text).to.be('No data supplied');
 
 					expect(response).to.be.null;
 
