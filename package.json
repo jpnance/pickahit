@@ -15,12 +15,12 @@
   "devDependencies": {
     "expect.js": "0.3.1",
     "mocha": "3.4.2",
-    "mockgoose": "7.3.3",
     "superagent": "3.5.2",
     "superagent-prefix": "0.0.2"
   },
   "dependencies": {
     "body-parser": "1.17.2",
-    "express": "4.15.4"
+    "express": "4.15.4",
+    "mongoose": "4.11.8"
   }
 }
