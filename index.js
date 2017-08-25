@@ -16,6 +16,12 @@ app.post('/user', function(request, response) {
 	else if (!request.body.password) {
 		response.status(400).send('No password supplied');
 	}
+	else {
+		response.send({
+			username: request.body.username,
+			password: request.body.password
+		});
+	}
 });
 
 app.listen(process.env.PORT);

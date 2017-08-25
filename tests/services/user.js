@@ -58,4 +58,22 @@ describe('POST to /user', function() {
 				});
 		});
 	});
+
+	describe('with a username and a password', function() {
+		it('should return an object reflecting the parameters', function(done) {
+			request
+				.post('/user')
+				.use(prefix)
+				.send({ username: 'jpnance', password: 'VerySecure' })
+				.end(function(error, response) {
+					expect(error).to.be.null;
+
+					expect(response).to.not.be.null;
+					expect(response.body).to.have.property('username', 'jpnance');
+					expect(response.body).to.have.property('password');
+
+					done();
+				});
+		});
+	});
 });
