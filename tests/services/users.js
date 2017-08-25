@@ -5,11 +5,11 @@ var prefix = require('superagent-prefix')('http://localhost:3333');
 
 var app = require('../../index.js');
 
-describe('POST to /user', function() {
+describe('POST to /users', function() {
 	describe('with no data', function() {
 		it('should return a 400 error', function(done) {
 			request
-				.post('/user')
+				.post('/users')
 				.use(prefix)
 				.end(function(error, response) {
 					expect(error).to.not.be.null;
@@ -26,7 +26,7 @@ describe('POST to /user', function() {
 	describe('with a username but no password', function() {
 		it('should return a 400 error', function(done) {
 			request
-				.post('/user')
+				.post('/users')
 				.use(prefix)
 				.send({ username: 'jpnance' })
 				.end(function(error, response) {
@@ -44,7 +44,7 @@ describe('POST to /user', function() {
 	describe('with a password but no username', function() {
 		it('should return a 400 error', function(done) {
 			request
-				.post('/user')
+				.post('/users')
 				.use(prefix)
 				.send({ password: 'VerySecure' })
 				.end(function(error, response) {
@@ -62,7 +62,7 @@ describe('POST to /user', function() {
 	describe('with a username and a password', function() {
 		it('should return an object reflecting the parameters', function(done) {
 			request
-				.post('/user')
+				.post('/users')
 				.use(prefix)
 				.send({ username: 'jpnance', password: 'VerySecure' })
 				.end(function(error, response) {
