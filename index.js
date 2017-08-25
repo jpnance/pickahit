@@ -7,11 +7,14 @@ app.use(bodyParser.json());
 process.env.PORT = process.env.PORT || 3333;
 
 app.post('/user', function(request, response) {
-	if (request.body.username && !request.body.password) {
-		response.status(400).send('No password supplied');
-	}
-	else {
+	if (!request.body.username && !request.body.password) {
 		response.status(400).send('No data supplied');
+	}
+	else if (!request.body.username) {
+		response.status(400).send('No username supplied');
+	}
+	else if (!request.body.password) {
+		response.status(400).send('No password supplied');
 	}
 });
 
