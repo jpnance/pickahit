@@ -4,12 +4,20 @@
   "description": "A Node.js web application that manages Pick-a-Hit. http://pickahit.coinflipper.org/",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha tests/*"
   },
   "repository": {
     "type": "git",
     "url": "jpnance@smatterhorn.com:Workspace/pickahit"
   },
   "author": "Patrick Nance",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "expect.js": "0.3.1",
+    "mocha": "3.4.2",
+    "mockgoose": "^7.3.3",
+    "nock": "9.0.13",
+    "superagent": "3.5.2",
+    "superagent-prefix": "0.0.2"
+  }
 }
