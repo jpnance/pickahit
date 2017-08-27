@@ -33,4 +33,20 @@ describe('User', function() {
 			done();
 		});
 	});
+
+	describe('.makeEligibleFor(2017)', function() {
+		it('should create a seasons property that includes 2017', function(done) {
+			var user = new User({ username: 'jpnance', password: 'VerySecure' });
+
+			expect(user).to.not.have.property('seasons');
+
+			user.makeEligibleFor(2017);
+
+			expect(user).to.have.property('seasons');
+			expect(user.seasons).to.be.an('array');
+			expect(user.seasons).to.contain(2017);
+
+			done();
+		});
+	});
 });
