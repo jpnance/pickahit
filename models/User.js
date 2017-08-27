@@ -7,6 +7,10 @@ var userSchema = new Schema({
 	seasons: { type: [Number] }
 });
 
+userSchema.methods.isEligibleFor = function(season) {
+	return false;
+};
+
 userSchema.methods.makeEligibleFor = function(season) {
 	if (!this.seasons) {
 		this.seasons = [];

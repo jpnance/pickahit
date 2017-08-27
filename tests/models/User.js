@@ -94,4 +94,16 @@ describe('User', function() {
 			});
 		});
 	});
+
+	describe('.isEligibleFor(2017)', function() {
+		describe('for a user with an empty seasons list', function() {
+			it('should return false', function(done) {
+				var user = new User({ username: 'jpnance', password: 'VerySecure' });
+
+				expect(user.isEligibleFor(2017)).to.be(false);
+
+				done();
+			});
+		});
+	});
 });
