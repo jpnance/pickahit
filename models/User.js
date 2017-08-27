@@ -3,7 +3,8 @@ var Schema = mongoose.Schema;
 
 var userSchema = new Schema({
 	username: { type: String, required: true, unique: true },
-	password: { type: String, required: true }
+	password: { type: String, required: true },
+	seasons: { type: [Number] }
 });
 
 userSchema.methods.makeEligibleFor = function(season) {

@@ -34,12 +34,20 @@ describe('User', function() {
 		});
 	});
 
+	it('should allow a seasons list to be optionally specified', function(done) {
+		var user = new User({ username: 'jpnance', password: 'VerySecure', seasons: [2016] });
+
+		expect(user).to.have.property('seasons');
+		expect(user.seasons).to.be.an('array');
+		expect(user.seasons).to.contain(2016);
+
+		done();
+	});
+
 	describe('.makeEligibleFor(2017)', function() {
-		describe('for a user without a seasons list', function() {
+		describe('for a user with an empty seasons list', function() {
 			it('should create a seasons list that includes 2017', function(done) {
 				var user = new User({ username: 'jpnance', password: 'VerySecure' });
-
-				expect(user).to.not.have.property('seasons');
 
 				user.makeEligibleFor(2017);
 
@@ -51,10 +59,9 @@ describe('User', function() {
 			});
 		});
 
-		describe('for a user with an existing seasons list that doesn\'t include 2017', function() {
+		describe('for a user with a seasons list that doesn\'t include 2017', function() {
 			it('should add 2017 to the seasons list, preserving existing values', function(done) {
-				var user = new User({ username: 'jpnance', password: 'VerySecure' });
-				user.seasons = [2016];
+				var user = new User({ username: 'jpnance', password: 'VerySecure', seasons: [2016] });
 
 				expect(user).to.have.property('seasons');
 				expect(user.seasons).to.be.an('array');
@@ -69,10 +76,9 @@ describe('User', function() {
 			});
 		});
 
-		describe('for a user with an existing seasons list that includes 2017', function() {
+		describe('for a user with a seasons list that includes 2017', function() {
 			it('shouldn\'t do anything, preserving existing values', function(done) {
-				var user = new User({ username: 'jpnance', password: 'VerySecure' });
-				user.seasons = [2016, 2017];
+				var user = new User({ username: 'jpnance', password: 'VerySecure', seasons: [2016, 2017] });
 
 				expect(user).to.have.property('seasons');
 				expect(user.seasons).to.be.an('array');
