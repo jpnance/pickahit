@@ -26,6 +26,9 @@ describe('User', function() {
 		user.validate(function(error) {
 			expect(error).to.be.null;
 		});
+
+		expect(user).to.have.property('username');
+		expect(user.username).to.be('jpnance');
 	});
 
 	it('should allow a seasons list to be optionally specified', function() {
