@@ -7,7 +7,11 @@ var userSchema = new Schema({
 });
 
 userSchema.methods.makeEligibleFor = function(season) {
-	this.seasons = [2017];
+	if (!this.seasons) {
+		this.seasons = [];
+	}
+
+	this.seasons.push(season);
 };
 
 module.exports = mongoose.model('User', userSchema);
