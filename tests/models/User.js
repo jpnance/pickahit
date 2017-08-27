@@ -68,5 +68,24 @@ describe('User', function() {
 				done();
 			});
 		});
+
+		describe('for a user with an existing seasons list that includes 2017', function() {
+			it('shouldn\'t do anything, preserving existing values', function(done) {
+				var user = new User({ username: 'jpnance', password: 'VerySecure' });
+				user.seasons = [2016, 2017];
+
+				expect(user).to.have.property('seasons');
+				expect(user.seasons).to.be.an('array');
+				expect(user.seasons).to.have.length(2);
+
+				user.makeEligibleFor(2017);
+
+				expect(user.seasons).to.contain(2016);
+				expect(user.seasons).to.contain(2017);
+				expect(user.seasons).to.have.length(2);
+
+				done();
+			});
+		});
 	});
 });

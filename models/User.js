@@ -11,7 +11,9 @@ userSchema.methods.makeEligibleFor = function(season) {
 		this.seasons = [];
 	}
 
-	this.seasons.push(season);
+	if (this.seasons.indexOf(season) == -1) {
+		this.seasons.push(season);
+	}
 };
 
 module.exports = mongoose.model('User', userSchema);
