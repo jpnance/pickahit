@@ -8,7 +8,7 @@ var userSchema = new Schema({
 });
 
 userSchema.methods.isEligibleFor = function(season) {
-	return false;
+	return this.seasons.indexOf(season) > -1;
 };
 
 userSchema.methods.makeEligibleFor = function(season) {

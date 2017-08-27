@@ -115,5 +115,15 @@ describe('User', function() {
 				done();
 			});
 		});
+
+		describe('for a user with a seasons list that includes 2017', function() {
+			it('should return true', function(done) {
+				var user = new User({ username: 'jpnance', password: 'VerySecure', seasons: [2016, 2017] });
+
+				expect(user.isEligibleFor(2017)).to.be(true);
+
+				done();
+			});
+		});
 	});
 });
