@@ -2,29 +2,35 @@ var expect = require('expect.js');
 var User = require('../../models/User');
 
 describe('User', function() {
-	it('should be invalid if username is empty', function() {
+	it('should be invalid if username is empty', function(done) {
 		var user = new User();
 
 		user.validate(function(error) {
 			expect(error).to.have.property('errors');
 			expect(error.errors).to.have.property('username');
+
+			done();
 		});
 	});
 
-	it('should be invalid if password is empty', function() {
+	it('should be invalid if password is empty', function(done) {
 		var user = new User({ username: 'jpnance' });
 
 		user.validate(function(error) {
 			expect(error).to.have.property('errors');
 			expect(error.errors).to.have.property('password');
+
+			done();
 		});
 	});
 
-	it('should be valid if username and password are both present', function() {
+	it('should be valid if username and password are both present', function(done) {
 		var user = new User({ username: 'jpnance', password: 'VerySecure' });
 
 		user.validate(function(error) {
 			expect(error).to.be.null;
+
+			done();
 		});
 
 		expect(user).to.have.property('username');
