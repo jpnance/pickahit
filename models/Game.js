@@ -8,6 +8,10 @@ var gameSchema = new Schema({
 });
 
 gameSchema.methods.hasStarted = function() {
+	if (this.startTime) {
+		return Date.now() >= this.startTime;
+	}
+
 	return false;
 };
 
