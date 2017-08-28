@@ -28,5 +28,6 @@ describe('Game', function() {
 		var game = new Game({ awayTeam: 'BOS', homeTeam: 'HOU', startTime: '2017-10-01 19:07:00' });
 
 		expect(game).to.have.property('startTime');
+		expect(game.startTime.toString()).to.be('Sun Oct 01 2017 19:07:00 GMT-0700 (PDT)');
 	});
 });
