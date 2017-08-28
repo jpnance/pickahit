@@ -7,4 +7,8 @@ var gameSchema = new Schema({
 	homeTeam: { type: String, required: true }
 });
 
+gameSchema.methods.hasStarted = function() {
+	return false;
+};
+
 module.exports = mongoose.model('Game', gameSchema);

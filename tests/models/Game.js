@@ -30,4 +30,14 @@ describe('Game', function() {
 		expect(game).to.have.property('startTime');
 		expect(game.startTime.toString()).to.be('Sun Oct 01 2017 19:07:00 GMT-0700 (PDT)');
 	});
+
+	describe('.hasStarted()', function() {
+		describe('for a game with no startTime set', function() {
+			it('should return false', function() {
+				var game = new Game({ awayTeam: 'BOS', homeTeam: 'HOU' });
+
+				expect(game.hasStarted()).to.be(false);
+			});
+		});
+	});
 });
