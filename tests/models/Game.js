@@ -39,5 +39,13 @@ describe('Game', function() {
 				expect(game.hasStarted()).to.be(false);
 			});
 		});
+
+		describe('for a game with a startTime in the future', function() {
+			it('should return false', function() {
+				var game = new Game({ awayTeam: 'BOS', homeTeam: 'HOU', startTime: Date.now() + 600000 });
+
+				expect(game.hasStarted()).to.be(false);
+			});
+		});
 	});
 });
