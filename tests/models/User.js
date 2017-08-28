@@ -33,8 +33,7 @@ describe('User', function() {
 			done();
 		});
 
-		expect(user).to.have.property('username');
-		expect(user.username).to.be('jpnance');
+		expect(user).to.have.property('username', 'jpnance');
 	});
 
 	it('should allow a seasons list to be optionally specified', function() {
