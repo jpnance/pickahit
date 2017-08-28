@@ -23,4 +23,10 @@ describe('Game', function() {
 			done();
 		});
 	});
+
+	it('should allow a start time to be optionally specified', function() {
+		var game = new Game({ awayTeam: 'BOS', homeTeam: 'HOU', startTime: '2017-10-01 19:07:00' });
+
+		expect(game).to.have.property('startTime');
+	});
 });
