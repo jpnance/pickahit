@@ -1,3 +1,5 @@
+var crypto = require('crypto');
+
 var User = require('../models/User');
 
 module.exports.signUp = function(request, response) {
@@ -11,9 +13,18 @@ module.exports.signUp = function(request, response) {
 		response.status(400).send('No password supplied');
 	}
 	else {
-		response.send({
+		var user = new User({
 			username: request.body.username,
-			password: request.body.password
+			password: crypto.createHash('sha256').update(request.body.password).digest('hex')
+		});
+
+		user.save(function(error) {
+			if (!error) {
+				response.send(user);
+			}
+			else {
+				response.status(400).send(error);
+			}
 		});
 	}
 };
