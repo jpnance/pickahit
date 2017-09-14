@@ -1,0 +1,12 @@
+doctype html
+html
+	head
+		title pickin hits
+	body
+		if session
+			h1 whatup #{session.username}
+		else
+			form(method='POST' action='/sessions')
+				input(type='text' name='username' placeholder='username')
+				input(type='password' name='password' placeholder='password')
+				button(type='submit') log in

@@ -4,7 +4,9 @@ var cookieParser = require('cookie-parser');
 var app = express();
 
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded());
 app.use(cookieParser());
+app.set('view engine', 'pug');
 
 require('./config/routes')(app);
 
