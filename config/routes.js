@@ -9,16 +9,16 @@ module.exports = function(app) {
 	app.get('/', function(request, response) {
 		if (request.cookies.sessionId) {
 			Session.find({
-				_id: request.cookies.sessionId,
-				expires: {
-					$gte: Date.now()
-				}
+				_id: request.cookies.sessionId
 			}, function(error, documents) {
 				if (error) {
 					response.send(error);
 				}
 				else if (documents.length == 1) {
 					response.render('index', { session: documents[0] });
+				}
+				else {
+					response.render('index');
 				}
 			});
 		}

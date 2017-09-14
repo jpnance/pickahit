@@ -17,7 +17,7 @@ module.exports.logIn = function(request, response) {
 
 				var sessionUpdate = {
 					username: request.body.username,
-					expires: Date.now() + (20 * 60 * 1000)
+					createdAt: Date.now()
 				};
 
 				var options = {
