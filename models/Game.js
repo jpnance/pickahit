@@ -2,9 +2,10 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var gameSchema = new Schema({
+	_id: { type: Number },
 	startTime: { type: Date },
-	awayTeam: { type: String, required: true },
-	homeTeam: { type: String, required: true }
+	awayTeam: { type: Number, ref: 'Team', required: true },
+	homeTeam: { type: Number, ref: 'Team', required: true }
 });
 
 gameSchema.methods.hasStarted = function() {
