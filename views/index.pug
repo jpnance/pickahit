@@ -7,10 +7,9 @@ html
             h1 whatup #{session.username}
         else
             form(method='POST' action='/sessions')
-            input(type='text' name='username' placeholder='username')
-            input(type='password' name='password' placeholder='password')
-            button(type='submit') log in
-        endif
+                input(type='text' name='username' placeholder='username')
+                input(type='password' name='password' placeholder='password')
+                button(type='submit') log in
 
         table(border='1')
             tr

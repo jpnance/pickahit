@@ -9,6 +9,8 @@ module.exports = function(app) {
 
 	app.post('/sessions', sessions.logIn);
 
+	app.get('/users', users.showAll);
 	app.post('/users', users.signUp);
 	app.get('/users/add', users.add);
+	app.get('/users/edit/:userId', users.edit);
 };

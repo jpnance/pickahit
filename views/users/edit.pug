@@ -1,0 +1,13 @@
+doctype html
+html
+	head
+		title addin hit pickers
+	body
+		form(method='POST' action='/users/edit' + user._id)
+			input(type='text' name='username' placeholder='username' value=user.username)
+			br
+			input(type='text' name='name' placeholder='name' value=user.name)
+			br
+			input(type='password' name='password' placeholder='password')
+			br
+			button(type='submit') create user
