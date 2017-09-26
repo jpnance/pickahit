@@ -1,6 +1,8 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+var Team = require('../models/Team');
+
 var gameSchema = new Schema({
 	_id: { type: Number },
 	startTime: { type: Date },

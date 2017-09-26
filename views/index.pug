@@ -10,3 +10,19 @@ html
 				input(type='text' name='username' placeholder='username')
 				input(type='password' name='password' placeholder='password')
 				button(type='submit') log in
+		endif
+
+		table(border='1')
+			tr
+				td
+				each game in games
+					td
+						| #{game.awayTeam.name}
+						br
+						| at #{game.homeTeam.name}
+			tr
+				td pat
+			tr
+				td jeff
+			tr
+				td schex

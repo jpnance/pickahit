@@ -4,27 +4,40 @@ var sessions = require('../services/sessions');
 var users = require('../services/users');
 
 var Session = require('../models/Session');
+var Game = require('../models/Game');
 
 module.exports = function(app) {
 	app.get('/', function(request, response) {
-		if (request.cookies.sessionId) {
-			Session.find({
-				_id: request.cookies.sessionId
-			}, function(error, documents) {
-				if (error) {
-					response.send(error);
-				}
-				else if (documents.length == 1) {
-					response.render('index', { session: documents[0] });
+		var data = {};
+
+		Game.find({}).sort({ startTime: 1 }).populate('awayTeam').populate('homeTeam').exec(function(error, games) {
+			if (error) {
+				response.send(error);
+			}
+			else {
+				data.games = games;
+
+				if (request.cookies.sessionId) {
+					Session.find({
+						_id: request.cookies.sessionId
+					}, function(error, sessions) {
+						if (error) {
+							response.send(error);
+						}
+						else if (sessions.length == 1) {
+							data.session = sessions[0];
+							response.render('index', data);
+						}
+						else {
+							response.render('index', data);
+						}
+					});
 				}
 				else {
-					response.render('index');
+					response.render('index', data);
 				}
-			});
-		}
-		else {
-			response.render('index');
-		}
+			}
+		});
 	});
 
 	app.post('/sessions', sessions.logIn);
