@@ -37,15 +37,8 @@ for (var i = 0; i <= days; i++) {
 					homeTeam: homeTeam.id
 				};
 
-				if (awayTeam.placeholder) {
-					console.log(awayTeam.id);
-					Team.findByIdAndUpdate(awayTeam.id, { name: awayTeam.name, abbreviation: awayTeam.abbreviation }, { upsert: true }, function(error) { console.log(error); });
-				}
-
-				if (homeTeam.placeholder) {
-					console.log(homeTeam.id);
-					Team.findByIdAndUpdate(homeTeam.id, { name: homeTeam.name, abbreviation: homeTeam.abbreviation }, { upsert: true }, function(error) { console.log(error); });
-				}
+				Team.findByIdAndUpdate(awayTeam.id, { name: awayTeam.name, abbreviation: awayTeam.abbreviation }, { upsert: true }, function(error) { console.log(error); });
+				Team.findByIdAndUpdate(homeTeam.id, { name: homeTeam.name, abbreviation: homeTeam.abbreviation }, { upsert: true }, function(error) { console.log(error); });
 
 				Game.findByIdAndUpdate(game.gamePk, newGame, { upsert: true }).exec();
 			});
