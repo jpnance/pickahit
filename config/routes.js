@@ -42,4 +42,5 @@ module.exports = function(app) {
 
 	app.post('/sessions', sessions.logIn);
 	app.post('/users', users.signUp);
+	app.get('/users/add', users.add);
 };
