@@ -17,7 +17,7 @@ module.exports.showAll = function(request, response) {
 		if (request.cookies.sessionId) {
 			Session.find({
 				_id: request.cookies.sessionId
-			}, function(error, sessions) {
+			}).populate('user').exec(function(error, sessions) {
 				if (error) {
 					response.send(error);
 				}

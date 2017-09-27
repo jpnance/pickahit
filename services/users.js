@@ -72,6 +72,9 @@ module.exports.signUp = function(request, response) {
 	else {
 		var user = new User({
 			username: request.body.username,
+			firstName: request.body.firstName,
+			lastName: request.body.lastName,
+			displayName: request.body.displayName,
 			password: crypto.createHash('sha256').update(request.body.password).digest('hex')
 		});
 
@@ -84,4 +87,27 @@ module.exports.signUp = function(request, response) {
 			}
 		});
 	}
+};
+
+module.exports.update = function(request, response) {
+	var data = [
+		User.findById(request.params.userId)
+	];
+
+	Promise.all(data).then(function(values) {
+		var user = values[0];
+
+		user.firstName = request.body.firstName;
+		user.lastName = request.body.lastName;
+		user.displayName = request.body.displayName;
+
+		user.save(function(error) {
+			if (error) {
+				response.send(error);
+			}
+			else {
+				response.redirect('/');
+			}
+		});
+	});
 };

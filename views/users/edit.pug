@@ -3,10 +3,14 @@ html
 	head
 		title addin hit pickers
 	body
-		form(method='POST' action='/users/edit' + user._id)
-			input(type='text' name='username' placeholder='username' value=user.username)
+		form(method='POST' action='/users/edit/' + user._id)
+			| #{user.username}
 			br
-			input(type='text' name='name' placeholder='name' value=user.name)
+			input(type='text' name='firstName' placeholder='first name' value=user.firstName)
+			br
+			input(type='text' name='lastName' placeholder='last name' value=user.lastName)
+			br
+			input(type='text' name='displayName' placeholder='display name' value=user.displayName)
 			br
 			input(type='password' name='password' placeholder='password')
 			br
