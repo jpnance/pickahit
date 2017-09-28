@@ -6,6 +6,8 @@ var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
+app.use(express.static('public'));
+
 app.set('view engine', 'pug');
 
 require('./config/routes')(app);
