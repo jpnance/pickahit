@@ -7,7 +7,7 @@ var Player = require('../models/Player');
 var mongoose = require('mongoose');
 mongoose.connect(process.env.MONGODB_URI);
 
-var playerPromises = [];
+var teamPromises = [];
 
 request.get('https://statsapi.mlb.com/api/v1/teams', function(error, response) {
 	if (error) {
@@ -28,7 +28,11 @@ request.get('https://statsapi.mlb.com/api/v1/teams', function(error, response) {
 				abbreviation: team.abbreviation
 			};
 
-			Team.findByIdAndUpdate(team.id, newTeam, { upsert: true }).exec();
+			teamPromises.push(Team.findByIdAndUpdate(team.id, newTeam, { upsert: true }));
 		}
+	});
+
+	Promise.all(teamPromises).then(function() {
+		mongoose.disconnect();
 	});
 });

@@ -14,6 +14,8 @@ var dateRange = {
 
 var days = (dateRange.end - dateRange.start) / 86400000;
 
+var schedulePromises = [];
+
 for (var i = 0; i <= days; i++) {
 	var date = new Date(dateRange.start.getFullYear(), dateRange.start.getMonth(), dateRange.start.getDate() + i);
 
@@ -23,25 +25,37 @@ for (var i = 0; i <= days; i++) {
 
 	var dateString = year + '-' + (month + 1) + '-' + (date < 10 ? '0' : '') + date;
 
-	request.get('https://statsapi.mlb.com/api/v1/schedule?sportId=1&date=' + dateString + '&hydrate=team', function(error, response) {
-		var data = JSON.parse(response.text);
+	schedulePromises.push(new Promise(function(resolve, reject) {
+		request.get('https://statsapi.mlb.com/api/v1/schedule?sportId=1&date=' + dateString + '&hydrate=team', function(error, response) {
+			var gamePromises = [];
+			var data = JSON.parse(response.text);
 
-		data.dates.forEach(function(date) {
-			date.games.forEach(function(game) {
-				var awayTeam = game.teams.away.team;
-				var homeTeam = game.teams.home.team;
+			data.dates.forEach(function(date) {
+				date.games.forEach(function(game) {
+					var awayTeam = game.teams.away.team;
+					var homeTeam = game.teams.home.team;
 
-				var newGame = {
-					startTime: game.gameDate,
-					awayTeam: awayTeam.id,
-					homeTeam: homeTeam.id
-				};
+					var newGame = {
+						startTime: game.gameDate,
+						awayTeam: awayTeam.id,
+						homeTeam: homeTeam.id
+					};
 
-				Team.findByIdAndUpdate(awayTeam.id, { name: awayTeam.name, abbreviation: awayTeam.abbreviation }, { upsert: true }, function(error) { console.log(error); });
-				Team.findByIdAndUpdate(homeTeam.id, { name: homeTeam.name, abbreviation: homeTeam.abbreviation }, { upsert: true }, function(error) { console.log(error); });
+					gamePromises.push(Team.findByIdAndUpdate(awayTeam.id, { name: awayTeam.name, abbreviation: awayTeam.abbreviation }, { upsert: true }));
+					gamePromises.push(Team.findByIdAndUpdate(homeTeam.id, { name: homeTeam.name, abbreviation: homeTeam.abbreviation }, { upsert: true }));
 
-				Game.findByIdAndUpdate(game.gamePk, newGame, { upsert: true }).exec();
+					gamePromises.push(Game.findByIdAndUpdate(game.gamePk, newGame, { upsert: true }));
+				});
 			});
+
+			Promise.all(gamePromises).then(function() {
+				resolve(null);
+			});
+
 		});
-	});
+	}));
 }
+
+Promise.all(schedulePromises).then(function() {
+	mongoose.disconnect();
+});
