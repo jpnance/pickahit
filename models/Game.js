@@ -7,7 +7,12 @@ var gameSchema = new Schema({
 	_id: { type: Number },
 	startTime: { type: Date },
 	awayTeam: { type: Number, ref: 'Team', required: true },
-	homeTeam: { type: Number, ref: 'Team', required: true }
+	homeTeam: { type: Number, ref: 'Team', required: true },
+	gameDescription: { type: String },
+	seriesDescription: { type: String },
+	seriesGameNumber: { type: Number },
+	gamesInSeries: { type: Number },
+	ifNecessary: { type: String }
 });
 
 gameSchema.methods.hasStarted = function() {

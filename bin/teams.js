@@ -25,7 +25,9 @@ request.get('https://statsapi.mlb.com/api/v1/teams', function(error, response) {
 		if (team.league.id == 103 || team.league.id == 104) {
 			var newTeam = {
 				name: team.name,
-				abbreviation: team.abbreviation
+				abbreviation: team.abbreviation,
+				locationName: team.locationName,
+				teamName: team.teamName
 			};
 
 			teamPromises.push(Team.findByIdAndUpdate(team.id, newTeam, { upsert: true }));

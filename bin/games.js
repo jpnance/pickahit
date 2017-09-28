@@ -38,11 +38,16 @@ for (var i = 0; i <= days; i++) {
 					var newGame = {
 						startTime: game.gameDate,
 						awayTeam: awayTeam.id,
-						homeTeam: homeTeam.id
+						homeTeam: homeTeam.id,
+						gameDescription: game.description,
+						seriesDescription: game.seriesDescription,
+						seriesGameNumber: game.seriesGameNumber,
+						gamesInSeries: game.gamesInSeries,
+						ifNecessary: game.ifNecessary
 					};
 
-					gamePromises.push(Team.findByIdAndUpdate(awayTeam.id, { name: awayTeam.name, abbreviation: awayTeam.abbreviation }, { upsert: true }));
-					gamePromises.push(Team.findByIdAndUpdate(homeTeam.id, { name: homeTeam.name, abbreviation: homeTeam.abbreviation }, { upsert: true }));
+					gamePromises.push(Team.findByIdAndUpdate(awayTeam.id, { name: awayTeam.name, abbreviation: awayTeam.abbreviation, locationName: awayTeam.locationName, teamName: awayTeam.teamName }, { upsert: true }));
+					gamePromises.push(Team.findByIdAndUpdate(homeTeam.id, { name: homeTeam.name, abbreviation: homeTeam.abbreviation, locationName: homeTeam.locationName, teamName: homeTeam.teamName }, { upsert: true }));
 
 					gamePromises.push(Game.findByIdAndUpdate(game.gamePk, newGame, { upsert: true }));
 				});

@@ -7,21 +7,40 @@ body
 			|
 			|
 			a(href='/users/edit/' + session.user._id) #{session.username}
+			|
+			|
+			a(href='/logout') log out
 	else
 		form(method='POST' action='/sessions')
 			input(type='text' name='username' placeholder='username')
+			|
+			|
 			input(type='password' name='password' placeholder='password')
+			|
+			|
 			button(type='submit') log in
 
 	table(border='1')
 		tr
 			td
 				each game in games
-					td
-						| #{game.awayTeam.name}
-						br
-						| at #{game.homeTeam.name}
+					th
+						p
+							| #{game.awayTeam.teamName}
+							br
+							| at #{game.homeTeam.teamName}
+
+						p
+							| #{game.seriesDescription}
+							if game.gamesInSeries > 1
+								br
+								| Game #{game.seriesGameNumber}
+								if game.ifNecessary == 'Y'
+									| *
+
 		each user in users
 			tr
 				td #{user.username}
-	a(href='/logout') log out
+
+				each game in games
+					td
