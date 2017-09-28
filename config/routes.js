@@ -8,6 +8,7 @@ module.exports = function(app) {
 	app.get('/', games.showAll);
 
 	app.post('/sessions', sessions.logIn);
+	app.get('/logout', sessions.logOut);
 
 	app.get('/users', users.showAll);
 	app.post('/users', users.signUp);

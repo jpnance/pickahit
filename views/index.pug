@@ -1,26 +1,27 @@
 doctype html
 html
-    head
-        title pickin hits
-    body
-        if session
-            h1 whatup
-                | 
-                a(href='/users/edit/' + session.user._id) #{session.username}
-        else
-            form(method='POST' action='/sessions')
-                input(type='text' name='username' placeholder='username')
-                input(type='password' name='password' placeholder='password')
-                button(type='submit') log in
+	head
+		title pickin hits
+	body
+		if session
+			h1 whatup
+				| 
+				a(href='/users/edit/' + session.user._id) #{session.username}
+		else
+			form(method='POST' action='/sessions')
+				input(type='text' name='username' placeholder='username')
+				input(type='password' name='password' placeholder='password')
+				button(type='submit') log in
 
-        table(border='1')
-            tr
-                td
-                    each game in games
-                        td
-                            | #{game.awayTeam.name}
-                            br
-                            | at #{game.homeTeam.name}
-            each user in users
-                tr
-                    td #{user.username}
+		table(border='1')
+			tr
+				td
+					each game in games
+						td
+							| #{game.awayTeam.name}
+							br
+							| at #{game.homeTeam.name}
+			each user in users
+				tr
+					td #{user.username}
+		a(href='/logout') log out

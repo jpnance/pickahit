@@ -46,3 +46,7 @@ module.exports.logIn = function(request, response) {
 		response.status(400).send('Invalid username/password combination');
 	}
 };
+
+module.exports.logOut = function(request, response) {
+	response.clearCookie('sessionId').redirect('/');
+};
