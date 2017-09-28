@@ -1,17 +1,16 @@
-doctype html
-html
-	head
-		title addin hit pickers
-	body
-		form(method='POST' action='/users/edit/' + user._id)
-			| #{user.username}
-			br
-			input(type='text' name='firstName' placeholder='first name' value=user.firstName)
-			br
-			input(type='text' name='lastName' placeholder='last name' value=user.lastName)
-			br
-			input(type='text' name='displayName' placeholder='display name' value=user.displayName)
-			br
-			input(type='password' name='password' placeholder='password')
-			br
-			button(type='submit') create user
+- var title = 'Edit User'
+
+include ../header.pug
+body
+	form(method='POST' action='/users/edit/' + user._id)
+		| #{user.username}
+		br
+		input(type='text' name='firstName' placeholder='first name' value=user.firstName)
+		br
+		input(type='text' name='lastName' placeholder='last name' value=user.lastName)
+		br
+		input(type='text' name='displayName' placeholder='display name' value=user.displayName)
+		br
+		input(type='password' name='password' placeholder='password')
+		br
+		button(type='submit') create user
