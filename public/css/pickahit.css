@@ -1,3 +1,57 @@
 body {
 	font-family: sans-serif;
 }
+
+h1 {
+	font-size: 300%;
+	font-weight: bold;
+	padding: 0.8em;
+}
+
+div.verifier {
+	text-align: center;
+}
+
+div.verifier img.logo {
+	border-right: 1px solid #aaaaaa;
+	display: inline-block;
+	padding-right: 24px;
+	width: 250px;
+}
+
+div.verifier .hidden {
+	display: none;
+}
+
+div.verifier div.right {
+	display: inline-block;
+	padding-left: 8px;
+	padding-top: 76px;
+	text-align: center;
+	vertical-align: top;
+	width: 250px;
+}
+
+div.verifier form input {
+	border: 1px solid #dddddd;
+	padding: 8px;
+	width: 80%;
+}
+
+div.verifier form input:focus {
+	border: 1px solid #666666;
+}
+
+div.verifier form input, div.verifier form button {
+	margin-top: 12px;
+}
+
+div.verifier div.success,
+div.verifier div.failure {
+	font-size: 150%;
+	line-height: 1.2em;
+}
+
+div.verifier div.success p {
+	margin-bottom: 1em;
+}

@@ -4,7 +4,8 @@ include header.pug
 body
 	if session
 		h1 whatup
-			| 
+			|
+			|
 			a(href='/users/edit/' + session.user._id) #{session.username}
 	else
 		form(method='POST' action='/sessions')

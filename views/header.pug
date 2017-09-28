@@ -1,6 +1,18 @@
+- var additionalCssFiles = additionalCssFiles || [];
+- var additionalJsFiles = additionalJsFiles || [];
+
 doctype html
 html
 	head
 		title #{title} &laquo; Pick-a-Hit &laquo; Coinflipper
+
+		link(href='/css/reset.css' rel='stylesheet')
 		link(href='/css/pickahit.css' rel='stylesheet')
+		each cssFile in additionalCssFiles
+			link(href=cssFile rel='stylesheet')
+
+		script(src='/js/jquery-3.2.1.min.js' type='text/javascript')
+		each jsFile in additionalJsFiles
+			script(src=jsFile type='text/javascript')
+
 		link(href='/images/favicon.ico' rel='icon')

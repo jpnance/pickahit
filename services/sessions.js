@@ -9,6 +9,21 @@ module.exports.logIn = function(request, response) {
 			username: request.body.username,
 			password: crypto.createHash('sha256').update(request.body.password).digest('hex')
 		}, function(error, documents) {
+			if (request.body.justVerify) {
+				if (error) {
+					response.send({ success: false, error: error.message });
+				}
+				else if (documents.length == 1) {
+					var user = documents[0];
+					response.send({ success: true, user: { username: user.username, displayName: user.displayName } });
+				}
+				else {
+					response.send({ success: false, error: new Error('No clue really') });
+				}
+
+				return;
+			}
+
 			if (error) {
 				response.send(error);
 			}
