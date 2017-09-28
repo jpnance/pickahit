@@ -16,4 +16,20 @@ sessionSchema.virtual('user', {
 	justOne: true
 });
 
+sessionSchema.statics.withActiveSession = function(request, callback) {
+	if (request.cookies.sessionId) {
+		this.findById(request.cookies.sessionId).populate('user').exec(function(error, session) {
+			if (error) {
+				callback(error, null);
+			}
+			else {
+				callback(null, session);
+			}
+		});
+	}
+	else {
+		callback(null, null);
+	}
+};
+
 module.exports = mongoose.model('Session', sessionSchema);

@@ -4,51 +4,34 @@ var Session = require('../models/Session');
 var User = require('../models/User');
 
 module.exports.add = function(request, response) {
-	var responseData = {};
-
-	if (request.cookies.sessionId) {
-		Session.find({
-			_id: request.cookies.sessionId
-		}, function(error, sessions) {
-			if (error) {
-				response.send(error);
-			}
-			else if (sessions.length == 1) {
-				responseData.session = sessions[0];
-				response.render('users/add', responseData);
-			}
-			else {
-				response.render('users/add', responseData);
-			}
-		});
-	}
+	Session.withActiveSession(request, function(error, session) {
+		if (session && session.user.username == 'jpnance') {
+			response.render('users/add');
+		}
+		else {
+			response.redirect('/');
+		}
+	});
 };
 
 module.exports.edit = function(request, response) {
-	var data = [
-		User.findById(request.params.userId)
-	];
+	Session.withActiveSession(request, function(error, session) {
+		if (session && (request.params.userId == session.user._id || session.user.username == 'jpnance')) {
+			User.findById(request.params.userId).exec(function(error, user) {
+				var responseData = {
+					user: user,
+					session: session
+				};
 
-	Promise.all(data).then(function(values) {
-		var responseData = {
-			user: values[0]
-		};
-
-		if (request.cookies.sessionId) {
-			Session.find({
-				_id: request.cookies.sessionId
-			}, function(error, sessions) {
 				if (error) {
 					response.send(error);
 				}
-				else if (sessions.length == 1) {
-					responseData.session = sessions[0];
-					response.render('users/edit', responseData);
-				}
-				else {
-					response.redirect('/');
-				}
+
+				response.render('users/edit', responseData);
 			});
+		}
+		else {
+			response.redirect('/');
 		}
 	});
 };
