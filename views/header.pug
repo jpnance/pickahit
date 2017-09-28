@@ -4,7 +4,11 @@
 doctype html
 html
 	head
-		title #{title} &laquo; Pick-a-Hit &laquo; Coinflipper
+		title
+			if title
+				| #{title} &laquo;
+				|
+			| Pick-a-Hit &laquo; Coinflipper
 
 		link(href='/css/reset.css' rel='stylesheet')
 		link(href='/css/pickahit.css' rel='stylesheet')
