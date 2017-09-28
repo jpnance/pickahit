@@ -12,7 +12,7 @@ var placeholder = {
 
 module.exports = function(app) {
 	app.get('/', placeholder.verifier);
-	//app.get('/', games.showAll);
+	app.get('/games', games.showAll);
 
 	app.post('/sessions', sessions.logIn);
 	app.post('/login', sessions.logIn);
