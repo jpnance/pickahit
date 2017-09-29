@@ -14,6 +14,10 @@ var preview = {
 		}
 	},
 
+	disablePreview: function(request, response) {
+		response.clearCookie('preview').redirect('/');
+	},
+
 	enablePreview: function(request, response) {
 		response.cookie('preview', true).redirect('/');
 	}
@@ -23,6 +27,7 @@ module.exports = function(app) {
 	app.get('/', preview.crossroads);
 
 	app.get('/preview', preview.enablePreview);
+	app.get('/placeholder', preview.disablePreview);
 
 	app.post('/sessions', sessions.logIn);
 	app.post('/login', sessions.logIn);
