@@ -4,15 +4,25 @@ var sessions = require('../services/sessions');
 var users = require('../services/users');
 var games = require('../services/games');
 
-var placeholder = {
-	verifier: function(request, response) {
-		response.render('verifier');
+var preview = {
+	crossroads: function(request, response) {
+		if (request.cookies.preview) {
+			games.showAll(request, response);
+		}
+		else {
+			response.render('verifier');
+		}
+	},
+
+	enablePreview: function(request, response) {
+		response.cookie('preview', true).redirect('/');
 	}
 };
 
 module.exports = function(app) {
-	app.get('/', placeholder.verifier);
-	app.get('/games', games.showAll);
+	app.get('/', preview.crossroads);
+
+	app.get('/preview', preview.enablePreview);
 
 	app.post('/sessions', sessions.logIn);
 	app.post('/login', sessions.logIn);
