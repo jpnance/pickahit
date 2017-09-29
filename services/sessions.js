@@ -32,7 +32,7 @@ module.exports.logIn = function(request, response) {
 
 				var sessionUpdate = {
 					username: request.body.username,
-					createdAt: Date.now()
+					lastActivity: Date.now()
 				};
 
 				var options = {
