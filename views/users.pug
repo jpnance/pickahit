@@ -6,5 +6,5 @@ body
 	include masthead.pug
 
 	each user in users
-		a(href='/users/edit/' + user.id) #{user.username}
+		a(href='/users/edit/' + user.username) #{user.username}
 		br
