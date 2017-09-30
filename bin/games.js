@@ -49,13 +49,6 @@ Game.findById(492505).sort('startTime').exec(function(error, game) {
 					if (game.away.batters.indexOf(playerId) == -1) {
 						game.away.batters.push(playerId);
 					}
-
-					if (parseInt(player.gameStats.batting.hits) > 0) {
-						if (game.hits.indexOf(playerId) == -1) {
-							console.log(player.name.boxname, player.gameStats.batting.hits);
-							game.hits.push(playerId);
-						}
-					}
 				}
 			}
 		});
@@ -95,13 +88,6 @@ Game.findById(492505).sort('startTime').exec(function(error, game) {
 				else if (player.position.code != '1') {
 					if (game.home.batters.indexOf(playerId) == -1) {
 						game.home.batters.push(playerId);
-					}
-
-					if (parseInt(player.gameStats.batting.hits) > 0) {
-						if (game.hits.indexOf(playerId) == -1) {
-							console.log(player.name.boxname, player.gameStats.batting.hits);
-							game.hits.push(playerId);
-						}
 					}
 				}
 			}
