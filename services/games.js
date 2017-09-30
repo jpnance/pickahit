@@ -4,13 +4,15 @@ var Game = require('../models/Game');
 
 module.exports.showAll = function(request, response) {
 	var data = [
-		User.find({}).sort({ username: 1}),
+		User.find({}).sort({ username: 1 }),
 		Game.find({}).sort({ startTime: 1 }).populate('awayTeam').populate('homeTeam')
 	];
 
 	Promise.all(data).then(function(values) {
 		var responseData = {
-			users: values[0],
+			users: values[0].filter(function(user) {
+				return user.isEligibleFor(2017);
+			}),
 			games: values[1],
 			dateFormat: require('dateformat')
 		};
