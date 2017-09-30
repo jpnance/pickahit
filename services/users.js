@@ -74,6 +74,10 @@ module.exports.signUp = function(request, response) {
 
 module.exports.update = function(request, response) {
 	Session.withActiveSession(request, function(error, session) {
+		if (!session || (session.user.username != request.params.username && !session.user.admin)) {
+			response.redirect('/');
+		}
+
 		var data = [
 			User.findOne({ username: request.params.username })
 		];
