@@ -36,8 +36,8 @@ for (var i = 0; i <= days; i++) {
 
 					var newGame = {
 						startTime: game.gameDate,
-						awayTeam: awayTeam.id,
-						homeTeam: homeTeam.id,
+						away: { team: awayTeam.id },
+						home: { team: homeTeam.id },
 						gameDescription: game.description,
 						seriesDescription: game.seriesDescription,
 						seriesGameNumber: game.seriesGameNumber,

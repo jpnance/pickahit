@@ -12,9 +12,9 @@ body
 					th
 						p.teams
 							a(href='https://www.mlb.com/gameday/' + game._id)
-								| #{game.awayTeam.teamName}
+								| #{game.away.team.teamName}
 								br
-								| at #{game.homeTeam.teamName}
+								| at #{game.home.team.teamName}
 
 						p
 							| #{game.seriesDescription}

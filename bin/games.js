@@ -1,0 +1,68 @@
+var request = require('superagent');
+
+var Game = require('../models/Game');
+var Team = require('../models/Team');
+
+var mongoose = require('mongoose');
+mongoose.connect(process.env.MONGODB_URI);
+
+Game.findById(492505).sort('startTime').exec(function(error, game) {
+	request.get('https://statsapi.mlb.com/api/v1/game/' + game._id + '/feed/live', function(error, response) {
+		var data = JSON.parse(response.text);
+
+		var awayTeam = data.liveData.boxscore.teams.away;
+		var homeTeam = data.liveData.boxscore.teams.home;
+
+		Object.keys(awayTeam.players).forEach(function(key) {
+			var player = awayTeam.players[key];
+			var playerId = parseInt(player.id);
+
+			if (player.batterPitcher == 'p') {
+				if (game.away.pitchers.indexOf(playerId) == -1) {
+					game.away.pitchers.push(playerId);
+				}
+			}
+			else if (player.batterPitcher == 'b') {
+				if (game.away.batters.indexOf(playerId) == -1) {
+					game.away.batters.push(playerId);
+				}
+
+				if (parseInt(player.gameStats.batting.hits) > 0) {
+					if (game.hits.indexOf(playerId) == -1) {
+						console.log(player.name.boxname, player.gameStats.batting.hits);
+						game.hits.push(playerId);
+					}
+				}
+			}
+		});
+
+		Object.keys(homeTeam.players).forEach(function(key) {
+			var player = homeTeam.players[key];
+			var playerId = parseInt(player.id);
+
+			if (player.batterPitcher == 'p') {
+				if (game.home.pitchers.indexOf(playerId) == -1) {
+					game.home.pitchers.push(playerId);
+				}
+			}
+			else if (player.batterPitcher == 'b') {
+				if (game.home.batters.indexOf(playerId) == -1) {
+					game.home.batters.push(playerId);
+				}
+
+				if (parseInt(player.gameStats.batting.hits) > 0) {
+					if (game.hits.indexOf(playerId) == -1) {
+						console.log(player.name.boxname, player.gameStats.batting.hits);
+						game.hits.push(playerId);
+					}
+				}
+			}
+		});
+
+		game.save(function(error) {
+			if (!error) {
+				mongoose.disconnect();
+			}
+		});
+	});
+});

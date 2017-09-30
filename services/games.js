@@ -5,7 +5,7 @@ var Game = require('../models/Game');
 module.exports.showAll = function(request, response) {
 	var data = [
 		User.find({}).sort({ username: 1 }),
-		Game.find({}).sort({ startTime: 1 }).populate('awayTeam').populate('homeTeam')
+		Game.find({}).sort({ startTime: 1 }).populate('away.team').populate('home.team')
 	];
 
 	Promise.all(data).then(function(values) {

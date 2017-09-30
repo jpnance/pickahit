@@ -6,8 +6,17 @@ var Team = require('../models/Team');
 var gameSchema = new Schema({
 	_id: { type: Number },
 	startTime: { type: Date },
-	awayTeam: { type: Number, ref: 'Team', required: true },
-	homeTeam: { type: Number, ref: 'Team', required: true },
+	away: {
+		team: { type: Number, ref: 'Team', required: true },
+		batters: [{ type: Number, ref: 'Player' }],
+		pitchers: [{ type: Number, ref: 'Player' }]
+	},
+	home: {
+		team: { type: Number, ref: 'Team', required: true },
+		batters: [{ type: Number, ref: 'Player' }],
+		pitchers: [{ type: Number, ref: 'Player' }]
+	},
+	hits: [{ type: Number, ref: 'Player' }],
 	gameDescription: { type: String },
 	seriesDescription: { type: String },
 	seriesGameNumber: { type: Number },
