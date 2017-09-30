@@ -9,6 +9,29 @@ h1 {
 	padding: 0.8em;
 }
 
+h1.title {
+	display: inline-block;
+	font-size: 2em;
+	font-weight: bold;
+	margin-bottom: 4px;
+	margin-right: 4px;
+	padding: 0;
+	vertical-align: middle;
+}
+
+ul.navigation {
+	list-style: none;
+}
+
+ul.navigation li {
+	display: inline;
+	margin-right: 0.3em;
+}
+
+form.login {
+	display: inline-block;
+}
+
 input {
 	border: 1px solid #dddddd;
 	padding: 8px;
@@ -21,13 +44,13 @@ p {
 
 table {
 	border-collapse: collapse;
+	margin-top: 1em;
 }
 
 table th {
 	font-size: 80%;
 	text-align: left;
 	vertical-align: bottom;
-	white-space: nowrap;
 }
 
 table th p.teams {
@@ -38,6 +61,7 @@ table th,
 table td {
 	border: 1px solid #ccc;
 	padding: 4px;
+	white-space: nowrap;
 }
 
 table td.name {

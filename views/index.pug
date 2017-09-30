@@ -2,23 +2,20 @@
 
 include header.pug
 body
+	h1.title Pick-a-Hit
 	if session
-		h1 whatup
-			|
-			|
-			a(href='/users/edit/' + session.user._id) #{session.username}
-			|
-			|
-			a(href='/logout') log out
+		ul.navigation
+			li: a(href='/users/edit/' + session.user._id) Settings
+			li: a(href='/logout') Log Out
 	else
-		form(method='POST' action='/sessions')
-			input(type='text' name='username' placeholder='username')
+		form.login(method='POST' action='/sessions')
+			input(type='text' name='username' placeholder='Username')
 			|
 			|
-			input(type='password' name='password' placeholder='password')
+			input(type='password' name='password' placeholder='Password')
 			|
 			|
-			button(type='submit') log in
+			button(type='submit') Log In
 
 	table(border='1')
 		tr
@@ -53,7 +50,7 @@ body
 								| #{dateFormat(game.startTime, 'h:MMtt')}
 		each user in users
 			tr
-				td.name #{user.username}
+				td.name #{user.firstName} #{user.lastName}
 
 				each game in games
 					td
