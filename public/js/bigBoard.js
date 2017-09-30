@@ -2,6 +2,8 @@ $(document).ready(function() {
 	$('a.open-game').on('click', function(e) {
 		e.preventDefault();
 
+		var gameId = $(this).data('gameId');
+
 		$.get($(this).attr('href'), function(data) {
 			$('#modal div#away-team').find('div.name, div.batters, div.pitchers').empty();
 			$('#modal div#home-team').find('div.name, div.batters, div.pitchers').empty();
@@ -10,12 +12,14 @@ $(document).ready(function() {
 			$('div#modal div#home-team div.name').text(data.home.team.name);
 
 			data.away.batters.sort(playerAlphabeticalSort).forEach(function(batter) {
-				$('div#modal div#away-team div.batters').append(batter.name).append($('<br />'));
+				$('div#modal div#away-team div.batters').append($('<a>').data('playerId', batter._id).attr('href', '/games/pick/' + gameId + '/' + batter._id).text(batter.name)).append($('<br />'));
 			});
 
 			data.home.batters.sort(playerAlphabeticalSort).forEach(function(batter) {
-				$('div#modal div#home-team div.batters').append(batter.name).append($('<br />'));
+				$('div#modal div#home-team div.batters').append($('<a>').data('playerId', batter._id).attr('href', '/games/pick/' + gameId + '/' + batter._id).text(batter.name)).append($('<br />'));
 			});
+
+			$('div#modal div.batters a').addClass('make-pick').data('gameId', gameId);
 
 			/*
 			data.away.pitchers.sort(playerAlphabeticalSort).forEach(function(pitcher) {
@@ -40,6 +44,16 @@ $(document).ready(function() {
 				title: data.away.team.teamName + ' at ' + data.home.team.teamName,
 				width: 380
 			});
+		});
+	});
+
+	$('div#modal').on('click', 'a.make-pick', function(e) {
+		e.preventDefault();
+
+		$.post($(this).attr('href'), function(data) {
+			if (data.success) {
+				$('#modal').dialog('close');
+			}
 		});
 	});
 });

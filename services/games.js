@@ -1,6 +1,39 @@
 var Session = require('../models/Session');
 var User = require('../models/User');
 var Game = require('../models/Game');
+var Player = require('../models/Player');
+
+module.exports.pick = function(request, response) {
+	Session.withActiveSession(request, function(error, session) {
+		if (!request.params.gameId || !request.params.playerId) {
+			response.redirect('/');
+		}
+
+		var userId = session.user._id;
+		var gameId = parseInt(request.params.gameId);
+		var playerId = parseInt(request.params.playerId);
+
+		var data = [
+			Game.findById(gameId),
+			Player.findById(playerId)
+		];
+
+		Promise.all(data).then(function(values) {
+			var game = values[0];
+			var player = values[1];
+
+			if (game && player) {
+				game.makePick(userId, playerId);
+
+				game.save(function(error) {
+					if (!error) {
+						response.send({ success: true, player: player });
+					}
+				});
+			}
+		});
+	});
+};
 
 module.exports.showAll = function(request, response) {
 	Session.withActiveSession(request, function(error, session) {

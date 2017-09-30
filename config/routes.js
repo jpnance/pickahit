@@ -40,4 +40,5 @@ module.exports = function(app) {
 	app.post('/users/edit/:username', users.update);
 
 	app.get('/games/:gameId', games.showOne);
+	app.post('/games/pick/:gameId/:playerId', games.pick);
 };

@@ -46,8 +46,18 @@ body
 
 				each game in games
 					td
+						if game.hasStarted()
+							if game.picks && game.picks[user._id]
+								| #{game.picks[user._id]}
+							else
+								| --
+
 						if session && session.user.username == user.username && !game.hasStarted()
-							a.open-game(href='/games/' + game._id) pick
+							a.open-game(href='/games/' + game._id data-game-id=game._id data-user-id=user._id)
+								if game.picks && game.picks[session.user._id]
+									| #{game.picks[session.user._id]}
+								else
+									| pick
 
 	div#modal
 		div#away-team
