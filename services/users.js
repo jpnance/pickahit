@@ -89,6 +89,10 @@ module.exports.update = function(request, response) {
 			user.lastName = request.body.lastName;
 			user.displayName = request.body.displayName;
 
+			if (request.body.password1 && request.body.password2 && request.body.password1 == request.body.password2) {
+				user.password = crypto.createHash('sha256').update(request.body.password1).digest('hex');
+			}
+
 			user.save(function(error) {
 				if (error) {
 					response.send(error);

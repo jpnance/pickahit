@@ -12,6 +12,7 @@ form(method='POST' action='/users/edit/' + user.username)
 		br
 		input(type='text' name='displayName' placeholder='display name' value=user.displayName)
 		br
-	input(type='password' name='password' placeholder='password')
+	input(type='password' name='password1' placeholder='New Password')
+	input(type='password' name='password2' placeholder='Confirm New Password')
 	br
 	button(type='submit') Save
