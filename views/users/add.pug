@@ -2,15 +2,18 @@
 
 include ../header.pug
 
-form(method='POST' action='/users')
-	input(type='text' name='username' placeholder='username')
-	br
-	input(type='text' name='firstName' placeholder='first name')
-	br
-	input(type='text' name='lastName' placeholder='last name')
-	br
-	input(type='text' name='displayName' placeholder='display name')
-	br
-	input(type='password' name='password' placeholder='password')
-	br
-	button(type='submit') create user
+body
+	include ../masthead.pug
+
+	form(method='POST' action='/users')
+		input(type='text' name='username' placeholder='username')
+		br
+		input(type='text' name='firstName' placeholder='first name')
+		br
+		input(type='text' name='lastName' placeholder='last name')
+		br
+		input(type='text' name='displayName' placeholder='display name')
+		br
+		input(type='password' name='password' placeholder='password')
+		br
+		button(type='submit') create user

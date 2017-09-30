@@ -2,17 +2,20 @@
 
 include ../header.pug
 
-form(method='POST' action='/users/edit/' + user.username)
-	| #{user.username}
-	br
-	if session.user.admin
-		input(type='text' name='firstName' placeholder='first name' value=user.firstName)
+body
+	include ../masthead.pug
+
+	form(method='POST' action='/users/edit/' + user.username)
+		| #{user.username}
 		br
-		input(type='text' name='lastName' placeholder='last name' value=user.lastName)
+		if session.user.admin
+			input(type='text' name='firstName' placeholder='first name' value=user.firstName)
+			br
+			input(type='text' name='lastName' placeholder='last name' value=user.lastName)
+			br
+			input(type='text' name='displayName' placeholder='display name' value=user.displayName)
+			br
+		input(type='password' name='password1' placeholder='New Password')
+		input(type='password' name='password2' placeholder='Confirm New Password')
 		br
-		input(type='text' name='displayName' placeholder='display name' value=user.displayName)
-		br
-	input(type='password' name='password1' placeholder='New Password')
-	input(type='password' name='password2' placeholder='Confirm New Password')
-	br
-	button(type='submit') Save
+		button(type='submit') Save

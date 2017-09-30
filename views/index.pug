@@ -2,42 +2,45 @@
 
 include header.pug
 
-table(border='1')
-	tr
-		td
-			each game in games
-				th
-					p.teams
-						a(href='https://www.mlb.com/gameday/' + game._id)
-							| #{game.awayTeam.teamName}
-							br
-							| at #{game.homeTeam.teamName}
+body
+	include masthead.pug
 
-					p
-						| #{game.seriesDescription}
-						if game.gamesInSeries > 1
-							br
-							| Game #{game.seriesGameNumber}
-							if game.ifNecessary == 'Y'
-								| *
-						else
-							|
-							br
-							|
-							br
-
-					p
-						| #{dateFormat(game.startTime, 'mmmm dS')}
-						br
-						if game.startTime.getMinutes() == 33
-							| TBD
-						else
-							| #{dateFormat(game.startTime, 'h:MMtt')}
-	each user in users
+	table(border='1')
 		tr
-			td.name #{user.firstName} #{user.lastName}
+			td
+				each game in games
+					th
+						p.teams
+							a(href='https://www.mlb.com/gameday/' + game._id)
+								| #{game.awayTeam.teamName}
+								br
+								| at #{game.homeTeam.teamName}
 
-			each game in games
-				td
-					if session && session.user.username == user.username
-						a(href='#') pick
+						p
+							| #{game.seriesDescription}
+							if game.gamesInSeries > 1
+								br
+								| Game #{game.seriesGameNumber}
+								if game.ifNecessary == 'Y'
+									| *
+							else
+								|
+								br
+								|
+								br
+
+						p
+							| #{dateFormat(game.startTime, 'mmmm dS')}
+							br
+							if game.startTime.getMinutes() == 33
+								| TBD
+							else
+								| #{dateFormat(game.startTime, 'h:MMtt')}
+		each user in users
+			tr
+				td.name #{user.firstName} #{user.lastName}
+
+				each game in games
+					td
+						if session && session.user.username == user.username
+							a(href='#') pick

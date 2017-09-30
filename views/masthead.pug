@@ -1,0 +1,15 @@
+h1.title: a(href='/') Pick-a-Hit
+if session
+	ul.navigation
+		li: a(href='/users/edit/' + session.user.username) Settings
+		li: a(href='/logout') Log Out
+else
+	form.login(method='POST' action='/sessions')
+		input(type='text' name='username' placeholder='Username')
+		|
+		|
+		input(type='password' name='password' placeholder='Password')
+		|
+		|
+		button(type='submit') Log In
+

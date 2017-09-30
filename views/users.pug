@@ -1,7 +1,10 @@
 - var title = 'All Users'
 
 include header.pug
+
 body
+	include masthead.pug
+
 	each user in users
 		a(href='/users/edit/' + user.id) #{user.username}
 		br
