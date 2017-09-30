@@ -37,8 +37,15 @@ module.exports.edit = function(request, response) {
 };
 
 module.exports.showAll = function(request, response) {
-	User.find({}).sort({ username: 1 }).then(function(users) {
-		response.render('users', { users: users });
+	Session.withActiveSession(request, function(error, session) {
+		if (session && session.user.admin) {
+			User.find({}).sort({ username: 1 }).then(function(users) {
+				response.render('users', { users: users, session: session });
+			});
+		}
+		else {
+			response.redirect('/');
+		}
 	});
 };
 
