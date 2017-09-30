@@ -16,8 +16,8 @@ module.exports.add = function(request, response) {
 
 module.exports.edit = function(request, response) {
 	Session.withActiveSession(request, function(error, session) {
-		if (session && (request.params.userId == session.user._id || session.user.username == 'jpnance')) {
-			User.findById(request.params.userId).exec(function(error, user) {
+		if (session && (request.params.username == session.user.username || session.user.admin)) {
+			User.findOne({ username: request.params.username }).exec(function(error, user) {
 				var responseData = {
 					user: user,
 					session: session
@@ -73,24 +73,26 @@ module.exports.signUp = function(request, response) {
 };
 
 module.exports.update = function(request, response) {
-	var data = [
-		User.findById(request.params.userId)
-	];
+	Session.withActiveSession(request, function(error, session) {
+		var data = [
+			User.findOne({ username: request.params.username })
+		];
 
-	Promise.all(data).then(function(values) {
-		var user = values[0];
+		Promise.all(data).then(function(values) {
+			var user = values[0];
 
-		user.firstName = request.body.firstName;
-		user.lastName = request.body.lastName;
-		user.displayName = request.body.displayName;
+			user.firstName = request.body.firstName;
+			user.lastName = request.body.lastName;
+			user.displayName = request.body.displayName;
 
-		user.save(function(error) {
-			if (error) {
-				response.send(error);
-			}
-			else {
-				response.redirect('/');
-			}
+			user.save(function(error) {
+				if (error) {
+					response.send(error);
+				}
+				else {
+					response.redirect('/');
+				}
+			});
 		});
 	});
 };
