@@ -1,5 +1,7 @@
 - var title = 'Big Board'
 
+- var additionalJsFiles = [ '/js/bigBoard.js' ];
+
 include header.pug
 
 body
@@ -46,3 +48,14 @@ body
 					td
 						if session && session.user.username == user.username && !game.hasStarted()
 							a.open-game(href='/games/' + game._id) pick
+
+	div#modal
+		div#away-team
+			div.name
+			div.batters
+			div.pitchers
+
+		div#home-team
+			div.name
+			div.batters
+			div.pitchers

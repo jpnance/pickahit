@@ -121,3 +121,27 @@ div.verifier div.failure {
 div.verifier div.success p {
 	margin-bottom: 1em;
 }
+
+div#modal {
+	display: none;
+}
+
+div#modal div#away-team,
+div#modal div#home-team {
+	display: inline-block;
+	vertical-align: top;
+	width: 50%;
+}
+
+div#modal div#away-team {
+	text-align: left;
+}
+
+div#modal div#home-team {
+	text-align: right;
+}
+
+div#modal div.name {
+	font-weight: bold;
+	margin-bottom: 1em;
+}
