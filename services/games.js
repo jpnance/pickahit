@@ -38,3 +38,23 @@ module.exports.showAll = function(request, response) {
 		}
 	});
 };
+
+module.exports.showOne = function(request, response) {
+	var data = [
+		Game
+			.findById(request.params.gameId)
+			.populate('away.team')
+			.populate('home.team')
+			.populate('away.batters')
+			.populate('home.batters')
+			.populate('away.pitchers')
+			.populate('home.pitchers')
+			.populate('hits')
+	];
+
+	Promise.all(data).then(function(values) {
+		var game = values[0];
+
+		response.send(game);
+	});
+};

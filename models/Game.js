@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var Team = require('../models/Team');
+var Player = require('../models/Player');
 
 var gameSchema = new Schema({
 	_id: { type: Number },
