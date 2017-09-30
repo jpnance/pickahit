@@ -15,22 +15,46 @@ Game.findById(492505).sort('startTime').exec(function(error, game) {
 
 		Object.keys(awayTeam.players).forEach(function(key) {
 			var player = awayTeam.players[key];
-			var playerId = parseInt(player.id);
 
-			if (player.batterPitcher == 'p') {
-				if (game.away.pitchers.indexOf(playerId) == -1) {
-					game.away.pitchers.push(playerId);
+			if (player.batterPitcher) {
+				var playerId = parseInt(player.id);
+
+				if (player.batterPitcher == 'p') {
+					if (game.away.pitchers.indexOf(playerId) == -1) {
+						game.away.pitchers.push(playerId);
+					}
+				}
+				else if (player.batterPitcher == 'b') {
+					if (game.away.batters.indexOf(playerId) == -1) {
+						game.away.batters.push(playerId);
+					}
+
+					if (parseInt(player.gameStats.batting.hits) > 0) {
+						if (game.hits.indexOf(playerId) == -1) {
+							console.log(player.name.boxname, player.gameStats.batting.hits);
+							game.hits.push(playerId);
+						}
+					}
 				}
 			}
-			else if (player.batterPitcher == 'b') {
-				if (game.away.batters.indexOf(playerId) == -1) {
-					game.away.batters.push(playerId);
-				}
+			else if (player.person) {
+				var playerId = parseInt(player.person.id);
 
-				if (parseInt(player.gameStats.batting.hits) > 0) {
-					if (game.hits.indexOf(playerId) == -1) {
-						console.log(player.name.boxname, player.gameStats.batting.hits);
-						game.hits.push(playerId);
+				if (player.position.code == '1') {
+					if (game.away.pitchers.indexOf(playerId) == -1) {
+						game.away.pitchers.push(playerId);
+					}
+				}
+				else if (player.position.code != '1') {
+					if (game.away.batters.indexOf(playerId) == -1) {
+						game.away.batters.push(playerId);
+					}
+
+					if (parseInt(player.gameStats.batting.hits) > 0) {
+						if (game.hits.indexOf(playerId) == -1) {
+							console.log(player.name.boxname, player.gameStats.batting.hits);
+							game.hits.push(playerId);
+						}
 					}
 				}
 			}
@@ -38,22 +62,46 @@ Game.findById(492505).sort('startTime').exec(function(error, game) {
 
 		Object.keys(homeTeam.players).forEach(function(key) {
 			var player = homeTeam.players[key];
-			var playerId = parseInt(player.id);
 
-			if (player.batterPitcher == 'p') {
-				if (game.home.pitchers.indexOf(playerId) == -1) {
-					game.home.pitchers.push(playerId);
+			if (player.batterPitcher) {
+				var playerId = parseInt(player.id);
+
+				if (player.batterPitcher == 'p') {
+					if (game.home.pitchers.indexOf(playerId) == -1) {
+						game.home.pitchers.push(playerId);
+					}
+				}
+				else if (player.batterPitcher == 'b') {
+					if (game.home.batters.indexOf(playerId) == -1) {
+						game.home.batters.push(playerId);
+					}
+
+					if (parseInt(player.gameStats.batting.hits) > 0) {
+						if (game.hits.indexOf(playerId) == -1) {
+							console.log(player.name.boxname, player.gameStats.batting.hits);
+							game.hits.push(playerId);
+						}
+					}
 				}
 			}
-			else if (player.batterPitcher == 'b') {
-				if (game.home.batters.indexOf(playerId) == -1) {
-					game.home.batters.push(playerId);
-				}
+			else if (player.person) {
+				var playerId = parseInt(player.person.id);
 
-				if (parseInt(player.gameStats.batting.hits) > 0) {
-					if (game.hits.indexOf(playerId) == -1) {
-						console.log(player.name.boxname, player.gameStats.batting.hits);
-						game.hits.push(playerId);
+				if (player.position.code == '1') {
+					if (game.home.pitchers.indexOf(playerId) == -1) {
+						game.home.pitchers.push(playerId);
+					}
+				}
+				else if (player.position.code != '1') {
+					if (game.home.batters.indexOf(playerId) == -1) {
+						game.home.batters.push(playerId);
+					}
+
+					if (parseInt(player.gameStats.batting.hits) > 0) {
+						if (game.hits.indexOf(playerId) == -1) {
+							console.log(player.name.boxname, player.gameStats.batting.hits);
+							game.hits.push(playerId);
+						}
 					}
 				}
 			}
