@@ -70,6 +70,13 @@ module.exports.signUp = function(request, response) {
 					password: crypto.createHash('sha256').update(request.body.password).digest('hex')
 				});
 
+				if (request.body.eligible == 'on') {
+					user.makeEligibleFor(2017);
+				}
+				else {
+					user.makeUneligibleFor(2017);
+				}
+
 				user.save(function(error) {
 					if (!error) {
 						response.redirect('/');
@@ -99,9 +106,18 @@ module.exports.update = function(request, response) {
 		Promise.all(data).then(function(values) {
 			var user = values[0];
 
-			user.firstName = request.body.firstName;
-			user.lastName = request.body.lastName;
-			user.displayName = request.body.displayName;
+			if (session.user.admin) {
+				user.firstName = request.body.firstName;
+				user.lastName = request.body.lastName;
+				user.displayName = request.body.displayName;
+
+				if (request.body.eligible == 'on') {
+					user.makeEligibleFor(2017);
+				}
+				else {
+					user.makeUneligibleFor(2017);
+				}
+			}
 
 			if (request.body.password1 && request.body.password2 && request.body.password1 == request.body.password2) {
 				user.password = crypto.createHash('sha256').update(request.body.password1).digest('hex');

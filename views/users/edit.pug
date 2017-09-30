@@ -6,8 +6,6 @@ body
 	include ../masthead.pug
 
 	form(method='POST' action='/users/edit/' + user.username)
-		| #{user.username}
-		br
 		if session.user.admin
 			input(type='text' name='firstName' placeholder='first name' value=user.firstName)
 			br
@@ -18,4 +16,8 @@ body
 		input(type='password' name='password1' placeholder='New Password')
 		input(type='password' name='password2' placeholder='Confirm New Password')
 		br
+		if session.user.admin
+			input(type='checkbox' id='eligible' name='eligible' checked=user.isEligibleFor(2017) ? 'checked' : null)
+			label(for='eligible') Eligible for the 2017 season?
+			br
 		button(type='submit') Save

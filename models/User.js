@@ -25,4 +25,20 @@ userSchema.methods.makeEligibleFor = function(season) {
 	}
 };
 
+userSchema.methods.makeUneligibleFor = function(season) {
+	if (!this.seasons) {
+		this.seasons = [];
+	}
+
+	var seasons = [];
+
+	this.seasons.forEach(function(existingSeason) {
+		if (existingSeason != season) {
+			seasons.push(existingSeason);
+		}
+	});
+
+	this.seasons = seasons;
+};
+
 module.exports = mongoose.model('User', userSchema);
