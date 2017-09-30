@@ -44,5 +44,5 @@ body
 
 				each game in games
 					td
-						if session && session.user.username == user.username
-							a(href='#') pick
+						if session && session.user.username == user.username && !game.hasStarted()
+							a.open-game(href='/games/' + game._id) pick
