@@ -30,11 +30,13 @@ body
 								br
 
 						p
-							| #{dateFormat(game.startTime, 'mmmm dS')}
-							br
 							if game.startTime.getMinutes() == 33
+								| #{dateFormat(game.startTime, 'mmmm dS', true)}
+								br
 								| TBD
 							else
+								| #{dateFormat(game.startTime, 'mmmm dS')}
+								br
 								| #{dateFormat(game.startTime, 'h:MMtt')}
 		each user in users
 			tr
