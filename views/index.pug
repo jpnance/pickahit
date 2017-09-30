@@ -25,10 +25,11 @@ body
 			td
 				each game in games
 					th
-						p
-							| #{game.awayTeam.teamName}
-							br
-							| at #{game.homeTeam.teamName}
+						p.teams
+							a(href='https://www.mlb.com/gameday/' + game._id)
+								| #{game.awayTeam.teamName}
+								br
+								| at #{game.homeTeam.teamName}
 
 						p
 							| #{game.seriesDescription}
@@ -37,10 +38,22 @@ body
 								| Game #{game.seriesGameNumber}
 								if game.ifNecessary == 'Y'
 									| *
+							else
+								|
+								br
+								|
+								br
 
+						p
+							| #{dateFormat(game.startTime, 'mmmm dS')}
+							br
+							if game.startTime.getMinutes() == 33
+								| TBD
+							else
+								| #{dateFormat(game.startTime, 'h:MMtt')}
 		each user in users
 			tr
-				td #{user.username}
+				td.name #{user.username}
 
 				each game in games
 					td

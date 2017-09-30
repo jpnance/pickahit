@@ -11,7 +11,8 @@ module.exports.showAll = function(request, response) {
 	Promise.all(data).then(function(values) {
 		var responseData = {
 			users: values[0],
-			games: values[1]
+			games: values[1],
+			dateFormat: require('dateformat')
 		};
 
 		if (request.cookies.sessionId) {

@@ -25,16 +25,23 @@ table {
 
 table th {
 	font-size: 80%;
-	font-weight: bold;
 	text-align: left;
 	vertical-align: bottom;
 	white-space: nowrap;
+}
+
+table th p.teams {
+	font-weight: bold;
 }
 
 table th,
 table td {
 	border: 1px solid #ccc;
 	padding: 4px;
+}
+
+table td.name {
+	text-align: right;
 }
 
 div.verifier {
