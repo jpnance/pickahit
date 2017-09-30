@@ -5,8 +5,8 @@ var User = require('../models/User');
 
 module.exports.add = function(request, response) {
 	Session.withActiveSession(request, function(error, session) {
-		if (session && session.user.username == 'jpnance') {
-			response.render('users/add');
+		if (session && session.user.admin) {
+			response.render('users/add', { session: session });
 		}
 		else {
 			response.redirect('/');
@@ -50,33 +50,40 @@ module.exports.showAll = function(request, response) {
 };
 
 module.exports.signUp = function(request, response) {
-	if (!request.body.username && !request.body.password) {
-		response.status(400).send('No data supplied');
-	}
-	else if (!request.body.username) {
-		response.status(400).send('No username supplied');
-	}
-	else if (!request.body.password) {
-		response.status(400).send('No password supplied');
-	}
-	else {
-		var user = new User({
-			username: request.body.username,
-			firstName: request.body.firstName,
-			lastName: request.body.lastName,
-			displayName: request.body.displayName,
-			password: crypto.createHash('sha256').update(request.body.password).digest('hex')
-		});
-
-		user.save(function(error) {
-			if (!error) {
-				response.send(user);
+	Session.withActiveSession(request, function(error, session) {
+		if (session && session.user.admin) {
+			if (!request.body.username && !request.body.password) {
+				response.status(400).send('No data supplied');
+			}
+			else if (!request.body.username) {
+				response.status(400).send('No username supplied');
+			}
+			else if (!request.body.password) {
+				response.status(400).send('No password supplied');
 			}
 			else {
-				response.status(400).send(error);
+				var user = new User({
+					username: request.body.username,
+					firstName: request.body.firstName,
+					lastName: request.body.lastName,
+					displayName: request.body.displayName,
+					password: crypto.createHash('sha256').update(request.body.password).digest('hex')
+				});
+
+				user.save(function(error) {
+					if (!error) {
+						response.redirect('/');
+					}
+					else {
+						response.status(400).send(error);
+					}
+				});
 			}
-		});
-	}
+		}
+		else {
+			response.redirect('/');
+		}
+	});
 };
 
 module.exports.update = function(request, response) {
