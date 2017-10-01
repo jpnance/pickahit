@@ -85,23 +85,48 @@ module.exports.showAll = function(request, response) {
 };
 
 module.exports.showOne = function(request, response) {
-	var data = [
-		Game
-			.findById(request.params.gameId)
-			.populate('away.team')
-			.populate('home.team')
-			.populate('away.batters')
-			.populate('home.batters')
-			.populate('away.pitchers')
-			.populate('home.pitchers')
-			.populate('hits')
-			.populate('picks.user')
-			.populate('picks.player')
-	];
+	Session.withActiveSession(request, function(error, session) {
+		if (error || !session) {
+			response.redirect('/');
+		}
 
-	Promise.all(data).then(function(values) {
-		var game = values[0];
+		var data = [
+			Game
+				.findById(request.params.gameId)
+				.populate('away.team')
+				.populate('home.team')
+				.populate('away.batters')
+				.populate('home.batters')
+				.populate('away.pitchers')
+				.populate('home.pitchers')
+				.populate('hits')
+				.populate('picks.user')
+				.populate('picks.player'),
 
-		response.send(game);
+			Game.find({ picks: { '$elemMatch': { user: session.user._id } }})
+		];
+
+		Promise.all(data).then(function(values) {
+			var responseData = {
+				game: values[0],
+				alreadyPicked: []
+			};
+
+			var games = values[1];
+
+			games.forEach(function(game) {
+				if (!game.picks) {
+					return;
+				}
+
+				game.picks.forEach(function(pick) {
+					if (pick.user.toString() == session.user._id.toString()) {
+						responseData.alreadyPicked.push(pick.player);
+					}
+				});
+			});
+
+			response.send(responseData);
+		});
 	});
 };
