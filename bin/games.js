@@ -31,7 +31,6 @@ Game.findById(492505).sort('startTime').exec(function(error, game) {
 
 					if (parseInt(player.gameStats.batting.hits) > 0) {
 						if (game.hits.indexOf(playerId) == -1) {
-							console.log(player.name.boxname, player.gameStats.batting.hits);
 							game.hits.push(playerId);
 						}
 					}
@@ -71,7 +70,6 @@ Game.findById(492505).sort('startTime').exec(function(error, game) {
 
 					if (parseInt(player.gameStats.batting.hits) > 0) {
 						if (game.hits.indexOf(playerId) == -1) {
-							console.log(player.name.boxname, player.gameStats.batting.hits);
 							game.hits.push(playerId);
 						}
 					}
