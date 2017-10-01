@@ -22,7 +22,7 @@ module.exports.pick = function(request, response) {
 			var game = values[0];
 			var player = values[1];
 
-			if (game && player) {
+			if (game && !game.hasStarted() && player) {
 				game.makePick(userId, playerId);
 
 				game.save(function(error) {
