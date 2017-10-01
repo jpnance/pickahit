@@ -10,44 +10,46 @@ body
 	table(border='1')
 		tr
 			td
-				each game in games
-					th
-						p.teams
-							a(href='https://www.mlb.com/gameday/' + game._id)
-								| #{game.away.team.teamName}
-								br
-								| at #{game.home.team.teamName}
+			td
+			each game in games
+				th
+					p.teams
+						a(href='https://www.mlb.com/gameday/' + game._id)
+							| #{game.away.team.teamName}
+							br
+							| at #{game.home.team.teamName}
 
-						p
-							| #{game.seriesDescription}
-							if game.gamesInSeries > 1
-								br
-								| Game #{game.seriesGameNumber}
-								if game.ifNecessary == 'Y'
-									| *
-							else
-								|
-								br
-								|
-								br
+					p
+						| #{game.seriesDescription}
+						if game.gamesInSeries > 1
+							br
+							| Game #{game.seriesGameNumber}
+							if game.ifNecessary == 'Y'
+								| *
+						else
+							|
+							br
+							|
+							br
 
-						p
-							if game.startTime.getMinutes() == 33
-								| #{dateFormat(game.startTime, 'mmmm dS', true)}
-								br
-								| TBD
-							else
-								| #{dateFormat(game.startTime, 'mmmm dS')}
-								br
-								| #{dateFormat(game.startTime, 'h:MMtt')} ET
+					p
+						if game.startTime.getMinutes() == 33
+							| #{dateFormat(game.startTime, 'mmmm dS', true)}
+							br
+							| TBD
+						else
+							| #{dateFormat(game.startTime, 'mmmm dS')}
+							br
+							| #{dateFormat(game.startTime, 'h:MMtt')} ET
 
-						p
-							| #{game.points} point
-							if game.points > 1
-								| s
+					p
+						| #{game.points} point
+						if game.points > 1
+							| s
 		each user in users
 			tr
 				td.name #{user.firstName} #{user.lastName}
+				td.score #{user.score}
 
 				each game in games
 					td
