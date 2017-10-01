@@ -68,7 +68,33 @@ module.exports.showAll = function(request, response) {
 				users: values[0].filter(function(user) {
 					return user.isEligibleFor(2017);
 				}),
-				games: values[1],
+				games: values[1].sort(function(a, b) {
+					if (a.status == 'F' && b.status != 'F') {
+						return 1;
+					}
+					else if (a.status != 'F' && b.status == 'F') {
+						return -1;
+					}
+					else {
+						if (a.startTime < b.startTime) {
+							return -1;
+						}
+						else if (a.startTime > b.startTime) {
+							return 1;
+						}
+						else {
+							if (a.away.team.teamName < b.away.team.teamName) {
+								return -1;
+							}
+							else if (a.away.team.teamName > b.away.team.teamName) {
+								return 1;
+							}
+							else {
+								return 0;
+							}
+						}
+					}
+				}),
 				dateFormat: require('dateformat')
 			};
 
