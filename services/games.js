@@ -72,6 +72,8 @@ module.exports.showAll = function(request, response) {
 				dateFormat: require('dateformat')
 			};
 
+			var userScores = {};
+
 			responseData.games.forEach(function(game) {
 				if (!game.picks) {
 					return;
@@ -80,8 +82,47 @@ module.exports.showAll = function(request, response) {
 				game.mappedPicks = {};
 
 				game.picks.forEach(function(pick) {
+					if (!userScores[pick.user._id]) {
+						userScores[pick.user._id] = 0;
+					}
+
+					if (game.hits.indexOf(pick.player._id) != -1) {
+						userScores[pick.user._id] += game.points;
+					}
+
 					game.mappedPicks[pick.user._id] = pick.player;
 				});
+			});
+
+			responseData.users.forEach(function(user) {
+				if (userScores[user._id]) {
+					user.score = userScores[user._id];
+				}
+				else {
+					user.score = 0;
+				}
+			});
+
+			responseData.users = responseData.users.sort(function(a, b) {
+				if (a.score < b.score) {
+					return 1;
+				}
+				else if (a.score > b.score) {
+					return -1;
+				}
+				else {
+					var aName = a.firstName + a.lastName;
+					var bName = b.firstName + b.lastName;
+
+					if (aName < bName) {
+						return -1;
+					}
+					else if (aName > bName) {
+						return 1;
+					}
+
+					return 0;
+				}
 			});
 
 			response.render('index', responseData);

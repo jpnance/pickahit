@@ -8,7 +8,8 @@ var userSchema = new Schema({
 	lastName: { type: String },
 	displayName: { type: String },
 	seasons: { type: [Number] },
-	admin: { type: Boolean, default: false }
+	admin: { type: Boolean, default: false },
+	score: { type: Number }
 });
 
 userSchema.methods.isEligibleFor = function(season) {
