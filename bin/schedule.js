@@ -38,12 +38,33 @@ for (var i = 0; i <= days; i++) {
 						startTime: game.gameDate,
 						'away.team': awayTeam.id,
 						'home.team': homeTeam.id,
+						status: game.status.statusCode,
 						gameDescription: game.description,
 						seriesDescription: game.seriesDescription,
 						seriesGameNumber: game.seriesGameNumber,
 						gamesInSeries: game.gamesInSeries,
 						ifNecessary: game.ifNecessary
 					};
+
+					switch (game.seriesDescription) {
+						case 'AL Wild Card Game':
+						case 'NL Wild Card Game':
+						case 'AL Division Series':
+						case 'NL Division Series':
+							newGame.points = 1;
+							break;
+
+						case 'AL Championship Series':
+						case 'NL Championship Series':
+							newGame.points = 2;
+							break;
+
+						case 'World Series':
+							newGame.points = 4;
+							break;
+
+						default: break;
+					}
 
 					gamePromises.push(Team.findByIdAndUpdate(awayTeam.id, { name: awayTeam.name, abbreviation: awayTeam.abbreviation, locationName: awayTeam.locationName, teamName: awayTeam.teamName }, { upsert: true }));
 					gamePromises.push(Team.findByIdAndUpdate(homeTeam.id, { name: homeTeam.name, abbreviation: homeTeam.abbreviation, locationName: homeTeam.locationName, teamName: homeTeam.teamName }, { upsert: true }));

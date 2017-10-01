@@ -40,6 +40,11 @@ body
 								| #{dateFormat(game.startTime, 'mmmm dS')}
 								br
 								| #{dateFormat(game.startTime, 'h:MMtt')}
+
+						p
+							| #{game.points} point
+							if game.points > 1
+								| s
 		each user in users
 			tr
 				td.name #{user.firstName} #{user.lastName}
@@ -50,7 +55,11 @@ body
 							if game.mappedPicks && game.mappedPicks[user._id]
 								| #{game.mappedPicks[user._id].name}
 								if game.hits.indexOf(game.mappedPicks[user._id]._id) > -1
-									| !!!
+									|
+									| :)
+								else if game.isFinal()
+									|
+									| :(
 							else
 								| --
 

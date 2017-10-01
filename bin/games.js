@@ -95,6 +95,8 @@ Game.find({}).sort('startTime').exec(function(error, games) {
 					}
 				});
 
+				game.status = data.gameData.status.statusCode;
+
 				game.save(function(error) {
 					if (!error) {
 						resolve('good');

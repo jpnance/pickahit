@@ -22,11 +22,13 @@ var gameSchema = new Schema({
 		player: { type: Number, ref: 'Player' }
 	}],
 	hits: [{ type: Number, ref: 'Player' }],
+	status: { type: String, required: true },
 	gameDescription: { type: String },
 	seriesDescription: { type: String },
 	seriesGameNumber: { type: Number },
 	gamesInSeries: { type: Number },
-	ifNecessary: { type: String }
+	ifNecessary: { type: String },
+	points: { type: Number }
 });
 
 gameSchema.methods.hasStarted = function() {
@@ -35,6 +37,10 @@ gameSchema.methods.hasStarted = function() {
 	}
 
 	return false;
+};
+
+gameSchema.methods.isFinal = function() {
+	return this.status == 'F';
 };
 
 module.exports = mongoose.model('Game', gameSchema);
