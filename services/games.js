@@ -15,14 +15,19 @@ module.exports.pick = function(request, response) {
 
 		var data = [
 			Game.findById(gameId),
-			Player.findById(playerId)
+			Player.findById(playerId),
+			Game.find({ picks: { '$elemMatch': { user: session.user._id, player: playerId } } })
 		];
 
 		Promise.all(data).then(function(values) {
 			var game = values[0];
 			var player = values[1];
+			var collision = values[2];
 
-			if (game && !game.hasStarted() && player) {
+			if (collision.length > 0) {
+				response.send({ success: false, error: new Error(player.name + ' has already been picked by ' + session.user.username) });
+			}
+			else if (game && !game.hasStarted() && player) {
 				Game.findOneAndUpdate({ _id: gameId, 'picks.user': session.user._id }, { '$set': { 'picks.$.player': player._id } }).exec(function(error, game) {
 					if (!game) {
 						Game.findOneAndUpdate({ _id: gameId }, { '$push': { picks: { user: session.user._id, player: playerId } } }).exec(function(error, game) {
