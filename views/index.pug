@@ -47,15 +47,17 @@ body
 				each game in games
 					td
 						if game.hasStarted()
-							if game.picks && game.picks[user._id]
-								| #{game.picks[user._id]}
+							if game.mappedPicks && game.mappedPicks[user._id]
+								| #{game.mappedPicks[user._id].name}
+								if game.hits.indexOf(game.mappedPicks[user._id]._id) > -1
+									| !!!
 							else
 								| --
 
 						if session && session.user.username == user.username && !game.hasStarted()
 							a.open-game(href='/games/' + game._id data-game-id=game._id data-user-id=user._id)
-								if game.picks && game.picks[session.user._id]
-									| #{game.picks[session.user._id]}
+								if game.mappedPicks && game.mappedPicks[session.user._id]
+									| #{game.mappedPicks[session.user._id].name}
 								else
 									| pick
 

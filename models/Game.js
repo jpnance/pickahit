@@ -17,7 +17,10 @@ var gameSchema = new Schema({
 		batters: [{ type: Number, ref: 'Player' }],
 		pitchers: [{ type: Number, ref: 'Player' }]
 	},
-	picks: { type: Schema.Types.Mixed },
+	picks: [{
+		user: { type: Schema.Types.ObjectId, ref: 'User' },
+		player: { type: Number, ref: 'Player' }
+	}],
 	hits: [{ type: Number, ref: 'Player' }],
 	gameDescription: { type: String },
 	seriesDescription: { type: String },
@@ -32,15 +35,6 @@ gameSchema.methods.hasStarted = function() {
 	}
 
 	return false;
-};
-
-gameSchema.methods.makePick = function(userId, playerId) {
-	if (!this.picks) {
-		this.picks = {};
-	}
-
-	this.picks[userId] = playerId;
-	this.markModified('picks');
 };
 
 module.exports = mongoose.model('Game', gameSchema);

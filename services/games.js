@@ -23,10 +23,15 @@ module.exports.pick = function(request, response) {
 			var player = values[1];
 
 			if (game && !game.hasStarted() && player) {
-				game.makePick(userId, playerId);
-
-				game.save(function(error) {
-					if (!error) {
+				Game.findOneAndUpdate({ _id: gameId, 'picks.user': session.user._id }, { '$set': { 'picks.$.player': player._id } }).exec(function(error, game) {
+					if (!game) {
+						Game.findOneAndUpdate({ _id: gameId }, { '$push': { picks: { user: session.user._id, player: playerId } } }).exec(function(error, game) {
+							if (!error) {
+								response.send({ success: true, player: player });
+							}
+						});
+					}
+					else if (!error) {
 						response.send({ success: true, player: player });
 					}
 				});
@@ -38,12 +43,23 @@ module.exports.pick = function(request, response) {
 module.exports.showAll = function(request, response) {
 	Session.withActiveSession(request, function(error, session) {
 		var data = [
-			User.find({}).sort({ username: 1 }),
-			Game.find({}).sort({ startTime: 1 }).populate('away.team').populate('home.team')
+			User
+				.find({})
+				.select('-password')
+				.sort({ username: 1 }),
+
+			Game
+				.find({})
+				.sort({ startTime: 1 })
+				.populate('away.team')
+				.populate('home.team')
+				.populate('picks.user')
+				.populate('picks.player')
 		];
 
 		Promise.all(data).then(function(values) {
 			var responseData = {
+				session: session,
 				users: values[0].filter(function(user) {
 					return user.isEligibleFor(2017);
 				}),
@@ -51,9 +67,17 @@ module.exports.showAll = function(request, response) {
 				dateFormat: require('dateformat')
 			};
 
-			if (session) {
-				responseData.session = session;
-			}
+			responseData.games.forEach(function(game) {
+				if (!game.picks) {
+					return;
+				}
+
+				game.mappedPicks = {};
+
+				game.picks.forEach(function(pick) {
+					game.mappedPicks[pick.user._id] = pick.player;
+				});
+			});
 
 			response.render('index', responseData);
 		});
@@ -71,6 +95,8 @@ module.exports.showOne = function(request, response) {
 			.populate('away.pitchers')
 			.populate('home.pitchers')
 			.populate('hits')
+			.populate('picks.user')
+			.populate('picks.player')
 	];
 
 	Promise.all(data).then(function(values) {
