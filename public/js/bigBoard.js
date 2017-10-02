@@ -17,7 +17,7 @@ $(document).ready(function() {
 			$('div#modal div#home-team div.name').text(data.game.home.team.name);
 
 			data.game.away.batters.sort(playerAlphabeticalSort).forEach(function(batter) {
-                $('div#modal div#away-team div.batters').append($('<span>').addClass('position').text(batter.position));
+				$('div#modal div#away-team div.batters').append($('<span>').addClass('position').text(batter.position));
 
 				if (data.alreadyPicked.indexOf(batter._id) != -1) {
 					$('div#modal div#away-team div.batters').append(
@@ -35,7 +35,7 @@ $(document).ready(function() {
 			});
 
 			data.game.home.batters.sort(playerAlphabeticalSort).forEach(function(batter) {
-                $('div#modal div#home-team div.batters').append($('<span>').addClass('position').text(batter.position));
+				$('div#modal div#home-team div.batters').append($('<span>').addClass('position').text(batter.position));
 
 				if (data.alreadyPicked.indexOf(batter._id) != -1) {
 					$('div#modal div#home-team div.batters').append(

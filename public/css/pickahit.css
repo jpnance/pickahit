@@ -182,32 +182,32 @@ div#modal div#home-team {
 }
 
 div#modal div.batters {
-    font-size: 80%;
-    line-height: 16px;
+	font-size: 80%;
+	line-height: 16px;
 }
 
 div#modal div.batters span.position {
-    color: #666666;
-    display: inline-block;
-    font-size: 80%;
-    text-align: center;
-    width: 3em;
+	color: #666666;
+	display: inline-block;
+	font-size: 80%;
+	text-align: center;
+	width: 3em;
 }
 
 div#modal div.batters a {
-    text-decoration: none;
+	text-decoration: none;
 }
 
 div#modal div.batters a:hover {
-    color: #999999;
+	color: #999999;
 }
 
 div#modal div.batters span.picked {
-    color: #aaaaaa;
+	color: #aaaaaa;
 }
 
 div#modal div.name {
 	font-weight: bold;
 	margin-bottom: 1em;
-    white-space: nowrap;
+	white-space: nowrap;
 }
