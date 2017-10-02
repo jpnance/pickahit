@@ -151,6 +151,10 @@ module.exports.showAll = function(request, response) {
 				}
 			});
 
+			if (request.query.error) {
+				responseData.error = request.query.error;
+			}
+
 			response.render('index', responseData);
 		});
 	});

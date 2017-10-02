@@ -53,12 +53,12 @@ module.exports.logIn = function(request, response) {
 				});
 			}
 			else {
-				response.status(400).send('Invalid username/password combination');
+				response.redirect('/?error=login');
 			}
 		});
 	}
 	else {
-		response.status(400).send('Invalid username/password combination');
+		response.redirect('/?error=login');
 	}
 };
 

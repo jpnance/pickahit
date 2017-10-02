@@ -36,12 +36,17 @@ ul.navigation li {
 	margin-right: 0.6em;
 }
 
-form.login {
+form.login.error input {
+	background-color: #ffdddd;
 }
 
 input {
 	border: 1px solid #dddddd;
 	padding: 8px;
+}
+
+input:focus {
+	border: 1px solid #666666;
 }
 
 form.login input {
@@ -54,6 +59,7 @@ p {
 }
 
 div#header {
+	height: 56px;
 	padding: 1em;
 }
 
@@ -149,10 +155,6 @@ div.verifier div.right {
 
 div.verifier form input {
 	width: 80%;
-}
-
-div.verifier form input:focus {
-	border: 1px solid #666666;
 }
 
 div.verifier form input, div.verifier form button {

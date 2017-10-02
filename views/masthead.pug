@@ -5,7 +5,7 @@ if session
 		li: a(href='/users/edit/' + session.user.username) Settings
 		li: a(href='/logout') Log Out
 else
-	form.login(method='POST' action='/sessions')
+	form.login(method='POST' action='/sessions' class=error ? 'error' : '')
 		input(type='text' name='username' placeholder='Username')
 		|
 		|
@@ -13,4 +13,3 @@ else
 		|
 		|
 		button(type='submit') Log In
-
