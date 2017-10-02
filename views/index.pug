@@ -8,69 +8,70 @@ block append scripts
 
 block content
 	table(border='1')
-		tr
-			td
-			td
-			each game in games
-				th
-					p.teams
-						a(href='https://www.mlb.com/gameday/' + game._id)
-							| #{game.away.team.teamName}
-							br
-							| at #{game.home.team.teamName}
-
-					p
-						| #{game.seriesDescription}
-						if game.gamesInSeries > 1
-							br
-							| Game #{game.seriesGameNumber}
-							if game.ifNecessary == 'Y'
-								| *
-						else
-							|
-							br
-							|
-							br
-
-					p
-						if game.startTime.getMinutes() == 33
-							| #{dateFormat(game.startTime, 'mmmm dS', true)}
-							br
-							| TBD
-						else
-							| #{dateFormat(game.startTime, 'mmmm dS')}
-							br
-							| #{dateFormat(game.startTime, 'h:MMtt')} ET
-
-					p
-						| #{game.points} point
-						if game.points > 1
-							| s
-		each user in users
+		thead
 			tr
-				td.name #{user.firstName} #{user.lastName}
-				td.score #{user.score}
-
+				td
+				td
 				each game in games
-					- var hitClass = '';
-					if game.hasStarted() && game.mappedPicks[user._id] && game.hits.indexOf(game.mappedPicks[user._id]._id) > -1
-						- hitClass = 'hit'
-					else if (game.hasStarted() && !game.mappedPicks[user._id]) || (game.isFinal() && game.hits.indexOf(game.mappedPicks[user._id]._id) == -1)
-						- hitClass = 'no-hit'
+					th
+						p.teams
+							a(href='https://www.mlb.com/gameday/' + game._id)
+								| #{game.away.team.teamName}
+								br
+								| at #{game.home.team.teamName}
 
-					td(class=hitClass)
-						if session && session.user._id.toString() == user._id && !game.hasStarted()
-							a.open-game(href='/games/' + game._id data-game-id=game._id data-user-id=user._id)
-								if game.mappedPicks[session.user._id]
-									| #{game.mappedPicks[session.user._id].name}
-								else
-									| pick
-						else if game.hasStarted()
-							if game.mappedPicks[user._id]
-								| #{game.mappedPicks[user._id].name}
+						p
+							| #{game.seriesDescription}
+							if game.gamesInSeries > 1
+								br
+								| Game #{game.seriesGameNumber}
+								if game.ifNecessary == 'Y'
+									| *
 							else
-								| --
+								|
+								br
+								|
+								br
 
+						p
+							if game.startTime.getMinutes() == 33
+								| #{dateFormat(game.startTime, 'mmmm dS', true)}
+								br
+								| TBD
+							else
+								| #{dateFormat(game.startTime, 'mmmm dS')}
+								br
+								| #{dateFormat(game.startTime, 'h:MMtt')} ET
+
+						p
+							| #{game.points} point
+							if game.points > 1
+								| s
+		tbody
+			each user in users
+				tr
+					td.name #{user.firstName} #{user.lastName}
+					td.score #{user.score}
+
+					each game in games
+						- var hitClass = '';
+						if game.hasStarted() && game.mappedPicks[user._id] && game.hits.indexOf(game.mappedPicks[user._id]._id) > -1
+							- hitClass = 'hit'
+						else if (game.hasStarted() && !game.mappedPicks[user._id]) || (game.isFinal() && game.hits.indexOf(game.mappedPicks[user._id]._id) == -1)
+							- hitClass = 'no-hit'
+
+						td(class=hitClass)
+							if session && session.user._id.toString() == user._id && !game.hasStarted()
+								a.open-game(href='/games/' + game._id data-game-id=game._id data-user-id=user._id)
+									if game.mappedPicks[session.user._id]
+										| #{game.mappedPicks[session.user._id].name}
+									else
+										| pick
+							else if game.hasStarted()
+								if game.mappedPicks[user._id]
+									| #{game.mappedPicks[user._id].name}
+								else
+									| --
 
 	div#modal
 		div#away-team
