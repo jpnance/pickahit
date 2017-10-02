@@ -1,10 +1,9 @@
-- var title = 'All Users'
+extends layout.pug
 
-include header.pug
+block title
+	+title('All Users')
 
-body
-	include masthead.pug
-
+block content
 	each user in users
 		a(href='/users/edit/' + user.username) #{user.username}
 		br
