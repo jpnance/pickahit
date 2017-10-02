@@ -83,6 +83,14 @@ table td.name {
 	text-align: right;
 }
 
+table td.hit {
+	color: green;
+}
+
+table td.no-hit {
+	color: red;
+}
+
 div.verifier {
 	text-align: center;
 }
