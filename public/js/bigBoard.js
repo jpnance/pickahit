@@ -1,6 +1,11 @@
 $(document).ready(function() {
+	$('td.pickable').on('click', function(e) {
+		$(this).find('a.open-game').click();
+	});
+
 	$('a.open-game').on('click', function(e) {
 		e.preventDefault();
+		e.stopPropagation();
 
 		var gameId = $(this).data('gameId');
 
@@ -79,7 +84,7 @@ $(document).ready(function() {
 		$.post($(this).attr('href'), function(data) {
 			if (data.success) {
 				$('#modal').dialog('close');
-				$('table a[data-game-id=' + gameId + ']').text(data.player.name);
+				$('table a[data-game-id=' + gameId + ']').text(data.player.name).parent('td').removeClass('unpicked');
 			}
 		});
 	});

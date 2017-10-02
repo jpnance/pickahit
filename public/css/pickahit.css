@@ -83,8 +83,20 @@ table td {
 	white-space: nowrap;
 }
 
+table tr.my-row {
+	background-color: #f9f9f9;
+}
+
+table td {
+	font-size: 90%;
+}
+
 table td.name {
 	text-align: right;
+}
+
+table td.eman {
+	text-align: left;
 }
 
 table td.hit {
@@ -93,6 +105,22 @@ table td.hit {
 
 table td.no-hit {
 	color: red;
+}
+
+table tr.my-row td.pickable {
+	cursor: pointer;
+}
+
+table tr.my-row td.pickable:hover {
+	background-color: #eeeeee;
+}
+
+table tr.my-row td.pickable a {
+	color: blue;
+}
+
+table tr.my-row td.unpicked a {
+	visibility: hidden;
 }
 
 div.verifier {

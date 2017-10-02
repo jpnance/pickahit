@@ -47,31 +47,43 @@ block content
 							| #{game.points} point
 							if game.points > 1
 								| s
+				td
+				td
 		tbody
 			each user in users
-				tr
+				tr(class=session.user._id.toString() == user._id ? 'my-row' : '')
 					td.name #{user.firstName} #{user.lastName}
 					td.score #{user.score}
 
 					each game in games
-						- var hitClass = '';
+						- var hitClasses = [];
 						if game.hasStarted() && game.mappedPicks[user._id] && game.hits.indexOf(game.mappedPicks[user._id]._id) > -1
-							- hitClass = 'hit'
+							- hitClasses.push('hit')
 						else if (game.hasStarted() && !game.mappedPicks[user._id]) || (game.isFinal() && game.hits.indexOf(game.mappedPicks[user._id]._id) == -1)
-							- hitClass = 'no-hit'
+							- hitClasses.push('no-hit')
 
-						td(class=hitClass)
+						if !game.hasStarted()
+							if session && session.user._id.toString() == user._id
+								- hitClasses.push('pickable')
+
+							if !game.mappedPicks[user._id]
+								- hitClasses.push('unpicked')
+
+						td(class=hitClasses)
 							if session && session.user._id.toString() == user._id && !game.hasStarted()
 								a.open-game(href='/games/' + game._id data-game-id=game._id data-user-id=user._id)
 									if game.mappedPicks[session.user._id]
 										| #{game.mappedPicks[session.user._id].name}
 									else
-										| pick
+										| Make a Pick
 							else if game.hasStarted()
 								if game.mappedPicks[user._id]
 									| #{game.mappedPicks[user._id].name}
 								else
 									| --
+
+					td.score #{user.score}
+					td.eman #{user.firstName} #{user.lastName}
 
 	div#modal
 		div#away-team
