@@ -62,17 +62,16 @@ $(document).ready(function() {
 
 			$('div#modal div.batters a').addClass('make-pick').attr('data-game-id', gameId);
 
-			/*
-			data.game.away.pitchers.sort(playerAlphabeticalSort).forEach(function(pitcher) {
-				$('div#modal div#away-team div.pitchers').append(pitcher.name).append($('<br />'));
-			});
-
-			data.game.home.pitchers.sort(playerAlphabeticalSort).forEach(function(pitcher) {
-				$('div#modal div#home-team div.pitchers').append(pitcher.name).append($('<br />'));
-			});
-			*/
-
 			$('#modal').dialog({
+				buttons: [
+					{
+						click: function() {
+							$(this).dialog('close');
+						},
+						text: 'Done'
+					}
+				],
+				draggable: false,
 				hide: 'fade',
 				modal: true,
 				position: {
@@ -82,7 +81,7 @@ $(document).ready(function() {
 				},
 				resizable: false,
 				show: 'fade',
-				width: 380
+				width: 480
 			});
 		});
 	});

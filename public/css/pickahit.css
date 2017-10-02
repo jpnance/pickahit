@@ -210,7 +210,31 @@ div#modal div.batters span.picked {
 }
 
 div#modal div.name {
+	font-size: 125%;
 	font-weight: bold;
 	margin-bottom: 1em;
 	white-space: nowrap;
+}
+
+div.ui-dialog {
+	background-color: white;
+	border: 2px solid #aaa;
+	border-radius: 6px;
+	box-shadow: 0px 0px 25px #aaa;
+	padding: 10px;
+}
+
+div.ui-dialog-titlebar {
+	display: none;
+}
+
+div.ui-dialog-titlebar span.ui-dialog-title {
+	font-size: 20px;
+	font-weight: bold;
+	letter-spacing: -1px;
+	margin-right: 10px;
+}
+
+div.ui-dialog-titlebar a.ui-dialog-titlebar-close {
+	font-size: 10px;
 }
