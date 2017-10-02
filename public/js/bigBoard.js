@@ -10,6 +10,14 @@ $(document).ready(function() {
 		var gameId = $(this).data('gameId');
 
 		$.get($(this).attr('href'), function(data) {
+			if (!data.success) {
+				if (data.redirect) {
+					window.location.href = data.redirect;
+				}
+
+				return;
+			}
+
 			$('#modal div#away-team').find('div.name, div.batters, div.pitchers').empty();
 			$('#modal div#home-team').find('div.name, div.batters, div.pitchers').empty();
 
@@ -85,10 +93,16 @@ $(document).ready(function() {
 		var gameId = $(this).data('gameId');
 
 		$.post($(this).attr('href'), function(data) {
-			if (data.success) {
-				$('#modal').dialog('close');
-				$('table a[data-game-id=' + gameId + ']').text(data.player.name).parent('td').removeClass('unpicked');
+			if (!data.success) {
+				if (data.redirect) {
+					window.location.href = data.redirect;
+				}
+
+				return;
 			}
+
+			$('#modal').dialog('close');
+			$('table a[data-game-id=' + gameId + ']').text(data.player.name).parent('td').removeClass('unpicked');
 		});
 	});
 });

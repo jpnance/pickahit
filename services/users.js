@@ -97,6 +97,7 @@ module.exports.update = function(request, response) {
 	Session.withActiveSession(request, function(error, session) {
 		if (!session || (session.user.username != request.params.username && !session.user.admin)) {
 			response.redirect('/');
+			return;
 		}
 
 		var data = [

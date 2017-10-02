@@ -5,8 +5,9 @@ var Player = require('../models/Player');
 
 module.exports.pick = function(request, response) {
 	Session.withActiveSession(request, function(error, session) {
-		if (!request.params.gameId || !request.params.playerId) {
-			response.redirect('/');
+		if (error || !session || !request.params.gameId || !request.params.playerId) {
+			response.send({ success: false, redirect: '/' });
+			return;
 		}
 
 		var userId = session.user._id;
@@ -163,7 +164,8 @@ module.exports.showAll = function(request, response) {
 module.exports.showOne = function(request, response) {
 	Session.withActiveSession(request, function(error, session) {
 		if (error || !session) {
-			response.redirect('/');
+			response.send({ success: false, redirect: '/' });
+			return;
 		}
 
 		var data = [
@@ -186,6 +188,7 @@ module.exports.showOne = function(request, response) {
 
 		Promise.all(data).then(function(values) {
 			var responseData = {
+				success: true,
 				game: values[0],
 				alreadyPicked: []
 			};
