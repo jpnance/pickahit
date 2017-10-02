@@ -176,19 +176,38 @@ div#modal {
 div#modal div#away-team,
 div#modal div#home-team {
 	display: inline-block;
+	text-align: left;
 	vertical-align: top;
 	width: 50%;
 }
 
-div#modal div#away-team {
-	text-align: left;
+div#modal div.batters {
+    font-size: 80%;
+    line-height: 16px;
 }
 
-div#modal div#home-team {
-	text-align: right;
+div#modal div.batters span.position {
+    color: #666666;
+    display: inline-block;
+    font-size: 80%;
+    text-align: center;
+    width: 3em;
+}
+
+div#modal div.batters a {
+    text-decoration: none;
+}
+
+div#modal div.batters a:hover {
+    color: #999999;
+}
+
+div#modal div.batters span.picked {
+    color: #aaaaaa;
 }
 
 div#modal div.name {
 	font-weight: bold;
 	margin-bottom: 1em;
+    white-space: nowrap;
 }
