@@ -32,6 +32,9 @@ module.exports.logIn = function(request, response) {
 
 				var sessionUpdate = {
 					username: request.body.username,
+					active: true,
+					userAgent: request.headers['user-agent'],
+					ipAddress: request.connection.remoteAddress,
 					lastActivity: Date.now()
 				};
 
@@ -63,5 +66,7 @@ module.exports.logIn = function(request, response) {
 };
 
 module.exports.logOut = function(request, response) {
-	response.clearCookie('sessionId').redirect('/');
+	Session.closeActiveSession(request, function(error) {
+		response.clearCookie('sessionId').redirect('/');
+	});
 };
