@@ -24,10 +24,10 @@ var preview = {
 };
 
 module.exports = function(app) {
-	app.get('/', preview.crossroads);
+	app.get('/', games.showAll);
 
-	app.get('/preview', preview.enablePreview);
-	app.get('/placeholder', preview.disablePreview);
+	//app.get('/preview', preview.enablePreview);
+	//app.get('/placeholder', preview.disablePreview);
 
 	app.post('/sessions', sessions.logIn);
 	app.post('/login', sessions.logIn);
