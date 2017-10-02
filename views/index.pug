@@ -1,12 +1,12 @@
-- var title = 'Big Board'
+extends layout.pug
 
-- var additionalJsFiles = [ '/js/bigBoard.js' ];
+block title
+	+title('Big Board')
 
-include header.pug
+block append scripts
+	script(src='/js/bigBoard.js' type='text/javascript')
 
-body
-	include masthead.pug
-
+block content
 	table(border='1')
 		tr
 			td

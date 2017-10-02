@@ -1,6 +1,5 @@
 body {
 	font-family: sans-serif;
-	padding: 1em;
 }
 
 h1 {
@@ -30,7 +29,7 @@ ul.navigation {
 
 ul.navigation li {
 	display: inline;
-	margin-right: 0.5em;
+	margin-right: 0.6em;
 }
 
 form.login {
@@ -50,9 +49,17 @@ p {
 	margin: 1em 0 0 0;
 }
 
+div#header {
+	padding: 1em;
+}
+
+div#content {
+	line-height: 16px;
+	padding: 0 1em;
+}
+
 table {
 	border-collapse: collapse;
-	margin-top: 1em;
 }
 
 table th {

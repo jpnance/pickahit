@@ -1,0 +1,24 @@
+include mixins.pug
+
+doctype html
+html
+	head
+		block title
+
+		block styles
+			link(href='/css/reset.css' rel='stylesheet')
+			link(href='/css/pickahit.css' rel='stylesheet')
+			link(href='/css/jquery-ui.css' rel='stylesheet')
+
+		block scripts
+			script(src='/js/jquery-3.2.1.min.js' type='text/javascript')
+			script(src='/js/jquery-ui-1.12.1.min.js' type='text/javascript')
+
+		link(href='/images/favicon.ico' rel='icon')
+
+	body
+		div#header
+			include masthead.pug
+
+		div#content
+			block content

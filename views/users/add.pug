@@ -1,10 +1,9 @@
-- var title = 'Add User'
+extends ../layout.pug
 
-include ../header.pug
+block title
+	+title('Add User')
 
-body
-	include ../masthead.pug
-
+block content
 	form(method='POST' action='/users')
 		input(type='text' name='username' placeholder='username')
 		br

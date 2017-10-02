@@ -1,6 +1,7 @@
 h1.title: a(href='/') Pick-a-Hit
 if session
 	ul.navigation
+		li: a(href='/') Big Board
 		li: a(href='/users/edit/' + session.user.username) Settings
 		li: a(href='/logout') Log Out
 else
