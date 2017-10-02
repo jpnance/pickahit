@@ -6,7 +6,9 @@ var User = require('../models/User');
 var sessionSchema = new Schema({
 	_id: { type: String, required: true },
 	username: { type: String, required: true },
-	lastActivity: { type: Date, expires: 600, required: true }
+	userAgent: { type: String },
+	ipAddress: { type: String },
+	lastActivity: { type: Date, required: true }
 });
 
 sessionSchema.virtual('user', {
@@ -18,7 +20,7 @@ sessionSchema.virtual('user', {
 
 sessionSchema.statics.withActiveSession = function(request, callback) {
 	if (request.cookies.sessionId) {
-		this.findByIdAndUpdate(request.cookies.sessionId, { lastActivity: Date.now() }).populate('user').exec(function(error, session) {
+		this.findByIdAndUpdate(request.cookies.sessionId, { userAgent: request.headers['user-agent'], ipAddress: request.connection.remoteAddress, lastActivity: Date.now() }).populate('user').exec(function(error, session) {
 			if (error) {
 				callback(error, null);
 			}
