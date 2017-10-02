@@ -29,6 +29,7 @@ module.exports.pick = function(request, response) {
 				response.send({ success: false, error: new Error(player.name + ' has already been picked by ' + session.user.username) });
 			}
 			else if (game && !game.hasStarted() && player) {
+				console.log('pick', session.user._id, game._id, player._id);
 				Game.findOneAndUpdate({ _id: gameId, 'picks.user': session.user._id }, { '$set': { 'picks.$.player': player._id } }).exec(function(error, game) {
 					if (!game) {
 						Game.findOneAndUpdate({ _id: gameId }, { '$push': { picks: { user: session.user._id, player: playerId } } }).exec(function(error, game) {
