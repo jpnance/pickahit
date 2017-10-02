@@ -10,12 +10,14 @@ var gameSchema = new Schema({
 	away: {
 		team: { type: Number, ref: 'Team', required: true },
 		batters: [{ type: Number, ref: 'Player' }],
-		pitchers: [{ type: Number, ref: 'Player' }]
+		pitchers: [{ type: Number, ref: 'Player' }],
+		probablePitcher: { type: Number, ref: 'Player' }
 	},
 	home: {
 		team: { type: Number, ref: 'Team', required: true },
 		batters: [{ type: Number, ref: 'Player' }],
-		pitchers: [{ type: Number, ref: 'Player' }]
+		pitchers: [{ type: Number, ref: 'Player' }],
+		probablePitcher: { type: Number, ref: 'Player' }
 	},
 	picks: [{
 		user: { type: Schema.Types.ObjectId, ref: 'User' },

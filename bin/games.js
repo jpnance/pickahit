@@ -95,6 +95,15 @@ Game.find({}).sort('startTime').exec(function(error, games) {
 					}
 				});
 
+				if (data.gameData.probablePitchers) {
+					if (data.gameData.probablePitchers.away) {
+						game.away.probablePitcher = data.gameData.probablePitchers.away.id;
+					}
+					if (data.gameData.probablePitchers.home) {
+						game.home.probablePitcher = data.gameData.probablePitchers.home.id;
+					}
+				}
+
 				game.status = data.gameData.status.statusCode;
 
 				game.save(function(error) {

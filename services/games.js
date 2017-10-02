@@ -171,6 +171,8 @@ module.exports.showOne = function(request, response) {
 				.populate('home.batters')
 				.populate('away.pitchers')
 				.populate('home.pitchers')
+				.populate('away.probablePitcher')
+				.populate('home.probablePitcher')
 				.populate('hits')
 				.populate('picks.user')
 				.populate('picks.player'),
