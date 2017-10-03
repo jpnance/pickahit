@@ -4,7 +4,8 @@ var Game = require('../models/Game');
 var Team = require('../models/Team');
 
 var mongoose = require('mongoose');
-mongoose.connect(process.env.MONGODB_URI);
+mongoose.Promise = global.Promise;
+mongoose.connect(process.env.MONGODB_URI, { useMongoClient: true });
 
 var dateRange = {
 	start: new Date('2017-10-03 00:00:00'),

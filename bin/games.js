@@ -4,6 +4,7 @@ var Game = require('../models/Game');
 var Team = require('../models/Team');
 
 var mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGODB_URI);
 
 Game.find({}).sort('startTime').exec(function(error, games) {
