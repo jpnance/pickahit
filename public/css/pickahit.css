@@ -198,6 +198,23 @@ div#modal div#home-team {
 	width: 50%;
 }
 
+div#modal div.batters.starting-lineup {
+	margin-bottom: 1.5em;
+}
+
+div#modal div.batters table th,
+div#modal div.batters table td {
+	border: 0;
+	font-size: 100%;
+	padding: 0;
+}
+
+div#modal div.batters table th {
+	font-weight: bold;
+	padding: 6px 0;
+	text-align: left;
+}
+
 div#modal div.probable-pitcher,
 div#modal div.batters {
 	font-size: 80%;
@@ -210,7 +227,7 @@ div#modal div.probable-pitcher {
 }
 
 div#modal div.probable-pitcher span.position,
-div#modal div.batters span.position,
+div#modal div.batters td.position,
 div#modal div.batters span.bats {
 	color: #666666;
 	display: inline-block;
@@ -233,14 +250,14 @@ div#modal div.batters a:hover {
 	color: #999999;
 }
 
-div#modal div.batters span.picked {
+div#modal div.batters td.picked {
 	color: #aaaaaa;
 }
 
 div#modal div.name {
 	font-size: 125%;
 	font-weight: bold;
-	margin-bottom: 0.2em;
+	margin: 0.2em 0;
 	white-space: nowrap;
 }
 
@@ -253,7 +270,6 @@ div.ui-dialog {
 }
 
 div.ui-dialog-titlebar {
-	display: none;
 }
 
 div.ui-dialog-titlebar span.ui-dialog-title {

@@ -180,8 +180,13 @@ module.exports.showOne = function(request, response) {
 				.populate('home.pitchers')
 				.populate('away.probablePitcher')
 				.populate('home.probablePitcher')
+				.populate('away.startingLineup')
+				.populate('home.startingLineup')
 				.populate('hits')
-				.populate('picks.user')
+				.populate({
+					path: 'picks.user',
+					select: '-password'
+				})
 				.populate('picks.player'),
 
 			Game.find({ picks: { '$elemMatch': { user: session.user._id } }})

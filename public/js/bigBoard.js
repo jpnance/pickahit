@@ -18,80 +18,66 @@ $(document).ready(function() {
 				return;
 			}
 
-			$('#modal div#away-team').find('div.name, div.probable-pitcher, div.batters').empty();
-			$('#modal div#home-team').find('div.name, div.probable-pitcher, div.batters').empty();
+			['away', 'home'].forEach(function(homeOrAway) {
+				var $team = $('div#modal div#' + homeOrAway + '-team');
+				$team.find('div.name, div.probable-pitcher, div.batters').empty().show();
 
-			$('div#modal div#away-team div.name').text(data.game.away.team.name);
-			$('div#modal div#home-team div.name').text(data.game.home.team.name);
+				$team.find('div.name').text(data.game[homeOrAway].team.name);
 
-			if (data.game.away.probablePitcher) {
-				$('div#modal div#away-team div.probable-pitcher').append($('<span>').addClass('position').text(data.game.away.probablePitcher.throws + 'HP')).append(data.game.away.probablePitcher.name);
-			}
-			else if (data.game.away.batters.length > 0) {
-				$('div#modal div#away-team div.probable-pitcher').text('TBD');
-			}
+				if (data.game[homeOrAway].probablePitcher) {
+					$team.find('div.probable-pitcher').append($('<span>').addClass('position').text(data.game[homeOrAway].probablePitcher.throws + 'HP')).append(data.game[homeOrAway].probablePitcher.name);
+				}
+				else if (data.game[homeOrAway].batters.length > 0) {
+					$team.find('div.probable-pitcher').text('TBD');
+				}
 
-			if (data.game.home.probablePitcher) {
-				$('div#modal div#home-team div.probable-pitcher').append($('<span>').addClass('position').text(data.game.home.probablePitcher.throws + 'HP')).append(data.game.home.probablePitcher.name);
-			}
-			else if (data.game.home.batters.length > 0) {
-				$('div#modal div#home-team div.probable-pitcher').text('TBD');
-			}
+				var $bench = $team.find('div.batters.bench');
+				var $startingLineup = $team.find('div.batters.starting-lineup');
+				var $container = null;
 
-			data.game.away.batters.sort(playerAlphabeticalSort).forEach(function(batter) {
-				$('div#modal div#away-team div.batters').append($('<span>').addClass('position').text(batter.position));
+				var startingLineup = data.game[homeOrAway].startingLineup;
+				var startingLineupIds = [];
+				var batters = data.game[homeOrAway].batters;
 
-				if (data.alreadyPicked.indexOf(batter._id) != -1) {
-					$('div#modal div#away-team div.batters').append(
-						$('<span>').addClass('picked').text(batter.name)
-					);
+				$benchTable = $('<table>');
+				$startingLineupTable = $('<table>');
+
+				if (startingLineup && startingLineup.length > 0) {
+					$benchTable.append($('<tr>').append($('<th>').attr('colspan', 2).text('Bench')));
+					$startingLineupTable.append($('<tr>').append($('<th>').attr('colspan', 2).text('Starting Lineup')));
 				}
 				else {
-					$('div#modal div#away-team div.batters').append(
-						$('<a>')
-							.attr('data-player-id', batter._id)
-							.attr('href', '/games/pick/' + gameId + '/' + batter._id)
-							.text(batter.name)
-					);
+					$startingLineup.hide();
 				}
 
-				$('div#modal div#away-team div.batters').append($('<span>').addClass('bats').text('(' + batter.bats + ')'));
-				$('div#modal div#away-team div.batters').append($('<br />'));
-			});
+				startingLineup.forEach(function(batter) {
+					if (batter.position == 'P') {
+						return;
+					}
 
-			data.game.home.batters.sort(playerAlphabeticalSort).forEach(function(batter) {
-				$('div#modal div#home-team div.batters').append($('<span>').addClass('position').text(batter.position));
+					var $row = generatePlayerRow(batter, data.alreadyPicked.indexOf(batter._id) != -1, gameId);
+					$startingLineupTable.append($row);
+					startingLineupIds.push(batter._id);
+				});
 
-				if (data.alreadyPicked.indexOf(batter._id) != -1) {
-					$('div#modal div#home-team div.batters').append(
-						$('<span>').addClass('picked').text(batter.name)
-					);
-				}
-				else {
-					$('div#modal div#home-team div.batters').append(
-						$('<a>')
-							.attr('data-player-id', batter._id)
-							.attr('href', '/games/pick/' + gameId + '/' + batter._id)
-							.text(batter.name)
-					);
-				}
+				batters.sort(playerAlphabeticalSort).forEach(function(batter) {
+					if (startingLineupIds.indexOf(batter._id) != -1) {
+						return;
+					}
+					else {
+						var $row = generatePlayerRow(batter, data.alreadyPicked.indexOf(batter._id) != -1, gameId);
+						$benchTable.append($row);
+					}
+				});
 
-				$('div#modal div#home-team div.batters').append($('<span>').addClass('bats').text('(' + batter.bats + ')'));
-				$('div#modal div#home-team div.batters').append($('<br />'));
+				$bench.append($benchTable);
+				$startingLineup.append($startingLineupTable);
 			});
 
 			$('div#modal div.batters a').addClass('make-pick').attr('data-game-id', gameId);
 
 			$('#modal').dialog({
-				buttons: [
-					{
-						click: function() {
-							$(this).dialog('close');
-						},
-						text: 'Done'
-					}
-				],
-				draggable: false,
+				draggable: true,
 				hide: 'fade',
 				modal: true,
 				position: {
@@ -101,6 +87,7 @@ $(document).ready(function() {
 				},
 				resizable: false,
 				show: 'fade',
+				title: modalTitle(data.game),
 				width: 480
 			});
 		});
@@ -136,3 +123,43 @@ var playerAlphabeticalSort = function(a, b) {
 
 	return 0;
 };
+
+var generatePlayerRow = function(batter, picked, gameId) {
+	var $row = $('<tr>');
+
+	$position = $('<td>').addClass('position').text(batter.position);
+	$player = $('<td>').addClass('player');
+
+	if (picked) {
+		$player.addClass('picked').text(batter.name);
+	}
+	else {
+		var $playerLink = $('<a>')
+			.attr('data-player-id', batter._id)
+			.attr('href', '/games/pick/' + gameId + '/' + batter._id)
+			.text(batter.name);
+
+		$player.append($playerLink);
+	}
+
+	$player.append($('<span>').addClass('bats').text('(' + batter.bats + ')'));
+
+	$row.append($position);
+	$row.append($player);
+
+	return $row;
+}
+
+var modalTitle = function(game) {
+	var modalTitle = game.seriesDescription;
+
+	if (game.gamesInSeries > 1) {
+		modalTitle += ', Game ' + game.seriesGameNumber;
+
+		if (game.ifNecessary == 'Y') {
+			modalTitle += '*';
+		}
+	}
+
+	return modalTitle;
+}

@@ -107,6 +107,22 @@ Game.find({}).sort('startTime').exec(function(error, games) {
 
 				game.status = data.gameData.status.statusCode;
 
+				if (awayTeam.battingOrder && awayTeam.battingOrder.length > 0) {
+					if (!game.away.startingLineup || game.away.startingLineup.length == 0) {
+						awayTeam.battingOrder.forEach(function(playerId) {
+							game.away.startingLineup.push(parseInt(playerId));
+						});
+					}
+				}
+
+				if (homeTeam.battingOrder && homeTeam.battingOrder.length > 0) {
+					if (!game.home.startingLineup || game.home.startingLineup.length == 0) {
+						homeTeam.battingOrder.forEach(function(playerId) {
+							game.home.startingLineup.push(parseInt(playerId));
+						});
+					}
+				}
+
 				game.save(function(error) {
 					if (!error) {
 						resolve('good');
