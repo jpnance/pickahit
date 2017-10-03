@@ -88,6 +88,11 @@ module.exports.showAll = function(request, response) {
 				session: session,
 				users: values[0],
 				sessionUserActivityMap: {},
+				totals: {
+					users: 0,
+					actives: 0,
+					inactives: 0
+				},
 				dateFormat: require('dateformat')
 			}
 
@@ -99,14 +104,18 @@ module.exports.showAll = function(request, response) {
 					inactive: 0,
 					lastActivity: null
 				};
+
+				responseData.totals.users++;
 			});
 
 			sessions.forEach(function(session) {
 				if (session.active) {
 					responseData.sessionUserActivityMap[session.username].active++;
+					responseData.totals.actives++;
 				}
 				else {
 					responseData.sessionUserActivityMap[session.username].inactive++;
+					responseData.totals.inactives++;
 				}
 
 				if (session.lastActivity > responseData.sessionUserActivityMap[session.username].lastActivity) {

@@ -238,3 +238,15 @@ div.ui-dialog-titlebar span.ui-dialog-title {
 div.ui-dialog-titlebar a.ui-dialog-titlebar-close {
 	font-size: 10px;
 }
+
+table.sessions th {
+	font-weight: bold;
+}
+
+table.sessions thead tr {
+	border-bottom: 2px solid #ccc;
+}
+
+table.sessions tfoot tr {
+	border-top: 2px solid #ccc;
+}

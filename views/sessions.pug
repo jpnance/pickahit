@@ -4,13 +4,14 @@ block title
 	+title('All Sessions')
 
 block content
-	table
+	table.sessions
 		thead
 			tr
 				th Username
 				th Logins
 				th Logouts
 				th Last Activity
+		tbody
 			each user in users
 				tr
 					td #{user.username}
@@ -21,3 +22,9 @@ block content
 							| #{dateFormat(sessionUserActivityMap[user.username].lastActivity, 'yyyy-mm-dd hh:MM:ss')}
 						else
 							| None
+		tfoot
+			tr
+				td #{totals.users}
+				td #{totals.actives}
+				td #{totals.inactives}
+				td
