@@ -87,7 +87,8 @@ module.exports.showAll = function(request, response) {
 			var responseData = {
 				session: session,
 				users: values[0],
-				sessionUserActivityMap: {}
+				sessionUserActivityMap: {},
+				dateFormat: require('dateformat')
 			}
 
 			var sessions = values[1];
