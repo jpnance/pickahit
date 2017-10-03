@@ -95,7 +95,8 @@ module.exports.showAll = function(request, response) {
 			responseData.users.forEach(function(user) {
 				responseData.sessionUserActivityMap[user.username] = {
 					active: 0,
-					inactive: 0
+					inactive: 0,
+					lastActivity: null
 				};
 			});
 
@@ -105,6 +106,10 @@ module.exports.showAll = function(request, response) {
 				}
 				else {
 					responseData.sessionUserActivityMap[session.username].inactive++;
+				}
+
+				if (session.lastActivity > responseData.sessionUserActivityMap[session.username].lastActivity) {
+					responseData.sessionUserActivityMap[session.username].lastActivity = session.lastActivity;
 				}
 			});
 

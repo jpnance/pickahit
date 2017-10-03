@@ -10,8 +10,10 @@ block content
 				th Username
 				th Logins
 				th Logouts
+				th Last Activity
 			each user in users
 				tr
 					td #{user.username}
 					td #{sessionUserActivityMap[user.username].active}
 					td #{sessionUserActivityMap[user.username].inactive}
+					td #{sessionUserActivityMap[user.username].lastActivity}
