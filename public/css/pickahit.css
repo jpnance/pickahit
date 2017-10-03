@@ -184,17 +184,31 @@ div#modal div#home-team {
 	width: 50%;
 }
 
+div#modal div.probable-pitcher,
 div#modal div.batters {
 	font-size: 80%;
 	line-height: 16px;
 }
 
-div#modal div.batters span.position {
+div#modal div.probable-pitcher {
+	font-style: italic;
+	margin-bottom: 1.5em;
+}
+
+div#modal div.probable-pitcher span.position,
+div#modal div.batters span.position,
+div#modal div.batters span.bats {
 	color: #666666;
 	display: inline-block;
 	font-size: 80%;
 	text-align: center;
 	width: 3em;
+}
+
+div#modal div.batters span.bats {
+	margin-left: 0.5em;
+	text-align: left;
+	width: auto;
 }
 
 div#modal div.batters a {
@@ -212,7 +226,7 @@ div#modal div.batters span.picked {
 div#modal div.name {
 	font-size: 125%;
 	font-weight: bold;
-	margin-bottom: 1em;
+	margin-bottom: 0.2em;
 	white-space: nowrap;
 }
 
