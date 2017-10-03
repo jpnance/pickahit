@@ -19,7 +19,7 @@ block content
 					td #{sessionUserActivityMap[user.username].inactive}
 					td
 						if sessionUserActivityMap[user.username].lastActivity
-							| #{dateFormat(sessionUserActivityMap[user.username].lastActivity, 'yyyy-mm-dd hh:MM:ss')}
+							| #{dateFormat(sessionUserActivityMap[user.username].lastActivity, 'yyyy-mm-dd HH:MM:ss')}
 						else
 							| None
 		tfoot
