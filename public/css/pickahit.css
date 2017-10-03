@@ -98,10 +98,24 @@ table td {
 	font-size: 90%;
 }
 
+table th.name,
+table th.eman,
+table th.score,
+table th.erocs {
+	font-weight: bold;
+}
+
+table th.name,
 table td.name {
 	text-align: right;
 }
 
+table th.score,
+table td.score {
+	text-align: right;
+}
+
+table th.eman,
 table td.eman {
 	text-align: left;
 }

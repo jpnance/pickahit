@@ -10,8 +10,8 @@ block content
 	table(border='1')
 		thead
 			tr
-				td
-				td
+				th.name Name
+				th.score Score
 				each game in games
 					th
 						p.teams
@@ -47,8 +47,8 @@ block content
 							| #{game.points} point
 							if game.points > 1
 								| s
-				td
-				td
+				th.erocs Score
+				th.eman Name
 		tbody
 			each user in users
 				tr(class=session && session.user._id.toString() == user._id ? 'my-row' : '')
