@@ -29,6 +29,7 @@ module.exports = function(app) {
 	//app.get('/preview', preview.enablePreview);
 	//app.get('/placeholder', preview.disablePreview);
 
+	app.get('/sessions', sessions.showAll);
 	app.post('/sessions', sessions.logIn);
 	app.post('/login', sessions.logIn);
 	app.get('/logout', sessions.logOut);

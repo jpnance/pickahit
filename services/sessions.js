@@ -70,3 +70,45 @@ module.exports.logOut = function(request, response) {
 		response.clearCookie('sessionId').redirect('/');
 	});
 };
+
+module.exports.showAll = function(request, response) {
+	Session.withActiveSession(request, function(error, session) {
+		if (error || !session || !session.user.admin) {
+			response.redirect('/');
+			return;
+		}
+
+		var data = [
+			User.find({}).select('username').sort('username'),
+			Session.find({})
+		];
+
+		Promise.all(data).then(function(values) {
+			var responseData = {
+				session: session,
+				users: values[0],
+				sessionUserActivityMap: {}
+			}
+
+			var sessions = values[1];
+
+			responseData.users.forEach(function(user) {
+				responseData.sessionUserActivityMap[user.username] = {
+					active: 0,
+					inactive: 0
+				};
+			});
+
+			sessions.forEach(function(session) {
+				if (session.active) {
+					responseData.sessionUserActivityMap[session.username].active++;
+				}
+				else {
+					responseData.sessionUserActivityMap[session.username].inactive++;
+				}
+			});
+
+			response.render('sessions', responseData);
+		});
+	});
+};
