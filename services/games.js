@@ -26,9 +26,9 @@ module.exports.pick = function(request, response) {
 			var collision = values[2];
 
 			if (collision.length > 0) {
-				response.send({ success: false, error: new Error(player.name + ' has already been picked by ' + session.user.username) });
+				response.send({ success: false, error: player.name + ' has already been picked by ' + session.user.username });
 			}
-			else if (game && !game.hasStarted() && player) {
+			else if (game && !game.hasStarted() && (game.away.batters.indexOf(playerId) != -1 || game.home.batters.indexOf(playerId) != -1) && player) {
 				console.log('pick', session.user._id, game._id, player._id);
 				Game.findOneAndUpdate({ _id: gameId, 'picks.user': session.user._id }, { '$set': { 'picks.$.player': player._id } }).exec(function(error, game) {
 					if (!game) {
@@ -42,6 +42,9 @@ module.exports.pick = function(request, response) {
 						response.send({ success: true, player: player });
 					}
 				});
+			}
+			else {
+				response.send({ success: false, error: 'You are hacking. Please stop.' });
 			}
 		});
 	});

@@ -108,7 +108,7 @@ $(document).ready(function() {
 			}
 
 			$('#modal').dialog('close');
-			$('table a[data-game-id=' + gameId + ']').text(data.player.name).parent('td').removeClass('unpicked');
+			$('table#big-board a[data-game-id=' + gameId + ']').text(data.player.name).parent('td').removeClass('unpicked');
 		});
 	});
 });
