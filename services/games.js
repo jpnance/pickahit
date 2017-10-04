@@ -74,10 +74,10 @@ module.exports.showAll = function(request, response) {
 					return user.isEligibleFor(2017);
 				}),
 				games: values[1].sort(function(a, b) {
-					if (a.status == 'F' && b.status != 'F') {
+					if (a.isFinalAndCool() && !b.isFinalAndCool()) {
 						return 1;
 					}
-					else if (a.status != 'F' && b.status == 'F') {
+					else if (!a.isFinalAndCool() && b.isFinalAndCool()) {
 						return -1;
 					}
 					else {

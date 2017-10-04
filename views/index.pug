@@ -59,7 +59,7 @@ block content
 						- var hitClasses = [];
 						if game.hasStarted() && game.mappedPicks[user._id] && game.hits.indexOf(game.mappedPicks[user._id]._id) > -1
 							- hitClasses.push('hit')
-						else if (game.hasStarted() && !game.mappedPicks[user._id]) || (game.isFinal() && game.hits.indexOf(game.mappedPicks[user._id]._id) == -1)
+						else if (game.hasStarted() && !game.mappedPicks[user._id]) || (game.isOver() && game.hits.indexOf(game.mappedPicks[user._id]._id) == -1)
 							- hitClasses.push('no-hit')
 
 						if !game.hasStarted()
