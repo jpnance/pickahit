@@ -3,19 +3,22 @@ var Game = require('../models/Game');
 var Player = require('../models/Player');
 
 var mongoose = require('mongoose');
-mongoose.connect(process.env.MONGODB_URI);
+mongoose.Promise = global.Promise;
+mongoose.connect(process.env.MONGODB_URI, { useMongoClient: true });
+
+var dateFormat = require('dateformat');
 
 var data = [
-	Game
-		.findById(492508)
-		.populate('picks.player')
-		.populate('picks.user')
+	Game.findById(526476),
+	Game.findById(526475)
 ];
 
 Promise.all(data).then(function(values) {
-	var game = values[0];
+	var game1 = values[0];
+	var game2 = values[1];
 
-	console.log(game.picks);
+	game1.isCool();
+
 	mongoose.disconnect();
 	process.exit();
 });
