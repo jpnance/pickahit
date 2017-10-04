@@ -58,6 +58,12 @@ p {
 	margin: 1em 0 0 0;
 }
 
+p.teams {
+	font-size: 120%;
+	line-height: 18px;
+	margin-top: 0;
+}
+
 div#header {
 	height: 56px;
 	padding: 1em;
