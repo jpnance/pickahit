@@ -34,7 +34,11 @@ block content
 								br
 
 						p
-							if game.startTime.getMinutes() == 33
+							if game.status == 'PR'
+								| #{dateFormat(game.startTime, 'mmmm dS', true)}
+								br
+								| Delayed
+							else if game.startTime.getMinutes() == 33
 								| #{dateFormat(game.startTime, 'mmmm dS', true)}
 								br
 								| TBD
