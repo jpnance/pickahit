@@ -15,6 +15,11 @@ Game.find({}).sort('startTime').exec(function(error, games) {
 			request.get('https://statsapi.mlb.com/api/v1/game/' + game._id + '/feed/live', function(error, response) {
 				var data = JSON.parse(response.text);
 
+				if (!data.liveData || !data.liveData.boxscore || !data.liveData.boxscore.teams) {
+					resolve('fine');
+					return;
+				}
+
 				var awayTeam = data.liveData.boxscore.teams.away;
 				var homeTeam = data.liveData.boxscore.teams.home;
 
