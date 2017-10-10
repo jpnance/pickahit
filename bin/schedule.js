@@ -32,6 +32,10 @@ for (var i = 0; i <= days; i++) {
 
 			data.dates.forEach(function(date) {
 				date.games.forEach(function(game) {
+					if (game.status.abstractGameCode == 'F') {
+						return;
+					}
+
 					var awayTeam = game.teams.away.team;
 					var homeTeam = game.teams.home.team;
 
