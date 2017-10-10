@@ -36,11 +36,18 @@ var gameSchema = new Schema({
 });
 
 gameSchema.methods.hasStarted = function() {
-	if (this.startTime) {
-		return Date.now() >= this.startTime;
+	var rainDelayed = false;
+	var pastStartTime = false;
+
+	if (this.status && this.status == 'PR') {
+		rainDelayed = true;
 	}
 
-	return false;
+	if (this.startTime && Date.now() >= this.startTime) {
+		pastStartTime = true;
+	}
+
+	return !rainDelayed && pastStartTime;
 };
 
 gameSchema.methods.isCool = function(hours) {
