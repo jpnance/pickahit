@@ -3,6 +3,7 @@ var crypto = require('crypto');
 var sessions = require('../services/sessions');
 var users = require('../services/users');
 var games = require('../services/games');
+var override = require('../services/override');
 
 var preview = {
 	crossroads: function(request, response) {
@@ -42,4 +43,6 @@ module.exports = function(app) {
 
 	app.get('/games/:gameId', games.showOne);
 	app.post('/games/pick/:gameId/:playerId', games.pick);
+
+	app.get('/override/pick/:username/:gameId/:playerId', override.pick);
 };
