@@ -26,7 +26,9 @@ for (var i = 0; i <= days; i++) {
 	var dateString = year + '-' + (month + 1) + '-' + (date < 10 ? '0' : '') + date;
 
 	schedulePromises.push(new Promise(function(resolve, reject) {
-		request.get('https://statsapi.mlb.com/api/v1/schedule?sportId=1&date=' + dateString + '&hydrate=team', function(error, response) {
+		var uri = 'https://statsapi.mlb.com/api/v1/schedule?sportId=1&date=' + dateString + '&hydrate=team';
+
+		request.get(uri, function(error, response) {
 			var gamePromises = [];
 			var data = JSON.parse(response.text);
 
