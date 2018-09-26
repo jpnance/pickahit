@@ -16,7 +16,7 @@ block content
 		input(type='password' name='password2' placeholder='Confirm New Password')
 		br
 		if session.user.admin
-			input(type='checkbox' id='eligible' name='eligible' checked=user.isEligibleFor(2017) ? 'checked' : null)
-			label(for='eligible') Eligible for the 2017 season?
+			input(type='checkbox' id='eligible' name='eligible' checked=user.isEligibleFor(process.env.SEASON) ? 'checked' : null)
+			label(for='eligible') Eligible for the #{process.env.SEASON} season?
 			br
 		button(type='submit') Save

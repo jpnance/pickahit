@@ -16,6 +16,6 @@ block content
 		input(type='password' name='password' placeholder='password')
 		br
 		input(type='checkbox' id='eligible' name='eligible' checked='checked')
-		label(for='eligible') Eligible for the 2017 season?
+		label(for='eligible') Eligible for the #{process.env.SEASON} season?
 		br
 		button(type='submit') create user

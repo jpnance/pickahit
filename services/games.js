@@ -17,7 +17,7 @@ module.exports.pick = function(request, response) {
 		var data = [
 			Game.findById(gameId),
 			Player.findById(playerId),
-			Game.find({ picks: { '$elemMatch': { user: session.user._id, player: playerId } } })
+			Game.find({ season: process.env.SEASON, picks: { '$elemMatch': { user: session.user._id, player: playerId } } })
 		];
 
 		Promise.all(data).then(function(values) {
@@ -59,7 +59,7 @@ module.exports.showAll = function(request, response) {
 				.sort({ username: 1 }),
 
 			Game
-				.find({})
+				.find({ season: process.env.SEASON })
 				.sort({ startTime: 1 })
 				.populate('away.team')
 				.populate('home.team')
@@ -71,7 +71,7 @@ module.exports.showAll = function(request, response) {
 			var responseData = {
 				session: session,
 				users: values[0].filter(function(user) {
-					return user.isEligibleFor(2017);
+					return user.isEligibleFor(process.env.SEASON);
 				}),
 				games: values[1].sort(function(a, b) {
 					if (a.isFinalAndCool() && !b.isFinalAndCool()) {
@@ -192,7 +192,7 @@ module.exports.showOne = function(request, response) {
 				})
 				.populate('picks.player'),
 
-			Game.find({ picks: { '$elemMatch': { user: session.user._id } }})
+			Game.find({ season: process.env.SEASON, picks: { '$elemMatch': { user: session.user._id } }})
 		];
 
 		Promise.all(data).then(function(values) {

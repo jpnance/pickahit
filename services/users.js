@@ -71,10 +71,10 @@ module.exports.signUp = function(request, response) {
 				});
 
 				if (request.body.eligible == 'on') {
-					user.makeEligibleFor(2017);
+					user.makeEligibleFor(process.env.SEASON);
 				}
 				else {
-					user.makeUneligibleFor(2017);
+					user.makeUneligibleFor(process.env.SEASON);
 				}
 
 				user.save(function(error) {
@@ -113,10 +113,10 @@ module.exports.update = function(request, response) {
 				user.displayName = request.body.displayName;
 
 				if (request.body.eligible == 'on') {
-					user.makeEligibleFor(2017);
+					user.makeEligibleFor(process.env.SEASON);
 				}
 				else {
-					user.makeUneligibleFor(2017);
+					user.makeUneligibleFor(process.env.SEASON);
 				}
 			}
 
