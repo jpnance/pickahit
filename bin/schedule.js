@@ -40,6 +40,7 @@ for (var i = 0; i <= days; i++) {
 					var homeTeam = game.teams.home.team;
 
 					var newGame = {
+						season: process.env.SEASON,
 						startTime: game.gameDate,
 						'away.team': awayTeam.id,
 						'home.team': homeTeam.id,

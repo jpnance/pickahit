@@ -6,6 +6,7 @@ var Player = require('../models/Player');
 
 var gameSchema = new Schema({
 	_id: { type: Number },
+	season: { type: Number },
 	startTime: { type: Date },
 	away: {
 		team: { type: Number, ref: 'Team', required: true },
