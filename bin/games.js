@@ -63,7 +63,7 @@ Game.find({ season: process.env.SEASON }).sort('startTime').exec(function(error,
 									game[name].batters.push(playerId);
 								}
 
-								if (parseInt(player.stats.batting.hits) > 0) {
+								if (player.stats && player.stats.batting && parseInt(player.stats.batting.hits) > 0) {
 									if (game.hits.indexOf(playerId) == -1) {
 										game.hits.push(playerId);
 									}
