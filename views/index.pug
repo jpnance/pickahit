@@ -58,9 +58,8 @@ block content
 				tr(class=session && session.user._id.toString() == user._id ? 'my-row' : '')
 					td.name #{user.firstName} #{user.lastName}
 					td.score
-						span.tiebreaker #{user.tiebreaker}
-						|
 						| #{user.score}
+						span.tiebreaker .#{user.tiebreaker < 10 ? '0' + user.tiebreaker : user.tiebreaker}
 
 					each game in games
 						- var hitClasses = [];
@@ -90,9 +89,8 @@ block content
 									| --
 
 					td.score
-						span.tiebreaker (#{user.tiebreaker})
-						|
 						| #{user.score}
+						span.tiebreaker .#{user.tiebreaker < 10 ? '0' + user.tiebreaker : user.tiebreaker}
 					td.eman #{user.firstName} #{user.lastName}
 
 	div#modal
