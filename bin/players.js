@@ -31,7 +31,8 @@ Team.find({}, function(error, teams) {
 						name: player.fullName,
 						position: player.primaryPosition.abbreviation,
 						bats: player.batSide.code,
-						throws: player.pitchHand.code
+						throws: player.pitchHand.code,
+						active: true
 					};
 
 					Player.findByIdAndUpdate(player.id, newPlayer, { upsert: true }).exec();

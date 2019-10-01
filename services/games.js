@@ -204,8 +204,14 @@ module.exports.showOne = function(request, response) {
 				.findById(request.params.gameId)
 				.populate('away.team')
 				.populate('home.team')
-				.populate('away.batters')
-				.populate('home.batters')
+				.populate({
+					path: 'away.batters',
+					match: { active: true }
+				})
+				.populate({
+					path: 'home.batters',
+					match: { active: true }
+				})
 				.populate('away.pitchers')
 				.populate('home.pitchers')
 				.populate('away.probablePitcher')

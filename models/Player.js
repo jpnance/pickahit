@@ -8,7 +8,8 @@ var playerSchema = new Schema({
 	number: { type: Number, required: true },
 	position: { type: String, required: true },
 	bats: { type: String, required: true },
-	throws: { type: String, required: true }
+	throws: { type: String, required: true },
+	active: { type: Boolean, required: true }
 });
 
 module.exports = mongoose.model('Player', playerSchema);
