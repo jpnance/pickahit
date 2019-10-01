@@ -69,7 +69,7 @@ Game.find({ season: process.env.SEASON }).sort('startTime').exec(function(error,
 									//var lolHits = Math.floor(Math.random() * 9) + 1;
 
 									if (!playerHits) {
-										game.hits.push({ playerId: playerId, hits: player.stats.batting.hits });
+										game.hits.push({ player: playerId, hits: player.stats.batting.hits });
 										//game.hits.push({ player: playerId, hits: lolHits });
 									}
 									else {

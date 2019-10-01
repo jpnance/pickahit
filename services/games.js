@@ -65,6 +65,7 @@ module.exports.showAll = function(request, response) {
 				.populate('home.team')
 				.populate('picks.user')
 				.populate('picks.player')
+				.populate('hits.player')
 		];
 
 		Promise.all(data).then(function(values) {
@@ -122,7 +123,7 @@ module.exports.showAll = function(request, response) {
 						userTiebreakers[pick.user._id] = 0;
 					}
 
-					var playerHits = game.hits.find(playerHits => { return playerHits.player == pick.player._id; });
+					var playerHits = game.hits.find(playerHits => { return playerHits.player._id == pick.player._id; });
 
 					if (playerHits) {
 						userScores[pick.user._id] += game.points;
@@ -130,6 +131,8 @@ module.exports.showAll = function(request, response) {
 					}
 
 					game.mappedPicks[pick.user._id] = pick.player;
+
+					game.flatHits = game.hits.map(playerHits => { return playerHits.player._id });
 				});
 			});
 
