@@ -121,6 +121,11 @@ table td.score {
 	text-align: right;
 }
 
+table td.score span.tiebreaker {
+	color: gray;
+	font-size: 60%;
+}
+
 table th.eman,
 table td.eman {
 	text-align: left;

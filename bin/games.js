@@ -64,8 +64,17 @@ Game.find({ season: process.env.SEASON }).sort('startTime').exec(function(error,
 								}
 
 								if (player.stats && player.stats.batting && parseInt(player.stats.batting.hits) > 0) {
-									if (game.hits.indexOf(playerId) == -1) {
-										game.hits.push(playerId);
+								//if ([599336, 599335].includes(game._id) && [519058, 669221].includes(playerId)) {
+									var playerHits = game.hits.find(playerHits => { return playerHits.player == playerId; });
+									//var lolHits = Math.floor(Math.random() * 9) + 1;
+
+									if (!playerHits) {
+										game.hits.push({ playerId: playerId, hits: player.stats.batting.hits });
+										//game.hits.push({ player: playerId, hits: lolHits });
+									}
+									else {
+										playerHits.hits = player.stats.batting.hits;
+										//playerHits.hits = lolHits;
 									}
 								}
 							}

@@ -104,6 +104,7 @@ module.exports.showAll = function(request, response) {
 			};
 
 			var userScores = {};
+			var userTiebreakers = {};
 
 			responseData.games.forEach(function(game) {
 				if (!game.picks) {
@@ -117,8 +118,15 @@ module.exports.showAll = function(request, response) {
 						userScores[pick.user._id] = 0;
 					}
 
-					if (game.hits.indexOf(pick.player._id) != -1) {
+					if (!userTiebreakers[pick.user._id]) {
+						userTiebreakers[pick.user._id] = 0;
+					}
+
+					var playerHits = game.hits.find(playerHits => { return playerHits.player == pick.player._id; });
+
+					if (playerHits) {
 						userScores[pick.user._id] += game.points;
+						userTiebreakers[pick.user._id] += playerHits.hits;
 					}
 
 					game.mappedPicks[pick.user._id] = pick.player;
@@ -132,6 +140,14 @@ module.exports.showAll = function(request, response) {
 				else {
 					user.score = 0;
 				}
+
+				if (userTiebreakers[user._id]) {
+					user.tiebreaker = userTiebreakers[user._id];
+				}
+				else {
+					user.tiebreaker = 0;
+				}
+
 			});
 
 			responseData.users = responseData.users.sort(function(a, b) {
@@ -142,17 +158,25 @@ module.exports.showAll = function(request, response) {
 					return -1;
 				}
 				else {
-					var aName = a.firstName + a.lastName;
-					var bName = b.firstName + b.lastName;
-
-					if (aName < bName) {
-						return -1;
-					}
-					else if (aName > bName) {
+					if (a.tiebreaker < b.tiebreaker) {
 						return 1;
 					}
+					else if (a.tiebreaker > b.tiebreaker) {
+						return -1;
+					}
+					else {
+						var aName = a.firstName + a.lastName;
+						var bName = b.firstName + b.lastName;
 
-					return 0;
+						if (aName < bName) {
+							return -1;
+						}
+						else if (aName > bName) {
+							return 1;
+						}
+
+						return 0;
+					}
 				}
 			});
 
@@ -185,7 +209,7 @@ module.exports.showOne = function(request, response) {
 				.populate('home.probablePitcher')
 				.populate('away.startingLineup')
 				.populate('home.startingLineup')
-				.populate('hits')
+				.populate('hits.player')
 				.populate({
 					path: 'picks.user',
 					select: '-password'

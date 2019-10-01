@@ -26,7 +26,10 @@ var gameSchema = new Schema({
 		user: { type: Schema.Types.ObjectId, ref: 'User' },
 		player: { type: Number, ref: 'Player' }
 	}],
-	hits: [{ type: Number, ref: 'Player' }],
+	hits: [{
+		player: { type: Number, ref: 'Player' },
+		hits: { type: Number, required: true }
+	}],
 	status: { type: String, required: true },
 	gameDescription: { type: String },
 	seriesDescription: { type: String },

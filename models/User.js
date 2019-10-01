@@ -9,7 +9,8 @@ var userSchema = new Schema({
 	displayName: { type: String },
 	seasons: { type: [Number] },
 	admin: { type: Boolean, default: false },
-	score: { type: Number }
+	score: { type: Number },
+	tiebreaker: { type: Number }
 });
 
 userSchema.methods.isEligibleFor = function(season) {
