@@ -11,7 +11,10 @@ block content
 		thead
 			tr
 				th.name Name
-				th.score Score
+				th.score
+					| Score
+					span.tiebreaker .00
+
 				each game in games
 					th
 						p.teams
@@ -51,7 +54,9 @@ block content
 							| #{game.points} point
 							if game.points > 1
 								| s
-				th.erocs Score
+				th.erocs
+					| Score
+					span.tiebreaker .00
 				th.eman Name
 		tbody
 			each user in users

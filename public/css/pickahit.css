@@ -111,6 +111,13 @@ table th.erocs {
 	font-weight: bold;
 }
 
+table th.score span.tiebreaker,
+table th.erocs span.tiebreaker {
+	font-size: 60%;
+	font-weight: normal;
+	visibility: hidden;
+}
+
 table th.name,
 table td.name {
 	text-align: right;
