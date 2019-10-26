@@ -4,3 +4,4 @@ schedule: node bin/schedule.js
 games: node bin/games.js
 players: node bin/players.js
 test: node bin/test.js
+sanity: node bin/sanity.js
