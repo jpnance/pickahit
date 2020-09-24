@@ -1,3 +1,5 @@
+var dotenv = require('dotenv').config({ path: '../.env' });
+
 var request = require('superagent');
 var cheerio = require('cheerio');
 
@@ -5,7 +7,8 @@ var Team = require('../models/Team');
 var Player = require('../models/Player');
 
 var mongoose = require('mongoose');
-mongoose.connect(process.env.MONGODB_URI);
+mongoose.Promise = global.Promise;
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
 
 var playerPromises = [];
 
@@ -16,8 +19,9 @@ Team.find({}, function(error, teams) {
 
 			var $ = cheerio.load(response.text);
 
-			$('td.dg-name_display_first_last a').each(function(i, e) {
-				var playerId = $(this).attr('href').split('/')[2];
+			$('td.info a').each(function(i, e) {
+				var hrefSections = $(this).attr('href').split('-');
+				var playerId = hrefSections[hrefSections.length - 1];
 
 				request.get('https://statsapi.mlb.com/api/v1/people/' + playerId, function(error, response) {
 					if (!response || !response.text) { return; }
