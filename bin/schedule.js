@@ -1,3 +1,5 @@
+var dotenv = require('dotenv').config({ path: '../.env' });
+
 var request = require('superagent');
 
 var Game = require('../models/Game');
@@ -5,11 +7,11 @@ var Team = require('../models/Team');
 
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-mongoose.connect(process.env.MONGODB_URI);
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
 
 var dateRange = {
-	start: new Date('2019-10-01 00:00:00'),
-	end: new Date('2019-10-31 00:00:00')
+	start: new Date('2020-09-29 00:00:00'),
+	end: new Date('2020-10-29 00:00:00')
 };
 
 var days = (dateRange.end - dateRange.start) / 86400000;
@@ -55,20 +57,20 @@ for (var i = 0; i <= days; i++) {
 					};
 
 					switch (game.seriesDescription) {
-						case 'AL Wild Card Game':
-						case 'NL Wild Card Game':
-						case 'AL Division Series':
-						case 'NL Division Series':
+						case 'Wild Card Game':
 							newGame.points = 1;
 							break;
 
-						case 'AL Championship Series':
-						case 'NL Championship Series':
+						case 'Division Series':
 							newGame.points = 2;
 							break;
 
-						case 'World Series':
+						case 'League Championship Series':
 							newGame.points = 4;
+							break;
+
+						case 'World Series':
+							newGame.points = 8;
 							break;
 
 						default: break;

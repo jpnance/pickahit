@@ -1,3 +1,5 @@
+var dotenv = require('dotenv').config();
+
 var express = require('express');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
@@ -16,7 +18,7 @@ var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGODB_URI);
 
-process.env.PORT = process.env.PORT || 3333;
+process.env.PORT = process.env.PORT;
 app.listen(process.env.PORT);
 
 module.exports = app;
