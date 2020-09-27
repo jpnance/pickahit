@@ -1,15 +1,35 @@
 h1.title: a(href='/') Pick-a-Hit
 if session
 	ul.navigation
-		li: a(href='/') Big Board
-		li: a(href='/users/edit/' + session.user.username) Settings
-		li: a(href='/logout') Log Out
+		li.log-out Log Out:
+			|
+			|
+			a(href=process.env.LOGIN_SERVICE + '/sessions/delete') This Device
+			|
+			| |
+			|
+			a(href=process.env.LOGIN_SERVICE + '/sessions/deleteAll') All Devices
 else
-	form.login(method='POST' action='/sessions' class=error ? 'error' : '')
-		input(type='text' name='username' placeholder='Username')
-		|
-		|
-		input(type='password' name='password' placeholder='Password')
-		|
-		|
-		button(type='submit') Log In
+	if success
+		div.success Check your email for your login link!
+	else
+		-
+			var placeholder = 'Email Address';
+
+			if (error) {
+				if (error == 'invalid-email') {
+					placeholder = 'Invalid Email Address';
+				}
+				else if (error == 'not-found') {
+					placeholder = 'Unknown Email Address';
+				}
+				else {
+					placeholder = 'Unknown Error';
+				}
+			}
+
+		form.login(name='login' method='POST' action=process.env.LOGIN_SERVICE + '/links/create' class=error ? 'error' : '')
+			input(type='hidden' name='sendLoginLink' value='true')
+			input(type='hidden' name='redirectTo' value=process.env.PICKAHIT_SERVICE)
+			input(type='text' name='email' placeholder=placeholder)
+			button(type='submit') Send Me a Login Link

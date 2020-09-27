@@ -1,3 +1,5 @@
+var apiRequest = require('superagent');
+
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
@@ -36,15 +38,19 @@ sessionSchema.statics.closeActiveSession = function(request, callback) {
 };
 
 sessionSchema.statics.withActiveSession = function(request, callback) {
-	if (request.cookies.sessionId) {
-		this.findByIdAndUpdate(request.cookies.sessionId, { userAgent: request.headers['user-agent'], ipAddress: request.connection.remoteAddress, lastActivity: Date.now() }).populate('user').exec(function(error, session) {
-			if (error) {
+	if (request.cookies.sessionKey) {
+		apiRequest
+			.get(process.env.LOGIN_SERVICE + '/sessions/retrieve/' + request.cookies.sessionKey)
+			.then(response => {
+				User.findOne({
+					username: response.body.user.username
+				}).then(function(user) {
+					callback(null, { username: user.username, user: user });
+				});
+			})
+			.catch(error => {
 				callback(error, null);
-			}
-			else {
-				callback(null, session);
-			}
-		});
+			});
 	}
 	else {
 		callback(null, null);

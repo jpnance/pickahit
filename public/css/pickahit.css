@@ -36,6 +36,15 @@ ul.navigation li {
 	margin-right: 0.6em;
 }
 
+ul.navigation li.log-out {
+	font-size: 85%;
+}
+
+div.success {
+	color: green;
+	font-weight: bold;
+}
+
 form.login.error input {
 	background-color: #ffdddd;
 }

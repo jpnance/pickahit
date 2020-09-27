@@ -186,6 +186,9 @@ module.exports.showAll = function(request, response) {
 			if (request.query.error) {
 				responseData.error = request.query.error;
 			}
+			else if (request.query.success) {
+				responseData.success = request.query.success;
+			}
 
 			response.render('index', responseData);
 		});
