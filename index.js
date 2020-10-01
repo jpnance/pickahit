@@ -18,7 +18,22 @@ var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
 
-process.env.PORT = process.env.PORT;
-app.listen(process.env.PORT);
+if (process.env.NODE_ENV == 'dev') {
+	var fs = require('fs');
+	var https = require('https');
+
+	var options = {
+		key: fs.readFileSync('../ssl/server.key'),
+		cert: fs.readFileSync('../ssl/server.crt'),
+		requestCert: false
+	};
+
+	var server = https.createServer(options, app);
+
+	server.listen(process.env.PORT, function() { console.log('https, listening on port ' + process.env.PORT) });
+}
+else {
+	app.listen(process.env.PORT, function() { console.log('http, listening on port ' + process.env.PORT) });
+}
 
 module.exports = app;
