@@ -10,38 +10,63 @@ var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
 
+var teamPromises = [];
 var playerPromises = [];
 
 Team.find({}, function(error, teams) {
 	teams.forEach(function(team) {
-		request.get('http://m.mlb.com/' + team.abbreviation.toLowerCase() + '/roster/40-man/', function(error, response) {
-			if (!response || !response.text) { return; }
+		teamPromises.push(new Promise(function(teamResolve, teamReject) {
+			request.get('http://m.mlb.com/' + team.abbreviation.toLowerCase() + '/roster/40-man/', function(error, response) {
+				if (error) {
+					teamResolve(null);
+					return;
+				}
 
-			var $ = cheerio.load(response.text);
+				if (!response || !response.text) { teamResolve(null); return; }
 
-			$('td.info a').each(function(i, e) {
-				var hrefSections = $(this).attr('href').split('-');
-				var playerId = hrefSections[hrefSections.length - 1];
+				var $ = cheerio.load(response.text);
 
-				request.get('https://statsapi.mlb.com/api/v1/people/' + playerId, function(error, response) {
-					if (!response || !response.text) { return; }
+				$('td.info a').each(function(i, e) {
+					var hrefSections = $(this).attr('href').split('-');
+					var playerId = hrefSections[hrefSections.length - 1];
 
-					var data = JSON.parse(response.text);
-					var player = data.people[0];
+					playerPromises.push(new Promise(function(playerResolve, playerReject) {
+						request.get('https://statsapi.mlb.com/api/v1/people/' + playerId, function(error, response) {
+							if (error) {
+								playerResolve(null);
+								return;
+							}
 
-					var newPlayer = {
-						team: team.id,
-						number: player.primaryNumber,
-						name: player.fullName,
-						position: player.primaryPosition.abbreviation,
-						bats: player.batSide.code,
-						throws: player.pitchHand.code,
-						active: true
-					};
+							if (!response || !response.text) { playerResolve(null); return; }
 
-					Player.findByIdAndUpdate(player.id, newPlayer, { upsert: true }).exec();
+							var data = JSON.parse(response.text);
+							var player = data.people[0];
+
+							var newPlayer = {
+								team: team.id,
+								number: player.primaryNumber,
+								name: player.fullName,
+								position: player.primaryPosition.abbreviation,
+								bats: player.batSide.code,
+								throws: player.pitchHand.code,
+								active: true
+							};
+
+							Player.findByIdAndUpdate(player.id, newPlayer, { upsert: true }).exec(function(error, player) {
+								playerResolve(null);
+							});
+						});
+					}));
+
+					teamResolve(team.abbreviation);
 				});
 			});
+		}));
+	});
+
+	Promise.all(teamPromises).then(teamValues => {
+		Promise.all(playerPromises).then(playerValues => {
+			mongoose.disconnect();
 		});
 	});
 });
