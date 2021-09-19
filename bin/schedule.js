@@ -10,8 +10,8 @@ mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
 
 var dateRange = {
-	start: new Date('2020-09-29 00:00:00'),
-	end: new Date('2020-10-29 00:00:00')
+	start: new Date('2021-10-05 00:00:00'),
+	end: new Date('2021-11-03 00:00:00')
 };
 
 var days = (dateRange.end - dateRange.start) / 86400000;
