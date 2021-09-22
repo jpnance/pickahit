@@ -7,7 +7,7 @@ block append scripts
 	script(src='/js/bigBoard.js' type='text/javascript')
 
 block content
-	table#big-board(border='1')
+	table.table.table-sm#big-board(border='1')
 		thead
 			tr
 				th.name Name
@@ -18,7 +18,7 @@ block content
 				each game in games
 					th
 						p.teams
-							a(href='https://www.mlb.com/gameday/' + game._id)
+							a.text-underline(href='https://www.mlb.com/gameday/' + game._id)
 								| #{game.away.team.teamName}
 								br
 								| vs. #{game.home.team.teamName}
@@ -98,15 +98,27 @@ block content
 						span.tiebreaker .#{user.tiebreaker < 10 ? '0' + user.tiebreaker : user.tiebreaker}
 					td.eman #{user.firstName} #{user.lastName}
 
-	div#modal
-		div#away-team
-			div.name
-			div.probable-pitcher
-			div.batters.starting-lineup
-			div.batters.bench
+	div.modal.fade#modal
+		div.modal-dialog
+			div.modal-content
+				div.modal-header
+					h5.modal-title
+					button.close(type='button' data-dismiss='modal')
+						span &times;
 
-		div#home-team
-			div.name
-			div.probable-pitcher
-			div.batters.starting-lineup
-			div.batters.bench
+				div.modal-body
+					div.container-fluid
+						div.row
+							div.col-12.col-sm-6.mb-4.mb-sm-0
+								div#away-team
+									div.name
+									div.probable-pitcher
+									div.batters.starting-lineup
+									div.batters.bench
+
+							div.col-12.col-sm-6
+								div#home-team
+									div.name
+									div.probable-pitcher
+									div.batters.starting-lineup
+									div.batters.bench

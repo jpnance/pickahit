@@ -32,6 +32,7 @@ module.exports = function(app) {
 
 	app.get('/sessions', sessions.showAll);
 	app.post('/sessions', sessions.logIn);
+	app.get('/login', users.loginPrompt);
 	app.post('/login', sessions.logIn);
 	app.get('/logout', sessions.logOut);
 

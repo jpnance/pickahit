@@ -3,6 +3,28 @@ var crypto = require('crypto');
 var Session = require('../models/Session');
 var User = require('../models/User');
 
+module.exports.loginPrompt = function(request, response) {
+	var responseData = {};
+
+	if (request.query.error == 'login') {
+		responseData.error = { message: 'Invalid username/password combination.' };
+	}
+	else if (request.query.error == 'invalid-email') {
+		responseData.error = { message: 'Invalid email address.' };
+	}
+	else if (request.query.error == 'not-found') {
+		responseData.error = { message: 'No user found for that email address.' };
+	}
+	else if (request.query.error == 'unknown') {
+		responseData.error = { message: 'Unknown server error.' };
+	}
+	else if (request.query.success == 'email-sent') {
+		responseData.success = { message: 'Check your email for your login link!' };
+	}
+
+	response.render('users/login', responseData);
+};
+
 module.exports.add = function(request, response) {
 	Session.withActiveSession(request, function(error, session) {
 		if (session && session.user.admin) {

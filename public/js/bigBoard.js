@@ -76,6 +76,9 @@ $(document).ready(function() {
 
 			$('div#modal div.batters a').addClass('make-pick').attr('data-game-id', gameId);
 
+			$('div#modal h5.modal-title').text(modalTitle(data.game));
+
+			/*
 			$('#modal').dialog({
 				draggable: true,
 				hide: 'fade',
@@ -90,6 +93,9 @@ $(document).ready(function() {
 				title: modalTitle(data.game),
 				width: 480
 			});
+			*/
+
+			$('#modal').modal();
 		});
 	});
 
