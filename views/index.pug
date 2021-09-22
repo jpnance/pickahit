@@ -13,7 +13,7 @@ block content
 				th.name Name
 				th.score
 					| Score
-					span.tiebreaker .00
+					span.tiebreaker.align-middle .00
 
 				each game in games
 					th
@@ -56,7 +56,7 @@ block content
 								| s
 				th.erocs
 					| Score
-					span.tiebreaker .00
+					span.tiebreaker.align-middle .00
 				th.eman Name
 		tbody
 			each user in users
@@ -64,7 +64,7 @@ block content
 					td.name #{user.firstName} #{user.lastName}
 					td.score
 						| #{user.score}
-						span.tiebreaker .#{user.tiebreaker < 10 ? '0' + user.tiebreaker : user.tiebreaker}
+						span.tiebreaker.align-middle .#{user.tiebreaker < 10 ? '0' + user.tiebreaker : user.tiebreaker}
 
 					each game in games
 						- var hitClasses = [];
@@ -95,7 +95,7 @@ block content
 
 					td.score
 						| #{user.score}
-						span.tiebreaker .#{user.tiebreaker < 10 ? '0' + user.tiebreaker : user.tiebreaker}
+						span.tiebreaker.align-middle .#{user.tiebreaker < 10 ? '0' + user.tiebreaker : user.tiebreaker}
 					td.eman #{user.firstName} #{user.lastName}
 
 	div.modal.fade#modal
