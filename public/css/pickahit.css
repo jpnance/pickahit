@@ -61,6 +61,10 @@ table th {
 	vertical-align: bottom;
 }
 
+table th.game {
+	font-weight: normal;
+}
+
 table th p.teams {
 	font-weight: bold;
 }
@@ -78,13 +82,6 @@ table tr.my-row {
 
 table td {
 	font-size: 90%;
-}
-
-table th.name,
-table th.eman,
-table th.score,
-table th.erocs {
-	font-weight: bold;
 }
 
 table th.score span.tiebreaker,
@@ -140,58 +137,8 @@ table tr.my-row td.unpicked a {
 	visibility: hidden;
 }
 
-div.verifier {
-	text-align: center;
-}
-
-div.verifier img.logo {
-	border-right: 1px solid #aaaaaa;
-	display: inline-block;
-	padding-right: 24px;
-	width: 250px;
-}
-
-div.verifier .hidden {
-	display: none;
-}
-
-div.verifier div.right {
-	display: inline-block;
-	padding-left: 8px;
-	padding-top: 76px;
-	text-align: center;
-	vertical-align: top;
-	width: 250px;
-}
-
-div.verifier form input {
-	width: 80%;
-}
-
-div.verifier form input, div.verifier form button {
-	margin-top: 12px;
-}
-
-div.verifier div.success,
-div.verifier div.failure {
-	font-size: 150%;
-	line-height: 1.2em;
-}
-
-div.verifier div.success p {
-	margin-bottom: 1em;
-}
-
 div#modal {
 	display: none;
-}
-
-div#modal div#away-team,
-div#modal div#home-team {
-	display: inline-block;
-	text-align: left;
-	vertical-align: top;
-	width: 50%;
 }
 
 div#modal div.batters.starting-lineup {
@@ -254,38 +201,4 @@ div#modal div.name {
 	font-size: 125%;
 	font-weight: bold;
 	white-space: nowrap;
-}
-
-div.ui-dialog {
-	background-color: white;
-	border: 2px solid #aaa;
-	border-radius: 6px;
-	box-shadow: 0px 0px 25px #aaa;
-	padding: 10px;
-}
-
-div.ui-dialog-titlebar {
-}
-
-div.ui-dialog-titlebar span.ui-dialog-title {
-	font-size: 20px;
-	font-weight: bold;
-	letter-spacing: -1px;
-	margin-right: 10px;
-}
-
-div.ui-dialog-titlebar a.ui-dialog-titlebar-close {
-	font-size: 10px;
-}
-
-table.sessions th {
-	font-weight: bold;
-}
-
-table.sessions thead tr {
-	border-bottom: 2px solid #ccc;
-}
-
-table.sessions tfoot tr {
-	border-top: 2px solid #ccc;
 }
