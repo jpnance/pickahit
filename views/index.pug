@@ -18,7 +18,7 @@ block content
 				each game in games
 					th
 						p.teams
-							a.text-underline(href='https://www.mlb.com/gameday/' + game._id)
+							a.text-underline(href='https://www.mlb.com/gameday/' + game._id target='_blank')
 								| #{game.away.team.teamName}
 								br
 								| vs. #{game.home.team.teamName}
