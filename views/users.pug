@@ -4,6 +4,7 @@ block title
 	+title('All Users')
 
 block content
-	ul
-		each user in users
-			li: a(href='/users/edit/' + user.username) #{user.username}
+	div.container
+		ul
+			each user in users
+				li: a(href='/users/edit/' + user.username) #{user.username}
