@@ -55,7 +55,6 @@ module.exports.showAll = function(request, response) {
 		var data = [
 			User
 				.find({})
-				.select('-password')
 				.sort({ username: 1 }),
 
 			Game
@@ -222,10 +221,7 @@ module.exports.showOne = function(request, response) {
 				.populate('away.startingLineup')
 				.populate('home.startingLineup')
 				.populate('hits.player')
-				.populate({
-					path: 'picks.user',
-					select: '-password'
-				})
+				.populate({ path: 'picks.user' })
 				.populate('picks.player'),
 
 			Game.find({ season: process.env.SEASON, picks: { '$elemMatch': { user: session.user._id } }})

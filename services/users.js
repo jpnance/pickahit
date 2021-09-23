@@ -6,10 +6,7 @@ var User = require('../models/User');
 module.exports.loginPrompt = function(request, response) {
 	var responseData = {};
 
-	if (request.query.error == 'login') {
-		responseData.error = { message: 'Invalid username/password combination.' };
-	}
-	else if (request.query.error == 'invalid-email') {
+	if (request.query.error == 'invalid-email') {
 		responseData.error = { message: 'Invalid email address.' };
 	}
 	else if (request.query.error == 'not-found') {
@@ -74,22 +71,15 @@ module.exports.showAll = function(request, response) {
 module.exports.signUp = function(request, response) {
 	Session.withActiveSession(request, function(error, session) {
 		if (session && session.user.admin) {
-			if (!request.body.username && !request.body.password) {
-				response.status(400).send('No data supplied');
-			}
-			else if (!request.body.username) {
+			if (!request.body.username) {
 				response.status(400).send('No username supplied');
-			}
-			else if (!request.body.password) {
-				response.status(400).send('No password supplied');
 			}
 			else {
 				var user = new User({
 					username: request.body.username,
 					firstName: request.body.firstName,
 					lastName: request.body.lastName,
-					displayName: request.body.displayName,
-					password: crypto.createHash('sha256').update(request.body.password).digest('hex')
+					displayName: request.body.displayName
 				});
 
 				if (request.body.eligible == 'on') {
@@ -140,10 +130,6 @@ module.exports.update = function(request, response) {
 				else {
 					user.makeUneligibleFor(process.env.SEASON);
 				}
-			}
-
-			if (request.body.password1 && request.body.password2 && request.body.password1 == request.body.password2) {
-				user.password = crypto.createHash('sha256').update(request.body.password1).digest('hex');
 			}
 
 			user.save(function(error) {

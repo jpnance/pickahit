@@ -1,6 +1,5 @@
 var crypto = require('crypto');
 
-var sessions = require('../services/sessions');
 var users = require('../services/users');
 var games = require('../services/games');
 var override = require('../services/override');
@@ -27,14 +26,7 @@ var preview = {
 module.exports = function(app) {
 	app.get('/', games.showAll);
 
-	//app.get('/preview', preview.enablePreview);
-	//app.get('/placeholder', preview.disablePreview);
-
-	app.get('/sessions', sessions.showAll);
-	app.post('/sessions', sessions.logIn);
 	app.get('/login', users.loginPrompt);
-	app.post('/login', sessions.logIn);
-	app.get('/logout', sessions.logOut);
 
 	app.get('/users', users.showAll);
 	app.post('/users', users.signUp);
