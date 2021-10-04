@@ -113,7 +113,7 @@ $(document).ready(function() {
 				return;
 			}
 
-			$('#modal').dialog('close');
+			$('#modal').modal('hide');
 			$('table#big-board a[data-game-id=' + gameId + ']').text(data.player.name).parent('td').removeClass('unpicked');
 		});
 	});
