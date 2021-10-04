@@ -98,28 +98,3 @@ block content
 							| #{user.score}
 							span.tiebreaker.align-middle .#{user.tiebreaker < 10 ? '0' + user.tiebreaker : user.tiebreaker}
 						td.eman #{user.firstName} #{user.lastName}
-
-		div.modal.fade#modal
-			div.modal-dialog
-				div.modal-content
-					div.modal-header
-						h5.modal-title
-						button.close(type='button' data-dismiss='modal')
-							span &times;
-
-					div.modal-body
-						div.container-fluid
-							div.row
-								div.col-12.col-sm-6.mb-4.mb-sm-0
-									div#away-team
-										div.name
-										div.probable-pitcher
-										div.batters.starting-lineup
-										div.batters.bench
-
-								div.col-12.col-sm-6
-									div#home-team
-										div.name
-										div.probable-pitcher
-										div.batters.starting-lineup
-										div.batters.bench
