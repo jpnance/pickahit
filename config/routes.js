@@ -4,6 +4,8 @@ var users = require('../services/users');
 var games = require('../services/games');
 var override = require('../services/override');
 
+var Session = require('../models/Session');
+
 var preview = {
 	crossroads: function(request, response) {
 		if (request.cookies.preview) {
@@ -38,4 +40,10 @@ module.exports = function(app) {
 	app.post('/games/pick/:gameId/:playerId', games.pick);
 
 	app.get('/override/pick/:username/:gameId/:playerId', override.pick);
+
+	app.get('/rules', function(request, response) {
+		Session.withActiveSession(request, function(error, session) {
+			response.render('rules', { session: session });
+		});
+	});
 };

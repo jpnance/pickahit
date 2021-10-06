@@ -6,7 +6,7 @@ block title
 block append scripts
 	script(src='/js/bigBoard.js' type='text/javascript')
 
-block content
+block bigBoard
 	div.table-responsive.container-fluid
 		table.table.table-sm#big-board(border='1')
 			thead
@@ -51,7 +51,7 @@ block content
 									br
 									| #{dateFormat(game.startTime, 'h:MMtt')} ET
 
-							p
+							p.points
 								| #{game.points} point
 								if game.points > 1
 									| s

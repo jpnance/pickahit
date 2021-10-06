@@ -1,0 +1,46 @@
+extends layout.pug
+
+block title
+	+title('Rules')
+
+block content
+	h1 Pick-a-Hit Rules for 2021
+	p Pick-a-Hit is a postseason baseball picks pool for any number of entrants. It's combines aspects of survivor pools and fantasy baseball.
+	ol
+		li Plain English
+			ol(type='a')
+				li The entry fee is $5.
+				li Every game during the postseason, you pick one hitter in that game.
+				li If that hitter gets a hit in that game, you score points that increase with every round of the playoffs. If he doesn't, you score zero points.
+				li Regardless of the outcome, you may not select that player again during the postseason.
+				li Multiple hits by that player don't get you multiples of points: you either score the number of points offered for a game or you don't.
+				li Walks, reaches-on-error, and hits-by-pitch are not hits.
+				li You can intentionally not make a pick for a game if you want.
+				li The first tiebreaker will be the total number of hits your picks acculumated throughout the playoffs.
+		//- li Overview
+			ol(type='a')
+				li The entry fee for every entrant is $5. It must be paid before an entrant will be allowed to begin making picks.
+				li The pay-out for first place will be the entire pool of money.
+		//- li Format
+			ol(type='a')
+				li For each of the postseason games in the MLB season, each entrant may pick one hitter invoved in that game.
+				li In each team's series, the entrant will attempt to correctly pick that team to win in four regular season MLB games.
+				li If the entrant makes four correct picks in a series within seven attempts (i.e. the entrant accrues four wins before four losses for a given MLB team), the entrant will score positive points for that team's series; otherwise, they will score negative points (scoring rules defined later).
+				li Once an entrant scores any points for a team's series, they may no longer pick that team in any games (i.e. each entrant only has one opportunity per MLB team to score points).
+		//- li Picks
+			ol(type='a')
+				li An entrant may pick any combination of regular season MLB games for a given team (i.e. they do not need to be consecutive).
+				li An entrant may only pick one side of any given game (i.e. you cannot pick both teams in an effort to guarantee a win and a loss).
+				li Neither side of a game may be picked after that game has had its first pitch thrown.
+		li Scoring
+			ol(type='a')
+				li A hit in a Wild Card or Division Series game will be worth 1 point to the entrant.
+				li A hit in a League Championship Series game will be worth 2 points to the entrant.
+				li A hit in a World Series game will be worth 4 points to the entrant.
+				li The final standings will be based on most points scored.
+				li In the event that two or more entrants are tied on points scored, the tie will be broken by most number of hits each entrant's picks accumulated throughout the playoffs.
+				li In the event that two or more entrants are tied on both points scored and hits accumulated, all tied entrants may unanimously agree to have the purse randomly awarded to one of them or, lacking unanimity, split the purse equally amongst them.
+		li Miscellany
+			ol(type='a')
+				li All picks must be made by the entrant on the website with potential exceptions only made in the event of website downtime.
+				li In the event that these rules underspecify a situation that must be ruled on, the pool administrator will retain the authority to make the ruling.

@@ -25,7 +25,7 @@ html
 			var navItems = [];
 
 			navItems.push({ name: 'Big Board', href: '/' });
-			// navItems.push({ name: 'Rules', href: '/rules' });
+			navItems.push({ name: 'Rules', href: '/rules' });
 
 			if (session) {
 				navItems.push({ name: 'Log Out', href: process.env.LOGIN_SERVICE + '/sessions/delete' });
@@ -56,8 +56,11 @@ html
 							li.nav-item.py-1
 								a.nav-link(href=navItem.href) #{navItem.name}
 
-		div#content
+		div.container.pb-3
 			block content
+
+		div#content
+			block bigBoard
 
 		div.modal.fade#modal
 			div.modal-dialog
