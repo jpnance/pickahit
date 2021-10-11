@@ -45,7 +45,7 @@ for (var i = 0; i <= days; i++) {
 
 					var newGame = {
 						season: process.env.SEASON,
-						startTime: game.gameDate,
+						startTime: game.rescheduleDate || game.gameDate,
 						'away.team': awayTeam.id,
 						'home.team': homeTeam.id,
 						status: game.status.statusCode,
