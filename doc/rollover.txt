@@ -1,6 +1,6 @@
 vi .env
 # change SEASON to the appropriate year
+# change POSTSEASON_START_TIME and POSTSEASON_END_TIME to the appropriate times
 cd bin
 node players.js
-# open up schedule.js and set the dates to the range of dates in the postseason
 node schedule.js
