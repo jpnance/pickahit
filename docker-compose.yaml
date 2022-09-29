@@ -1,0 +1,35 @@
+version: '3.6'
+
+services:
+    web:
+        container_name: pickahit-web
+        image: node:14-alpine
+        volumes:
+            - .:/app
+            - ../ssl:/ssl
+        working_dir: /app
+        ports:
+            - $PORT:$PORT
+        command: node index.js
+
+    mongo:
+        container_name: pickahit-mongo
+        image: mongo:3.6.8
+        volumes:
+            - pickahit-data:/data/db
+
+    cron:
+        container_name: pickahit-cron
+        image: node:14-alpine
+        volumes:
+            - .:/app
+        command: sh -c "crontab /app/etc/crontab && crond -f"
+
+volumes:
+    pickahit-data:
+        name: pickahit-data
+
+networks:
+    default:
+        name: coinflipper
+        external: true
