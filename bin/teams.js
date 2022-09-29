@@ -1,5 +1,4 @@
 var request = require('superagent');
-var cheerio = require('cheerio');
 
 var Team = require('../models/Team');
 var Player = require('../models/Player');
