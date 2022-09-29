@@ -1,7 +1,6 @@
 var dotenv = require('dotenv').config({ path: __dirname + '/../.env' });
 
 var request = require('superagent');
-var cheerio = require('cheerio');
 
 var Team = require('../models/Team');
 var Player = require('../models/Player');
@@ -16,7 +15,7 @@ var playerPromises = [];
 Team.find({}, function(error, teams) {
 	teams.forEach(function(team) {
 		teamPromises.push(new Promise(function(teamResolve, teamReject) {
-			request.get('http://m.mlb.com/' + team.abbreviation.toLowerCase() + '/roster/40-man/', function(error, response) {
+			request.get('https://statsapi.mlb.com/api/v1/teams/' + team._id + '/roster?rosterType=40Man', function(error, response) {
 				if (error) {
 					teamResolve(null);
 					return;
@@ -24,11 +23,15 @@ Team.find({}, function(error, teams) {
 
 				if (!response || !response.text) { teamResolve(null); return; }
 
-				var $ = cheerio.load(response.text);
+				var data = JSON.parse(response.text);
 
-				$('td.info a').each(function(i, e) {
-					var hrefSections = $(this).attr('href').split('-');
-					var playerId = hrefSections[hrefSections.length - 1];
+				if (!data.roster) {
+					teamResolve(null);
+					return;
+				}
+
+				data.roster.forEach((player) => {
+					var playerId = player.person.id;
 
 					playerPromises.push(new Promise(function(playerResolve, playerReject) {
 						request.get('https://statsapi.mlb.com/api/v1/people/' + playerId, function(error, response) {
@@ -64,8 +67,8 @@ Team.find({}, function(error, teams) {
 		}));
 	});
 
-	Promise.all(teamPromises).then(teamValues => {
-		Promise.all(playerPromises).then(playerValues => {
+	Promise.all(teamPromises).then((teamValues) => {
+		Promise.all(playerPromises).then((playerValues) => {
 			mongoose.disconnect();
 		});
 	});
