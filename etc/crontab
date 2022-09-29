@@ -1,0 +1,2 @@
+42 * * * *	/usr/local/bin/node /app/bin/schedule.js
+*/5 * * * *	/usr/local/bin/node /app/bin/games.js
