@@ -28,7 +28,7 @@ html
 			navItems.push({ name: 'Rules', href: '/rules' });
 
 			if (session) {
-				navItems.push({ name: 'Log Out', href: process.env.LOGIN_SERVICE + '/sessions/delete' });
+				navItems.push({ name: 'Log Out', href: process.env.LOGIN_SERVICE_EXTERNAL + '/sessions/delete' });
 			}
 			else {
 				navItems.push({ name: 'Log In', href: '/login' });
@@ -50,8 +50,8 @@ html
 									| Log Out
 
 								div.log-out.dropdown-menu.py-0
-									a.this-device.dropdown-item(href=process.env.LOGIN_SERVICE + '/sessions/delete') This Device
-									a.all-devices.dropdown-item(href=process.env.LOGIN_SERVICE + '/sessions/deleteAll') All Devices
+									a.this-device.dropdown-item(href=process.env.LOGIN_SERVICE_EXTERNAL + '/sessions/delete') This Device
+									a.all-devices.dropdown-item(href=process.env.LOGIN_SERVICE_EXTERNAL + '/sessions/deleteAll') All Devices
 						else
 							li.nav-item.py-1
 								a.nav-link(href=navItem.href) #{navItem.name}
