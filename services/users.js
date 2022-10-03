@@ -28,7 +28,7 @@ module.exports.add = function(request, response) {
 			response.render('users/add', { session: session });
 		}
 		else {
-			response.redirect('/');
+			response.redirect('/users');
 		}
 	});
 };
@@ -50,7 +50,7 @@ module.exports.edit = function(request, response) {
 			});
 		}
 		else {
-			response.redirect('/');
+			response.redirect('/users');
 		}
 	});
 };
@@ -91,7 +91,7 @@ module.exports.signUp = function(request, response) {
 
 				user.save(function(error) {
 					if (!error) {
-						response.redirect('/');
+						response.redirect('/users');
 					}
 					else {
 						response.status(400).send(error);
@@ -137,7 +137,7 @@ module.exports.update = function(request, response) {
 					response.send(error);
 				}
 				else {
-					response.redirect('/');
+					response.redirect('/users');
 				}
 			});
 		});
