@@ -39,15 +39,15 @@ block bigBoard
 
 							p
 								if game.status == 'PR'
-									| #{dateFormat(game.startTime, 'mmmm dS', true)}
+									| #{dateFormat(game.startTime, 'mmmm d', true)}
 									br
 									| Delayed
 								else if game.startTime.getMinutes() == 33
-									| #{dateFormat(game.startTime, 'mmmm dS', true)}
+									| #{dateFormat(game.startTime, 'mmmm d', true)}
 									br
 									| TBD
 								else
-									| #{dateFormat(game.startTime, 'mmmm dS')}
+									| #{dateFormat(game.startTime, 'mmmm d')}
 									br
 									| #{dateFormat(game.startTime, 'h:MMtt')} ET
 
