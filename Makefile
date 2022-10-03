@@ -6,7 +6,10 @@ seed:
 	@echo "docker exec -i pickahit-mongo sh -c \"mongorestore --drop --archive\" < ~/backups/pickahit/pickahit.dump"
 
 schedule:
-	docker exec pickahit-cron sh -c "cd /app/bin && node schedule.js update"
+	docker exec pickahit-cron sh -c "cd /app/bin && node schedule.js"
 
 games:
-	docker exec pickahit-cron sh -c "cd /app/bin && node games.js update"
+	docker exec pickahit-cron sh -c "cd /app/bin && node games.js"
+
+players:
+	docker exec pickahit-cron sh -c "cd /app/bin && node players.js"
