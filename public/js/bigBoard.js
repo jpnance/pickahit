@@ -114,7 +114,7 @@ $(document).ready(function() {
 			}
 
 			$('#modal').modal('hide');
-			$('table#big-board a[data-game-id=' + gameId + ']').text(data.player.name).parent('td').removeClass('unpicked');
+			$('table#big-board a[data-game-id=' + gameId + ']').text(data.player?.name || '').parent('td').removeClass('unpicked');
 		});
 	});
 
@@ -159,7 +159,13 @@ var generatePlayerRow = function(batter, picked, gameId) {
 	$player = $('<td>').addClass('player');
 
 	if (picked) {
-		$player.addClass('picked').text(batter.name);
+		// $player.addClass('picked').text(batter.name);
+		var $playerLink = $('<a>')
+			.attr('data-player-id', batter._id)
+			.attr('href', '/games/unpick/' + gameId + '/' + batter._id)
+			.text(batter.name);
+
+		$player.append($playerLink);
 	}
 	else {
 		var $playerLink = $('<a>')

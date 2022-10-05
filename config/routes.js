@@ -38,6 +38,7 @@ module.exports = function(app) {
 
 	app.get('/games/:gameId', games.showOne);
 	app.post('/games/pick/:gameId/:playerId', games.pick);
+	app.post('/games/unpick/:gameId/:playerId', games.unpick);
 
 	app.get('/override/pick/:username/:gameId/:playerId', override.pick);
 

@@ -30,6 +30,7 @@ module.exports.pick = function(request, response) {
 			}
 			else if (game && !game.hasStarted() && (game.away.batters.indexOf(playerId) != -1 || game.home.batters.indexOf(playerId) != -1) && player) {
 				console.log('pick', session.user._id, game._id, player._id);
+
 				Game.findOneAndUpdate({ _id: gameId, 'picks.user': session.user._id }, { '$set': { 'picks.$.player': player._id } }).exec(function(error, game) {
 					if (!game) {
 						Game.findOneAndUpdate({ _id: gameId }, { '$push': { picks: { user: session.user._id, player: playerId } } }).exec(function(error, game) {
@@ -40,6 +41,53 @@ module.exports.pick = function(request, response) {
 					}
 					else if (!error) {
 						response.send({ success: true, player: player });
+					}
+				});
+			}
+			else {
+				response.send({ success: false, error: 'You are hacking. Please stop.' });
+			}
+		});
+	});
+};
+
+module.exports.unpick = function(request, response) {
+	Session.withActiveSession(request, function(error, session) {
+		if (error || !session || !request.params.gameId || !request.params.playerId) {
+			response.send({ success: false, redirect: '/' });
+			return;
+		}
+
+		var userId = session.user._id;
+		var gameId = parseInt(request.params.gameId);
+		var playerId = parseInt(request.params.playerId);
+
+		var data = [
+			Game.findById(gameId),
+			Player.findById(playerId),
+			Game.find({ season: process.env.SEASON, picks: { '$elemMatch': { user: session.user._id, player: playerId } } })
+		];
+
+		Promise.all(data).then(function(values) {
+			var game = values[0];
+			var player = values[1];
+			var existing = values[2];
+
+			if (existing.length == 0) {
+				response.send({ success: false, error: player.name + ' isn\'t selected for that game' });
+			}
+			else if (game && !game.hasStarted() && (game.away.batters.indexOf(playerId) != -1 || game.home.batters.indexOf(playerId) != -1) && player) {
+				console.log('unpick', session.user._id, game._id, player._id);
+
+				Game.findOneAndUpdate({ _id: gameId, 'picks.user': session.user._id }, { '$pull': { picks: { user: session.user._id } } }).exec(function(error, game) {
+					if (!game) {
+						response.send({ success: false, error: 'That game either doesn\'t exist or that user doesn\'t have an active pick made for it.' });
+					}
+					else if (!error) {
+						response.send({ success: true });
+					}
+					else {
+						response.status(500).send(error);
 					}
 				});
 			}
@@ -231,7 +279,8 @@ module.exports.showOne = function(request, response) {
 			var responseData = {
 				success: true,
 				game: values[0],
-				alreadyPicked: []
+				alreadyPicked: [],
+				currentSelection: null
 			};
 
 			var games = values[1];
@@ -244,6 +293,10 @@ module.exports.showOne = function(request, response) {
 				game.picks.forEach(function(pick) {
 					if (pick.user.toString() == session.user._id.toString()) {
 						responseData.alreadyPicked.push(pick.player);
+
+						if (game._id == responseData.game._id) {
+							responseData.currentSelection = pick.player;
+						}
 					}
 				});
 			});
