@@ -24,7 +24,7 @@ block content
 									div.col-6.text-left
 										p.mb-0.text-nowrap: small #{game.seriesDescription}, Game #{game.seriesGameNumber}
 									div.col-6.text-right
-										p.mb-0.text-nowrap: small #{game.points} points
+										p.mb-0.text-nowrap: small: strong #{game.points} point#{game.points > 1 ? 's' : ''}
 							+teamRow(game, 'away')
 							+teamRow(game, 'home')
 						div.card-footer.text-center
