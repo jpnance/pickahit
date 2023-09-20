@@ -46,4 +46,6 @@ module.exports = function(app) {
 			response.render('rules', { session: session });
 		});
 	});
+
+	app.get('/test', games.showAllForDate);
 };

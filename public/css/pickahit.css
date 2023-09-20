@@ -201,3 +201,16 @@ div#modal div.name {
 	font-weight: bold;
 	white-space: nowrap;
 }
+
+.pitcher {
+	font-size: 70%;
+}
+
+li.team-row img {
+	height: 40px;
+	width: 40px;
+}
+
+a.team-button {
+	line-height: 0.9rem;
+}

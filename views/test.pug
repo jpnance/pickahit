@@ -1,0 +1,68 @@
+extends layout.pug
+
+block title
+	+title('Test')
+
+block append scripts
+	script(src='/js/bigBoard.js' type='text/javascript')
+
+block content
+	div.row
+		if games.length == 0
+			h5.col-8.offset-2.text-center There are no games scheduled for #{dateFormat(today, 'mmmm d')}.
+		else
+			each game in games
+				div.col-xs-12.col-sm-6.col-md-6.col-lg-4.mb-4(id='game-' + game._id)
+					div.card
+						div.card-header.py-1
+							div.row.justify-content-center
+								div.col-10.text-center
+									a(href='https://www.mlb.com/gameday/' + game._id target='_blank') #{dateFormat(game.startTime, 'h:MMtt')} ET
+						ul.list-group.list-group-flush
+							li.list-group-item.py-1
+								div.row
+									div.col-6.text-left
+										p.mb-0.text-nowrap: small #{game.seriesDescription}, Game #{game.seriesGameNumber}
+									div.col-6.text-right
+										p.mb-0.text-nowrap: small #{game.points} points
+							+teamRow(game, 'away')
+							+teamRow(game, 'home')
+										//h4.text-nowrap #{game.away.team.teamName} at #{game.home.team.teamName}
+						div.card-footer.text-center
+							div.btn-group
+								a.team-button.text-center.btn.btn-outline-secondary.open-game(href=`/games/${game._id}` data-game-id=game._id) #{game.mappedPicks['59ba0e9009335a0004714e26'].name}
+
+	pre= JSON.stringify(game, null, '  ')
+	pre= JSON.stringify(mappedPicks, null, '  ')
+
+mixin teamRow(game, side)
+	li.team-row.list-group-item.py-1
+		div.row
+			div.col-10.offset-1.p-0
+				div.d-flex
+					img.p-1.mr-1(src='/images/' + game[side].team.abbreviation.toLowerCase() + '.png')
+					div.d-flex.flex-column.flex-grow-1
+						h5.mb-0.text-nowrap
+							a.font-weight-bold(href='#')
+								span.d-inline.d-sm-none.d-md-inline #{game[side].team.teamName}
+								span.d-none.d-sm-inline.d-md-none #{game[side].team.abbreviation}
+						div.pitcher.mb-0.text-nowrap
+							if game[side].probablePitcher
+								a.text-muted(href='http://m.mlb.com/player/' + game[side].probablePitcher._id target='_blank')= game[side].probablePitcher.name
+							else
+								span TBD
+
+						//-if game.hasDefinitelyStarted() && game[side].picks && game[side].picks.length > 0
+							div.picks.col-12.p-0.mb-1.mt-2
+								each pick in game[side].picks
+									span.d-inline-block
+										a(href='#')
+											| #{pick.user.displayName}
+										|
+										|
+										span.record
+											+record(pick)
+										if pick != game[side].picks[game[side].picks.length - 1]
+											| ,
+									|
+									|
