@@ -29,7 +29,7 @@ block content
 							+teamRow(game, 'home')
 						div.card-footer.text-center
 							div.btn-group
-								a.team-button.text-center.btn.btn-outline-secondary.open-game(href=`/games/${game._id}` data-game-id=game._id) #{game.mappedPicks['59ba0e9009335a0004714e26'].name}
+								a.team-button.text-center.btn.btn-outline-secondary.open-game(href=`/games/${game._id}` data-game-id=game._id) #{game.mappedPicks[session.user._id.toString()].name}
 
 	pre= JSON.stringify(game, null, '  ')
 	pre= JSON.stringify(mappedPicks, null, '  ')
