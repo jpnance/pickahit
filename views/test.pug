@@ -27,7 +27,6 @@ block content
 										p.mb-0.text-nowrap: small #{game.points} points
 							+teamRow(game, 'away')
 							+teamRow(game, 'home')
-										//h4.text-nowrap #{game.away.team.teamName} at #{game.home.team.teamName}
 						div.card-footer.text-center
 							div.btn-group
 								a.team-button.text-center.btn.btn-outline-secondary.open-game(href=`/games/${game._id}` data-game-id=game._id) #{game.mappedPicks['59ba0e9009335a0004714e26'].name}
@@ -51,18 +50,3 @@ mixin teamRow(game, side)
 								a.text-muted(href='http://m.mlb.com/player/' + game[side].probablePitcher._id target='_blank')= game[side].probablePitcher.name
 							else
 								span TBD
-
-						//-if game.hasDefinitelyStarted() && game[side].picks && game[side].picks.length > 0
-							div.picks.col-12.p-0.mb-1.mt-2
-								each pick in game[side].picks
-									span.d-inline-block
-										a(href='#')
-											| #{pick.user.displayName}
-										|
-										|
-										span.record
-											+record(pick)
-										if pick != game[side].picks[game[side].picks.length - 1]
-											| ,
-									|
-									|
