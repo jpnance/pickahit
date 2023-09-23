@@ -3,6 +3,8 @@ var User = require('../models/User');
 var Game = require('../models/Game');
 var Player = require('../models/Player');
 
+var dateFormat = require('dateformat');
+
 module.exports.pick = function(request, response) {
 	Session.withActiveSession(request, function(error, session) {
 		if (error || !session || !request.params.gameId || !request.params.playerId) {
@@ -255,13 +257,53 @@ module.exports.showOne = function(request, response) {
 
 module.exports.showAllForDate = function(request, response) {
 	Session.withActiveSession(request, function(error, session) {
+		var dateString;
+
+		if (!request.params.date) {
+			var now = new Date();
+			now.setMinutes(now.getMinutes() - now.getTimezoneOffset() - 180);
+
+			dateString = dateFormat(now, 'yyyy-mm-dd', true);
+		}
+		else {
+			dateString = dateFormat(request.params.date, 'yyyy-mm-dd', true);
+		}
+
+		if (dateString < process.env.POSTSEASON_START_TIME) {
+			dateString = process.env.POSTSEASON_START_TIME;
+		}
+
+		if (dateString > process.env.POSTSEASON_END_TIME) {
+			dateString = process.env.POSTSEASON_END_TIME;
+		}
+
+		var today = new Date(dateString);
+
+		today.setHours(today.getHours() + 14);
+
+		var todayUtc = dateFormat(today, 'isoDateTime', true);
+		var tomorrow = new Date(today);
+
+		tomorrow.setHours(today.getHours() + 18);
+
+		var tomorrowUtc = dateFormat(tomorrow, 'isoDateTime', true);
+		var yesterday = new Date(today);
+
+		yesterday.setHours(today.getHours() - 18);
+
 		var data = [
 			User
 				.find({})
 				.sort({ username: 1 }),
 
 			Game
-				.find({ season: process.env.SEASON })
+				.find({
+					season: process.env.SEASON,
+					startTime: {
+						'$gte': todayUtc,
+						'$lt': tomorrowUtc
+					}
+				})
 				.sort({ startTime: 1 })
 				.populate('away.team')
 				.populate('home.team')
@@ -305,6 +347,9 @@ module.exports.showAllForDate = function(request, response) {
 						}
 					}
 				}),
+				yesterday: yesterday,
+				today: today,
+				tomorrow: tomorrow,
 				dateFormat: require('dateformat')
 			};
 

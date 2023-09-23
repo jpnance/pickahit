@@ -26,7 +26,8 @@ var preview = {
 };
 
 module.exports = function(app) {
-	app.get('/', games.showAll);
+	app.get('/', games.showAllForDate);
+	app.get('/schedule/:date', games.showAllForDate);
 
 	app.get('/login', users.loginPrompt);
 
@@ -47,5 +48,5 @@ module.exports = function(app) {
 		});
 	});
 
-	app.get('/test', games.showAllForDate);
+	app.get('/legacy', games.showAll);
 };
