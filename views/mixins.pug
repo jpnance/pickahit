@@ -3,3 +3,96 @@ mixin title(title)
 		title #{title} &laquo; Pick-a-Hit &laquo; Coinflipper
 	else
 		title Pick-a-Hit &laquo; Coinflipper
+
+mixin teamRow(game, side)
+	li.team-row.list-group-item.py-1
+		div.row
+			div.col-10.offset-1.p-0
+				div.d-flex
+					img.p-1.mr-1(src='/images/' + game[side].team.abbreviation.toLowerCase() + '.png')
+					div.d-flex.flex-column.flex-grow-1
+						h5.mb-0.text-nowrap
+							a.font-weight-bold(href='#')
+								span.d-inline.d-sm-none.d-md-inline #{game[side].team.teamName}
+								span.d-none.d-sm-inline.d-md-none #{game[side].team.abbreviation}
+						div.pitcher.mb-0.text-nowrap
+							if game[side].probablePitcher
+								a.text-muted(href='http://m.mlb.com/player/' + game[side].probablePitcher._id target='_blank')= game[side].probablePitcher.name
+							else
+								span TBD
+
+mixin gameCard(game)
+	-
+		var classes = {
+			card: { border: [] },
+			header: { background: [], linkText: [] }
+		}
+
+		if (game.mappedPicks[session.user.id.toString()]) {
+			classes.card.border.push('border-secondary');
+		}
+
+		if (game.hasStarted() && !game.isFinal()) {
+			classes.header.background.push('bg-primary');
+			classes.header.linkText.push('text-white');
+		}
+
+		if (game.hasStarted()) {
+			classes.header.linkText.push('text-white');
+
+			if (game.mappedPicks[session.user._id.toString()] && game.flatHits.indexOf(game.mappedPicks[session.user._id.toString()]._id) > -1) {
+				classes.header.background.push('bg-success');
+			}
+			else {
+				classes.header.background.push('bg-primary');
+			}
+		}
+
+		if (game.isFinal()) {
+			if (game.mappedPicks[session.user.id.toString()]) {
+				classes.header.linkText.push('text-white');
+			}
+
+			if (game.mappedPicks[session.user._id.toString()] && game.flatHits.indexOf(game.mappedPicks[session.user._id.toString()]._id) > -1) {
+				classes.header.background.push('bg-success');
+			}
+			else {
+				classes.header.background.push('bg-danger');
+			}
+		}
+
+	div.col-xs-12.col-sm-6.col-md-6.col-lg-4.mb-4(id='game-' + game._id)
+		div.card(class=classes.card.border)
+			div.card-header.py-1(class=classes.header.background)
+				div.row.justify-content-center
+					div.col-10.text-center
+						a(href='https://www.mlb.com/gameday/' + game._id class=classes.header.linkText target='_blank') #{dateFormat(game.startTime, 'h:MMtt')} ET
+			ul.list-group.list-group-flush
+				li.list-group-item.py-1
+					div.row
+						div.col-6.text-left
+							p.mb-0.text-nowrap: small #{game.seriesDescription}, Game #{game.seriesGameNumber}
+						div.col-6.text-right
+							p.mb-0.text-nowrap: small: strong #{game.points} point#{game.points > 1 ? 's' : ''}
+				+teamRow(game, 'away')
+				+teamRow(game, 'home')
+			div.card-footer.text-center
+				div.btn-group
+					+hitterButton(session, game)
+
+mixin hitterButton(session, game)
+	-
+		var button = { classes: [], actionLink: null };
+
+		if (game.mappedPicks[session.user._id.toString()]) {
+			button.classes.push('btn-secondary');
+		}
+		else {
+			button.classes.push('btn-outline-secondary');
+		}
+
+	a.team-button.text-center.btn.open-game(href=`/games/${game._id}` class=button.classes data-game-id=game._id)
+		if game.mappedPicks[session.user.id.toString()]
+			span #{game.mappedPicks[session.user._id.toString()].name}
+		else
+			span Pick a Hitter
