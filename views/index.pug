@@ -1,100 +1,20 @@
 extends layout.pug
 
 block title
-	+title('Big Board')
+	+title('Test')
 
 block append scripts
 	script(src='/js/bigBoard.js' type='text/javascript')
 
-block bigBoard
-	div#big-board-container.table-responsive.container-fluid
-		table.table.table-sm#big-board(border='1')
-			thead
-				tr
-					th.name Name
-					th.score
-						| Score
-						span.tiebreaker .00
+block content
+	div.row
+		div.col-12.pb-3
+			+scheduleNav(yesterday, today, tomorrow)
 
-					each game in games
-						th.game
-							p.teams
-								a.text-underline(href='https://www.mlb.com/gameday/' + game._id target='_blank')
-									| #{game.away.team.teamName}
-									br
-									| vs. #{game.home.team.teamName}
+		if games.length == 0
+			h5.col-8.offset-2.text-center There are no games scheduled for #{dateFormat(today, 'mmmm d')}.
+		else
+			each game in games
+				+gameCard(game)
 
-							p
-								| #{game.seriesDescription}
-								if game.gamesInSeries > 1
-									br
-									| Game #{game.seriesGameNumber}
-									if game.ifNecessary == 'Y'
-										| *
-								else
-									|
-									br
-									|
-									br
-
-							p
-								if game.status == 'PR'
-									| #{dateFormat(game.startTime, 'mmmm d', true)}
-									br
-									| Delayed
-								else if game.startTime.getMinutes() == 33
-									| #{dateFormat(game.startTime, 'mmmm d', true)}
-									br
-									| TBD
-								else
-									| #{dateFormat(game.startTime, 'mmmm d')}
-									br
-									| #{dateFormat(game.startTime, 'h:MMtt')} ET
-
-							p.points
-								| #{game.points} point
-								if game.points > 1
-									| s
-					th.erocs
-						| Score
-						span.tiebreaker .00
-					th.eman Name
-			tbody
-				each user in users
-					tr(class=session && session.user._id.toString() == user._id ? 'my-row' : '')
-						td.name #{user.firstName} #{user.lastName}
-						td.score
-							| #{user.score}
-							span.tiebreaker.align-middle .#{user.tiebreaker < 10 ? '0' + user.tiebreaker : user.tiebreaker}
-
-						each game in games
-							- var hitClasses = [];
-							if game.hasStarted() && game.mappedPicks[user._id] && game.flatHits.indexOf(game.mappedPicks[user._id]._id) > -1
-								- hitClasses.push('hit')
-							else if (game.hasStarted() && !game.mappedPicks[user._id]) || (game.isOver() && game.flatHits.indexOf(game.mappedPicks[user._id]._id) == -1)
-								- hitClasses.push('no-hit')
-
-							if !game.hasStarted()
-								if session && session.user._id.toString() == user._id
-									- hitClasses.push('pickable')
-
-								if !game.mappedPicks[user._id]
-									- hitClasses.push('unpicked')
-
-							td(class=hitClasses)
-								if session && session.user._id.toString() == user._id && !game.hasStarted()
-									a.open-game(href='/games/' + game._id data-game-id=game._id data-user-id=user._id)
-										if game.mappedPicks[session.user._id]
-											| #{game.mappedPicks[session.user._id].name}
-										else
-											| Make a Pick
-								else if game.hasStarted()
-									if game.mappedPicks[user._id]
-										| #{game.mappedPicks[user._id].name}
-									else
-										| --
-
-						td.score
-							| #{user.score}
-							span.tiebreaker.align-middle .#{user.tiebreaker < 10 ? '0' + user.tiebreaker : user.tiebreaker}
-						td.eman #{user.firstName} #{user.lastName}
+	pre #{JSON.stringify(games, null, '  ')}

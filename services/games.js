@@ -191,7 +191,7 @@ module.exports.showAll = function(request, response) {
 				responseData.success = request.query.success;
 			}
 
-			response.render('index', responseData);
+			response.render('legacy', responseData);
 		});
 	});
 };
@@ -439,7 +439,7 @@ module.exports.showAllForDate = function(request, response) {
 				responseData.success = request.query.success;
 			}
 
-			response.render('test', responseData);
+			response.render('index', responseData);
 		});
 	});
 };
