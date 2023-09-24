@@ -49,90 +49,90 @@ p.points {
 	margin-bottom: 0;
 }
 
-table {
+table#legacy {
 	border-collapse: collapse;
 }
 
-table th {
+table#legacy th {
 	font-size: 80%;
 	line-height: 14px;
 	text-align: left;
 	vertical-align: bottom;
 }
 
-table th.game {
+table#legacy th.game {
 	font-weight: normal;
 }
 
-table th p.teams {
+table#legacy th p.teams {
 	font-weight: bold;
 }
 
-table th,
-table td {
+table#legacy th,
+table#legacy td {
 	border: 1px solid #ccc;
 	padding: 6px;
 	white-space: nowrap;
 }
 
-table tr.my-row {
+table#legacy tr.my-row {
 	background-color: #f6f6f6;
 }
 
-table td {
+table#legacy td {
 	font-size: 90%;
 }
 
-table th.score span.tiebreaker,
-table th.erocs span.tiebreaker {
+table#legacy th.score span.tiebreaker,
+table#legacy th.erocs span.tiebreaker {
 	font-size: 60%;
 	font-weight: normal;
 	vertical-align: bottom;
 	visibility: hidden;
 }
 
-table th.name,
-table td.name {
+table#legacy th.name,
+table#legacy td.name {
 	text-align: right;
 }
 
-table th.score,
-table td.score {
+table#legacy th.score,
+table#legacy td.score {
 	text-align: right;
 }
 
-table td.score span.tiebreaker {
+table#legacy td.score span.tiebreaker {
 	color: #999999;
 	font-size: 60%;
 	vertical-align: bottom;
 }
 
-table th.eman,
-table td.eman {
+table#legacy th.eman,
+table#legacy td.eman {
 	text-align: left;
 }
 
-table td.hit {
+table#legacy td.hit {
 	color: green;
 }
 
-table td.no-hit {
+table#legacy td.no-hit {
 	color: red;
 }
 
-table tr.my-row td.pickable {
+table#legacy tr.my-row td.pickable {
 	cursor: pointer;
 }
 
-table tr.my-row td.pickable:hover {
+table#legacy tr.my-row td.pickable:hover {
 	background-color: #eeeeee;
 }
 
-table tr.my-row td.pickable a {
+table#legacy tr.my-row td.pickable a {
 	color: blue;
 }
 
-table tr.my-row td.unpicked a {
+table#legacy tr.my-row td.unpicked a {
 	visibility: hidden;
 }
 

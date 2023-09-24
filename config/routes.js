@@ -2,6 +2,7 @@ var crypto = require('crypto');
 
 var users = require('../services/users');
 var games = require('../services/games');
+var standings = require('../services/standings');
 var override = require('../services/override');
 
 var Session = require('../models/Session');
@@ -28,6 +29,8 @@ var preview = {
 module.exports = function(app) {
 	app.get('/', games.showAllForDate);
 	app.get('/schedule/:date', games.showAllForDate);
+
+	app.get('/standings', standings.showStandings);
 
 	app.get('/login', users.loginPrompt);
 
