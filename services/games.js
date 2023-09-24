@@ -257,39 +257,35 @@ module.exports.showOne = function(request, response) {
 
 module.exports.showAllForDate = function(request, response) {
 	Session.withActiveSession(request, function(error, session) {
-		var dateString;
+		var dateTimeString;
 
 		if (!request.params.date) {
 			var now = new Date();
-			now.setMinutes(now.getMinutes() - now.getTimezoneOffset() - 180);
+			now.setHours(0);
+			now.setMinutes(0);
+			now.setSeconds(0);
 
-			dateString = dateFormat(now, 'yyyy-mm-dd', true);
+			dateTimeString = dateFormat(now, 'yyyy-mm-dd HH:MM:ss');
 		}
 		else {
-			dateString = dateFormat(request.params.date, 'yyyy-mm-dd', true);
+			dateTimeString = dateFormat(new Date(`${request.params.date} 00:00:00`), 'yyyy-mm-dd HH:MM:ss');
 		}
 
-		if (dateString < process.env.POSTSEASON_START_TIME) {
-			dateString = process.env.POSTSEASON_START_TIME;
+		if (dateTimeString < process.env.POSTSEASON_START_TIME) {
+			dateTimeString = process.env.POSTSEASON_START_TIME // 2023-10-15 00:00:00;
 		}
 
-		if (dateString > process.env.POSTSEASON_END_TIME) {
-			dateString = process.env.POSTSEASON_END_TIME;
+		if (dateTimeString > process.env.POSTSEASON_END_TIME) {
+			dateTimeString = process.env.POSTSEASON_END_TIME // 2023-10-15 00:00:00;
 		}
 
-		var today = new Date(dateString);
+		var today = new Date(dateTimeString);
 
-		today.setHours(today.getHours() + 14);
+		var tomorrow = new Date(dateTimeString);
+		tomorrow.setTime(tomorrow.getTime() + (24 * 60 * 60 * 1000));
 
-		var todayUtc = dateFormat(today, 'isoDateTime', true);
-		var tomorrow = new Date(today);
-
-		tomorrow.setHours(today.getHours() + 18);
-
-		var tomorrowUtc = dateFormat(tomorrow, 'isoDateTime', true);
-		var yesterday = new Date(today);
-
-		yesterday.setHours(today.getHours() - 18);
+		var yesterday = new Date(dateTimeString);
+		yesterday.setTime(yesterday.getTime() - (24 * 60 * 60 * 1000));
 
 		var data = [
 			User
@@ -300,8 +296,8 @@ module.exports.showAllForDate = function(request, response) {
 				.find({
 					season: process.env.SEASON,
 					startTime: {
-						'$gte': todayUtc,
-						'$lt': tomorrowUtc
+						'$gte': dateFormat(today, 'isoUtcDateTime'),
+						'$lt': dateFormat(tomorrow, 'isoUtcDateTime')
 					}
 				})
 				.sort({ startTime: 1 })
