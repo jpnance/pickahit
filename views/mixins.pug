@@ -97,11 +97,17 @@ mixin hitterButton(session, game)
 			button.classes.push('btn-outline-secondary');
 		}
 
-	a.team-button.text-center.btn.open-game(href=`/games/${game._id}` class=button.classes data-game-id=game._id)
+	if !game.hasStarted()
+		a.team-button.text-center.btn.open-game(href=`/games/${game._id}` class=button.classes data-game-id=game._id)
+			if game.mappedPicks[session.user.id.toString()]
+				span #{game.mappedPicks[session.user._id.toString()].name}
+			else
+				span Pick a Hitter
+	else
 		if game.mappedPicks[session.user.id.toString()]
 			span #{game.mappedPicks[session.user._id.toString()].name}
 		else
-			span Pick a Hitter
+			span No Hitter Picked
 
 mixin scheduleNav(yesterday, today, tomorrow)
 	ul.nav.justify-content-center

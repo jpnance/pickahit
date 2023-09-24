@@ -114,7 +114,9 @@ $(document).ready(function() {
 			}
 
 			$('#modal').modal('hide');
-			$('table#big-board a[data-game-id=' + gameId + ']').text(data.player.name).parent('td').removeClass('unpicked');
+			$(`#game-${gameId} .card`).addClass('border-secondary');
+			$(`a.team-button[data-game-id=${gameId}]`).addClass('btn-secondary').addClass('text-white').removeClass('btn-outline-secondary');
+			$('a.team-button[data-game-id=' + gameId + '] span').text(data.player.name);
 		});
 	});
 
