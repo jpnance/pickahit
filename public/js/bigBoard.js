@@ -114,6 +114,7 @@ $(document).ready(function() {
 			}
 
 			$('#modal').modal('hide');
+
 			$(`#game-${gameId} .card`).addClass('border-secondary');
 			$(`a.team-button[data-game-id=${gameId}]`).addClass('btn-secondary').addClass('text-white').removeClass('btn-outline-secondary');
 			$('a.team-button[data-game-id=' + gameId + '] span').text(data.player.name);
