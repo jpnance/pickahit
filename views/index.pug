@@ -1,7 +1,7 @@
 extends layout.pug
 
 block title
-	+title('Test')
+	+title(dateFormat(today, 'mmmm d'), 'Schedule')
 
 block append scripts
 	script(src='/js/bigBoard.js' type='text/javascript')
