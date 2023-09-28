@@ -28,7 +28,7 @@ mixin gameCard(game)
 			header: { background: [], linkText: [] }
 		}
 
-		if (game.mappedPicks[session.user.id.toString()]) {
+		if (game.mappedPicks[session.user._id.toString()]) {
 			classes.card.border.push('border-secondary');
 		}
 
