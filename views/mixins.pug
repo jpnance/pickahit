@@ -40,7 +40,10 @@ mixin gameCard(game)
 		if (game.hasStarted()) {
 			classes.header.linkText.push('text-white');
 
-			if (game.mappedPicks[session.user._id.toString()] && game.flatHits.indexOf(game.mappedPicks[session.user._id.toString()]._id) > -1) {
+			if (!game.mappedPicks[session.user._id.toString()]) {
+				classes.header.background.push('bg-danger');
+			}
+			else if (game.mappedPicks[session.user._id.toString()] && game.flatHits.indexOf(game.mappedPicks[session.user._id.toString()]._id) > -1) {
 				classes.header.background.push('bg-success');
 			}
 			else {
@@ -90,24 +93,29 @@ mixin hitterButton(session, game)
 	-
 		var button = { classes: [], actionLink: null };
 
-		if (game.mappedPicks[session.user._id.toString()]) {
-			button.classes.push('btn-secondary');
+		if (!game.hasStarted()) {
+			if (game.mappedPicks[session.user._id.toString()]) {
+				button.classes.push('btn-secondary');
+			}
+			else {
+				button.classes.push('btn-outline-secondary');
+			}
 		}
 		else {
-			button.classes.push('btn-outline-secondary');
+			button.classes.push('btn-outline-secondary', 'disabled');
 		}
 
-	if !game.hasStarted()
-		a.team-button.text-center.btn.open-game(href=`/games/${game._id}` class=button.classes data-game-id=game._id)
+	a.team-button.text-center.btn.open-game(href=`/games/${game._id}` class=button.classes data-game-id=game._id)
+		if !game.hasStarted()
 			if game.mappedPicks[session.user.id.toString()]
 				span #{game.mappedPicks[session.user._id.toString()].name}
 			else
 				span Pick a Hitter
-	else
-		if game.mappedPicks[session.user.id.toString()]
-			span #{game.mappedPicks[session.user._id.toString()].name}
 		else
-			span No Hitter Picked
+			if game.mappedPicks[session.user.id.toString()]
+				span #{game.mappedPicks[session.user._id.toString()].name}
+			else
+				span No Hitter Picked
 
 mixin scheduleNav(yesterday, today, tomorrow)
 	ul.nav.justify-content-center
