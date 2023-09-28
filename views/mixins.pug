@@ -102,7 +102,22 @@ mixin hitterButton(session, game)
 			}
 		}
 		else {
-			button.classes.push('btn-outline-secondary', 'disabled');
+			button.classes.push('text-white');
+
+			if (!game.mappedPicks[session.user._id.toString()]) {
+				button.classes.push('btn-danger');
+			}
+			else if (game.flatHits.indexOf(game.mappedPicks[session.user._id.toString()]._id) > -1) {
+				button.classes.push('btn-success');
+			}
+			else {
+				if (game.isFinal()) {
+					button.classes.push('btn-danger');
+				}
+				else {
+					button.classes.push('btn-secondary');
+				}
+			}
 		}
 
 	a.team-button.text-center.btn.open-game(href=`/games/${game._id}` class=button.classes data-game-id=game._id)
