@@ -27,6 +27,8 @@ var preview = {
 };
 
 module.exports = function(app) {
+	app.get('/games/debug', games.debug);
+
 	app.get('/', games.showAllForDate);
 	app.get('/schedule/:date', games.showAllForDate);
 
