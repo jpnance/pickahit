@@ -84,6 +84,8 @@ mixin gameCard(game)
 								| Final
 							else if game.hasStarted()
 								| In Progress
+							else if game.startTime.getMinutes() == 33
+								| TBD
 							else
 								| #{dateFormat(game.startTime, 'h:MMtt')} ET
 			ul.list-group.list-group-flush
