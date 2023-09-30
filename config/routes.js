@@ -35,6 +35,7 @@ module.exports = function(app) {
 
 	app.get('/standings', standings.showStandings);
 
+	app.get('/picks', picks.showPicksForUser);
 	app.get('/picks/:username', picks.showPicksForUser);
 
 	app.get('/login', users.loginPrompt);

@@ -6,7 +6,7 @@ var Team = require('../models/Team');
 
 module.exports.showPicksForUser = function(request, response) {
 	Session.withActiveSession(request, function(error, session) {
-		var username = request.params.username;
+		var username = request.params.username || session.user.username;
 
 		var data = [
 			User.findOne({ username: username }),
@@ -43,15 +43,6 @@ module.exports.showPicksForUser = function(request, response) {
 							})
 						};
 					});
-					/*
-					.map(function(pick) {
-						let hydratedPick = pick;
-
-						hydratedPick.player.team = responseData.teams.find(team => team._id === hydratedPick.player.team) 
-
-						return hydratedPick;
-					});
-					*/
 
 			responseData.mappedTeams =
 				responseData.teams
