@@ -142,21 +142,6 @@ $(document).ready(function() {
 			}
 		});
 	});
-
-	$(document).on('keydown', function(e) {
-		if (e.originalEvent.keyCode == 35 || e.originalEvent.keyCode == 36) {
-			e.preventDefault();
-
-			var bigBoardContainer = document.querySelector('#big-board-container');
-
-			if (e.originalEvent.keyCode == 35) {
-				bigBoardContainer.scroll({ left: bigBoardContainer.scrollWidth, behavior: 'smooth' });
-			}
-			else if (e.originalEvent.keyCode == 36) {
-				bigBoardContainer.scroll({ left: 0, behavior: 'smooth' });
-			}
-		}
-	});
 });
 
 var playerAlphabeticalSort = function(a, b) {
