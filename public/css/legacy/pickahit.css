@@ -1,0 +1,203 @@
+img.logo {
+	border-radius: 4px;
+	height: 30px;
+	width: 26px;
+}
+
+ul.navigation {
+	list-style: none;
+}
+
+ul.navigation li {
+	display: inline;
+	margin-right: 0.6em;
+}
+
+ul.navigation li.log-out {
+	font-size: 85%;
+}
+
+div.success {
+	color: green;
+	font-weight: bold;
+}
+
+form.login.error input {
+	background-color: #ffdddd;
+}
+
+input {
+	border: 1px solid #dddddd;
+	padding: 8px;
+}
+
+input:focus {
+	border: 1px solid #666666;
+}
+
+form.login input {
+	padding: 4px;
+}
+
+p.teams {
+	font-size: 120%;
+	line-height: 18px;
+	margin-top: 0;
+}
+
+p.points {
+	margin-bottom: 0;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table th {
+	font-size: 80%;
+	line-height: 14px;
+	text-align: left;
+	vertical-align: bottom;
+}
+
+table th.game {
+	font-weight: normal;
+}
+
+table th p.teams {
+	font-weight: bold;
+}
+
+table th,
+table td {
+	border: 1px solid #ccc;
+	padding: 6px;
+	white-space: nowrap;
+}
+
+table tr.my-row {
+	background-color: #f6f6f6;
+}
+
+table td {
+	font-size: 90%;
+}
+
+table th.score span.tiebreaker,
+table th.erocs span.tiebreaker {
+	font-size: 60%;
+	font-weight: normal;
+	vertical-align: bottom;
+	visibility: hidden;
+}
+
+table th.name,
+table td.name {
+	text-align: right;
+}
+
+table th.score,
+table td.score {
+	text-align: right;
+}
+
+table td.score span.tiebreaker {
+	color: #999999;
+	font-size: 60%;
+	vertical-align: bottom;
+}
+
+table th.eman,
+table td.eman {
+	text-align: left;
+}
+
+table td.hit {
+	color: green;
+}
+
+table td.no-hit {
+	color: red;
+}
+
+table tr.my-row td.pickable {
+	cursor: pointer;
+}
+
+table tr.my-row td.pickable:hover {
+	background-color: #eeeeee;
+}
+
+table tr.my-row td.pickable a {
+	color: blue;
+}
+
+table tr.my-row td.unpicked a {
+	visibility: hidden;
+}
+
+div#modal {
+	display: none;
+}
+
+div#modal div.batters.starting-lineup {
+	margin-bottom: 1.5em;
+}
+
+div#modal div.batters table th,
+div#modal div.batters table td {
+	border: 0;
+	font-size: 100%;
+	padding: 0;
+}
+
+div#modal div.batters table th {
+	font-weight: bold;
+	padding: 6px 0;
+	text-align: left;
+}
+
+div#modal div.probable-pitcher,
+div#modal div.batters {
+	font-size: 80%;
+	line-height: 16px;
+}
+
+div#modal div.probable-pitcher {
+	font-style: italic;
+	margin-bottom: 1.5em;
+}
+
+div#modal div.probable-pitcher span.position,
+div#modal div.batters td.position,
+div#modal div.batters span.bats {
+	color: #666666;
+	display: inline-block;
+	font-size: 80%;
+	text-align: center;
+	width: 3em;
+}
+
+div#modal div.batters span.bats {
+	margin-left: 0.5em;
+	text-align: left;
+	width: auto;
+}
+
+div#modal div.batters a {
+	text-decoration: none;
+}
+
+div#modal div.batters a:hover {
+	color: #999999;
+}
+
+div#modal div.batters td.picked {
+	color: #aaaaaa;
+}
+
+div#modal div.name {
+	font-size: 125%;
+	font-weight: bold;
+	white-space: nowrap;
+}

@@ -191,7 +191,7 @@ module.exports.showAll = function(request, response) {
 				responseData.success = request.query.success;
 			}
 
-			response.render('legacy', responseData);
+			response.render('legacy/index', responseData);
 		});
 	});
 };
