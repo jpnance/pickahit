@@ -14,6 +14,9 @@ mixin teamRow(game, side)
 		else if (abbreviation.startsWith('NL')) {
 			abbreviation = 'NL';
 		}
+		else if (abbreviation.startsWith('LG')) {
+			abbreviation = 'MLB';
+		}
 
 	li.team-row.list-group-item.py-1
 		div.row

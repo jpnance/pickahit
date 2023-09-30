@@ -13,3 +13,5 @@ teams=(
 for team in "${teams[@]}"; do
 	curl "https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/${team}.png&h=80&w=80" > ../public/images/${team}.png
 done
+
+curl "https://a.espncdn.com/combiner/i?img=/i/teamlogos/leagues/500/mlb.png&w=80&h=80" > ../public/images/mlb.png
