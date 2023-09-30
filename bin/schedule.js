@@ -86,7 +86,6 @@ for (var i = 0; i <= days; i++) {
 			Promise.all(gamePromises).then(function() {
 				resolve(null);
 			});
-
 		});
 	}));
 }
