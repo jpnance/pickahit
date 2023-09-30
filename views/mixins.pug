@@ -101,9 +101,10 @@ mixin gameCard(game)
 							p.mb-0.text-nowrap: small: strong #{game.points} point#{game.points > 1 ? 's' : ''}
 				+teamRow(game, 'away')
 				+teamRow(game, 'home')
-			div.card-footer.text-center
-				div.btn-group
-					+hitterButton(session, game)
+			if session.user.isEligibleFor(process.env.SEASON)
+				div.card-footer.text-center
+					div.btn-group
+						+hitterButton(session, game)
 
 mixin hitterButton(session, game)
 	-
