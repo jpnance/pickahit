@@ -1,0 +1,48 @@
+mixin playerRow(game, player, picked)
+	tr
+		td.position #{player.position}
+		td.player(class={ picked })
+			if !picked
+				a.make-pick(href=`/games/pick/${game._id}/${player._id}` data-game-id=game._id data-player-id=player._id) #{player.name}
+			else
+				| #{player.name}
+
+			span.bats (#{player.bats})
+
+div.modal.fade#modal
+	div.modal-dialog
+		div.modal-content
+			div.modal-header
+				h5.modal-title #{game.seriesDescription}, Game #{game.seriesGameNumber}#{game.ifNecessary == 'Y' ? '*' : ''}
+				button.close(type='button' data-dismiss='modal')
+					span &times;
+
+			div.modal-body
+				div.container-fluid
+					div.row
+						each side in ['away', 'home']
+							div.col-12.col-sm-6
+								div(id=`${side}-team`)
+								div.name #{game[side].team.name}
+								div.probable-pitcher
+									if game[side].probablePitcher
+										span.position ${game[side].probablePitcher.throws}HP
+										| #{game[side].probablePitcher.name}
+									else
+										| TBD
+
+								if game[side].startingLineup.length > 0
+									div.batters.starting-lineup
+										table
+											tr: th(colspan='2'): Starting Lineup
+											- var startingLineup = game[side].startingLineup.filter(player => player.position != 'P');
+											each player in startingLineup
+												+playerRow(game, player, alreadyPicked.includes(player._id))
+
+								div.batters.bench
+									table
+										if game[side].startingLineup.length > 0
+											tr: th(colspan='2'): Bench
+										- var bench = game[side].batters.filter(batter => !game[side].startingLineup.find(startingPlayer => batter._id == startingPlayer._id)).sort((a, b) => a.name.localeCompare(b.name));
+										each player in bench
+											+playerRow(game, player, alreadyPicked.includes(player._id))

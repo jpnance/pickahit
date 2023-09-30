@@ -250,7 +250,8 @@ module.exports.showOne = function(request, response) {
 				});
 			});
 
-			response.send(responseData);
+			//response.send(responseData);
+			response.render('game/not-started', responseData);
 		});
 	});
 };
