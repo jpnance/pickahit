@@ -14,6 +14,10 @@ var playerPromises = [];
 
 Team.find({}, function(error, teams) {
 	teams.forEach(function(team) {
+		if (team._id < 108 || team._id > 158) {
+			return;
+		}
+
 		teamPromises.push(new Promise(function(teamResolve, teamReject) {
 			request.get('https://statsapi.mlb.com/api/v1/teams/' + team._id + '/roster?rosterType=40Man', function(error, response) {
 				if (error) {
