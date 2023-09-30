@@ -1,0 +1,37 @@
+-
+	var navItems = [];
+
+	navItems.push({ name: 'Schedule', href: '/' });
+	navItems.push({ name: 'Standings', href: '/standings' });
+	navItems.push({ name: 'Big Board', href: '/bigboard' });
+	navItems.push({ name: 'Rules', href: '/rules' });
+
+	if (session) {
+		navItems.push({ name: 'Log Out', href: process.env.LOGIN_SERVICE_EXTERNAL + '/sessions/delete' });
+	}
+	else {
+		navItems.push({ name: 'Log In', href: '/login' });
+	}
+
+nav.navbar.navbar-expand-md.navbar-light.bg-light.sticky-top.mb-3
+	a.navbar-brand(href='/')
+		img.logo.mr-2(src='/images/logo.png')
+		strong.align-middle Pick-a-Hit
+	button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarNav')
+		span.navbar-toggler-icon
+	div.collapse.navbar-collapse#navbarNav
+		ul.navbar-nav
+			each navItem in navItems
+				if navItem.name == 'Log Out'
+					li.nav-item.dropdown.py-1
+						a.nav-link.dropdown-toggle(href='#' data-toggle='dropdown')
+							| Log Out
+
+						div.log-out.dropdown-menu.py-0
+							a.this-device.dropdown-item(href=process.env.LOGIN_SERVICE_EXTERNAL + '/sessions/delete') This Device
+							a.all-devices.dropdown-item(href=process.env.LOGIN_SERVICE_EXTERNAL + '/sessions/deleteAll') All Devices
+				else
+					li.nav-item.py-1
+						a.nav-link(href=navItem.href) #{navItem.name}
+
+

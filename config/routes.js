@@ -56,5 +56,5 @@ module.exports = function(app) {
 		});
 	});
 
-	app.get('/legacy', games.showAll);
+	app.get('/bigboard', games.showAll);
 };
