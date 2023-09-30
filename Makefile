@@ -13,3 +13,6 @@ games:
 
 players:
 	docker exec pickahit-cron sh -c "cd /app/bin && node players.js"
+
+reset:
+	docker exec pickahit-cron sh -c "cd /app/bin && node reset.js"
