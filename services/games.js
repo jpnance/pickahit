@@ -539,7 +539,7 @@ module.exports.debug = function(request, response) {
 		var game = {
 			_id: 123456,
 			season: 2022,
-			startTime: '2022-10-30T00:03:00.000Z',
+			startTime: new Date('2022-10-30T00:03:00.000Z'),
 			away: { ...phillies },
 			home: { ...astros },
 			picks: [],
