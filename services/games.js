@@ -136,6 +136,17 @@ module.exports.showOne = function(request, response) {
 				responseData.teamPlayerPicks[side].sort(function(a, b) {
 					return a.player.name.localeCompare(b.player.name);
 				});
+
+				responseData.teamPlayerPicks[side].forEach(function(playerPicks) {
+					if (responseData.game.hits.find(function(hit) {
+						return hit.player._id == playerPicks.player._id;
+					})) {
+						playerPicks.correct = true;
+					}
+					else {
+						playerPicks.correct = false;
+					}
+				});
 			});
 
 			if (!responseData.game.hasStarted()) {

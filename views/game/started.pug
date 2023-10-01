@@ -1,6 +1,6 @@
-mixin playerPicks(playerPicks)
+mixin playerPicks(playerPicks, isFinal)
 	div.player-picks
-		strong.player #{playerPicks.player.name}
+		strong.player(class={ correct: playerPicks.correct, incorrect: isFinal && !playerPicks.correct }) #{playerPicks.player.name}
 		ul.users
 			each user in playerPicks.users
 				li #{user}
@@ -24,4 +24,4 @@ div.modal.fade#modal
 									if teamPlayerPicks[side].length > 0
 										div.picks
 											each playerPicks in teamPlayerPicks[side]
-												+playerPicks(playerPicks)
+												+playerPicks(playerPicks, game.isFinal())
