@@ -111,12 +111,12 @@ module.exports.showOne = function(request, response) {
 				responseData.game.picks.forEach(function(pick) {
 					if (pick.player.team == responseData.game[side].team._id) {
 						var playerPicks = responseData.teamPlayerPicks[side].find(function(playerPick) {
-							return playerPick.player == pick.player.name;
+							return playerPick.player._id == pick.player._id;
 						});
 
 						if (!playerPicks) {
 							playerPicks = {
-								player: pick.player.name,
+								player: pick.player,
 								users: []
 							};
 
@@ -134,7 +134,7 @@ module.exports.showOne = function(request, response) {
 				});
 
 				responseData.teamPlayerPicks[side].sort(function(a, b) {
-					return a.player.localeCompare(b.player);
+					return a.player.name.localeCompare(b.player.name);
 				});
 			});
 

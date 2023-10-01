@@ -1,6 +1,6 @@
 mixin playerPicks(playerPicks)
 	div.player-picks
-		strong.player #{playerPicks.player}
+		strong.player #{playerPicks.player.name}
 		ul.users
 			each user in playerPicks.users
 				li #{user}
