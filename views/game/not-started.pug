@@ -23,26 +23,26 @@ div.modal.fade#modal
 						each side in ['away', 'home']
 							div.col-12.col-sm-6
 								div(id=`${side}-team`)
-								div.name #{game[side].team.name}
-								div.probable-pitcher
-									if game[side].probablePitcher
-										span.position #{game[side].probablePitcher.throws}HP
-										| #{game[side].probablePitcher.name}
-									else
-										| TBD
+									div.name #{game[side].team.name}
+									div.probable-pitcher
+										if game[side].probablePitcher
+											span.position #{game[side].probablePitcher.throws}HP
+											| #{game[side].probablePitcher.name}
+										else
+											| TBD
 
-								if game[side].startingLineup.length > 0
-									div.batters.starting-lineup
+									if game[side].startingLineup.length > 0
+										div.batters.starting-lineup
+											table
+												tr: th(colspan='2'): Starting Lineup
+												- var startingLineup = game[side].startingLineup.filter(player => player.position != 'P');
+												each player in startingLineup
+													+playerRow(game, player, alreadyPicked.includes(player._id))
+
+									div.batters.bench
 										table
-											tr: th(colspan='2'): Starting Lineup
-											- var startingLineup = game[side].startingLineup.filter(player => player.position != 'P');
-											each player in startingLineup
+											if game[side].startingLineup.length > 0
+												tr: th(colspan='2'): Bench
+											- var bench = game[side].batters.filter(batter => !game[side].startingLineup.find(startingPlayer => batter._id == startingPlayer._id)).sort((a, b) => a.name.localeCompare(b.name));
+											each player in bench
 												+playerRow(game, player, alreadyPicked.includes(player._id))
-
-								div.batters.bench
-									table
-										if game[side].startingLineup.length > 0
-											tr: th(colspan='2'): Bench
-										- var bench = game[side].batters.filter(batter => !game[side].startingLineup.find(startingPlayer => batter._id == startingPlayer._id)).sort((a, b) => a.name.localeCompare(b.name));
-										each player in bench
-											+playerRow(game, player, alreadyPicked.includes(player._id))
