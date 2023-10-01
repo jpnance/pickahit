@@ -437,7 +437,7 @@ module.exports.showAllForDate = function(request, response) {
 				responseData.success = request.query.success;
 			}
 
-			response.render('index', responseData);
+			response.render('schedule/all', responseData);
 		});
 	});
 };
