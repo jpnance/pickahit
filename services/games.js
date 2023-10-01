@@ -632,7 +632,9 @@ module.exports.debug = function(request, response) {
 			name: 'Philadelphia Phillies',
 			abbreviation: 'PHI',
 			locationName: 'Philadelphia',
-			teamName: 'Phillies'
+			teamName: 'Phillies',
+			imageAbbreviation: () => 'phi',
+			isActualMlbTeam: () => true
 		},
 		batters: [ 516416, 669016, 547180, 592663, 624641, 592206, 664761, 681082, 656941, 596117, 663837, 656495, 656555, 665155 ],
 		pitchers: [ 621237, 554430, 641401, 592789, 622554, 621107, 624133, 571479, 605400, 663559, 543272, 502043, 502085, 656793 ],
@@ -655,7 +657,9 @@ module.exports.debug = function(request, response) {
 			name: 'Houston Astros',
 			abbreviation: 'HOU',
 			locationName: 'Houston',
-			teamName: 'Astros'
+			teamName: 'Astros',
+			imageAbbreviation: () => 'hou',
+			isActualMlbTeam: () => true
 		},
 		batters: [ 455117, 641820, 663656, 643289, 608324, 493329, 682073, 514888, 665161, 649557, 676801, 543877, 670541 ],
 		pitchers: [ 664285, 650556, 593576, 606160, 686613, 661527, 592773, 621121, 664353, 664299, 519151, 677651, 434378, 519293 ],
