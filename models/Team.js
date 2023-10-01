@@ -9,4 +9,35 @@ var teamSchema = new Schema({
 	teamName: { type: String, required: true }
 });
 
+teamSchema.methods.isActualMlbTeam = function() {
+	var mlbAbbreviations = [
+		'ARI', 'ATL', 'BAL', 'BOS', 'CHC',
+		'CIN', 'CLE', 'COL', 'CWS', 'DET',
+		'HOU', 'KC', 'LAA', 'LAD', 'MIA',
+		'MIL', 'MIN', 'NYM', 'NYY', 'OAK',
+		'PHI', 'PIT', 'SD', 'SEA', 'SF',
+		'STL', 'TB', 'TEX', 'TOR', 'WSH'
+	];
+
+	return mlbAbbreviations.includes(this.abbreviation);
+};
+
+teamSchema.methods.imageAbbreviation = function() {
+	var abbreviation = this.abbreviation;
+
+	if (!this.isActualMlbTeam()) {
+		if (abbreviation.startsWith('AL')) {
+			abbreviation = 'AL';
+		}
+		else if (abbreviation.startsWith('NL')) {
+			abbreviation = 'NL';
+		}
+		else if (abbreviation.startsWith('LG')) {
+			abbreviation = 'MLB';
+		}
+	}
+
+	return abbreviation.toLowerCase();
+};
+
 module.exports = mongoose.model('Team', teamSchema);

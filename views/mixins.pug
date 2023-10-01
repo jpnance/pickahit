@@ -5,24 +5,11 @@ mixin title(title)
 		title Pick-a-Hit &laquo; Coinflipper
 
 mixin teamRow(game, side)
-	-
-		var abbreviation = game[side].team.abbreviation;
-
-		if (abbreviation.startsWith('AL')) {
-			abbreviation = 'AL';
-		}
-		else if (abbreviation.startsWith('NL')) {
-			abbreviation = 'NL';
-		}
-		else if (abbreviation.startsWith('LG')) {
-			abbreviation = 'MLB';
-		}
-
 	li.team-row.list-group-item.py-1
 		div.row
 			div.col-10.offset-1.p-0
 				div.d-flex
-					img.p-1.mr-1(src='/images/' + abbreviation.toLowerCase() + '.png')
+					img.p-1.mr-1(src='/images/' + game[side].team.imageAbbreviation() + '.png')
 					div.d-flex.flex-column.flex-grow-1
 						h5.mb-0.text-nowrap
 							strong
