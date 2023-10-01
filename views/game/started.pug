@@ -1,0 +1,27 @@
+mixin playerPicks(playerPicks)
+	div.player-picks
+		strong.player #{playerPicks.player}
+		ul.users
+			each user in playerPicks.users
+				li #{user}
+
+div.modal.fade#modal
+	div.modal-dialog
+		div.modal-content
+			div.modal-header
+				h5.modal-title #{game.seriesDescription}, Game #{game.seriesGameNumber}#{game.ifNecessary == 'Y' ? '*' : ''}
+				button.close(type='button' data-dismiss='modal')
+					span &times;
+
+			div.modal-body
+				div.container-fluid
+					div.row
+						each side in ['away', 'home']
+							div.col-12.col-sm-6
+								div(id=`${side}-team`)
+									div.name.mb-2 #{game[side].team.name}
+
+									if teamPlayerPicks[side].length > 0
+										div.picks
+											each playerPicks in teamPlayerPicks[side]
+												+playerPicks(playerPicks)

@@ -214,3 +214,9 @@ li.team-row img {
 a.team-button {
 	line-height: 0.9rem;
 }
+
+div.player-picks ul.users {
+	font-size: 80%;
+	list-style: none;
+	padding-left: 0;
+}
