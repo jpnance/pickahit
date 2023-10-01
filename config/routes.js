@@ -31,7 +31,8 @@ module.exports = function(app) {
 	app.get('/games/debug', games.debug);
 
 	app.get('/', games.showAllForDate);
-	app.get('/schedule/:date', games.showAllForDate);
+	app.get('/schedule/:date(\\d\\d\\d\\d-\\d\\d-\\d\\d)', games.showAllForDate);
+	app.get('/schedule/:teamAbbreviation(\\w+)', games.showAllForTeam);
 
 	app.get('/standings', standings.showStandings);
 
