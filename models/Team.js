@@ -11,7 +11,7 @@ var teamSchema = new Schema({
 
 teamSchema.methods.isActualMlbTeam = function() {
 	var mlbAbbreviations = [
-		'ARI', 'ATL', 'BAL', 'BOS', 'CHC',
+		'ATL', 'AZ', 'BAL', 'BOS', 'CHC',
 		'CIN', 'CLE', 'COL', 'CWS', 'DET',
 		'HOU', 'KC', 'LAA', 'LAD', 'MIA',
 		'MIL', 'MIN', 'NYM', 'NYY', 'OAK',
