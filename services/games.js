@@ -789,7 +789,7 @@ module.exports.debug = function(request, response) {
 			game.flatHits = game.hits.map(playerHits => { return playerHits.player._id });
 		});
 
-		response.render('index', {
+		response.render('schedule/all', {
 			session: session,
 			games: games,
 			today: '2022-10-15',
