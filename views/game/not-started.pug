@@ -26,7 +26,7 @@ div.modal.fade#modal
 								div.name #{game[side].team.name}
 								div.probable-pitcher
 									if game[side].probablePitcher
-										span.position ${game[side].probablePitcher.throws}HP
+										span.position #{game[side].probablePitcher.throws}HP
 										| #{game[side].probablePitcher.name}
 									else
 										| TBD
