@@ -24,7 +24,7 @@ mixin teamRow(game, side)
 							if game[side].probablePitcher
 								a.text-muted(href='http://m.mlb.com/player/' + game[side].probablePitcher._id target='_blank')= game[side].probablePitcher.name
 							else
-								span TBD
+								span.text-muted TBD
 
 mixin gameCard(game)
 	-
