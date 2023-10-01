@@ -1,6 +1,7 @@
 var crypto = require('crypto');
 
 var users = require('../services/users');
+var schedule = require('../services/schedule');
 var games = require('../services/games');
 var standings = require('../services/standings');
 var picks = require('../services/picks');
@@ -11,7 +12,7 @@ var Session = require('../models/Session');
 var preview = {
 	crossroads: function(request, response) {
 		if (request.cookies.preview) {
-			games.showAll(request, response);
+			schedule.showAll(request, response);
 		}
 		else {
 			response.render('verifier');
@@ -28,11 +29,10 @@ var preview = {
 };
 
 module.exports = function(app) {
-	app.get('/games/debug', games.debug);
-
-	app.get('/', games.showAllForDate);
-	app.get('/schedule/:date(\\d\\d\\d\\d-\\d\\d-\\d\\d)', games.showAllForDate);
-	app.get('/schedule/:teamAbbreviation(\\w+)', games.showAllForTeam);
+	app.get('/', schedule.showAllForDate);
+	app.get('/schedule/debug', schedule.debug);
+	app.get('/schedule/:date(\\d\\d\\d\\d-\\d\\d-\\d\\d)', schedule.showAllForDate);
+	app.get('/schedule/:teamAbbreviation(\\w+)', schedule.showAllForTeam);
 
 	app.get('/standings', standings.showStandings);
 
@@ -58,5 +58,5 @@ module.exports = function(app) {
 		});
 	});
 
-	app.get('/bigboard', games.showAll);
+	app.get('/bigboard', schedule.showAll);
 };
