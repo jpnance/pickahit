@@ -22,7 +22,7 @@ div.modal.fade#modal
 					div.row
 						each side in ['away', 'home']
 							div.col-12.col-sm-6
-								div(id=`${side}-team`)
+								div(id=`${side}-team`).mb-4
 									div.name #{game[side].team.name}
 									div.probable-pitcher
 										if game[side].probablePitcher
