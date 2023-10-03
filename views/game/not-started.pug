@@ -27,7 +27,7 @@ div.modal.fade#modal
 									div.probable-pitcher
 										if game[side].probablePitcher
 											span.position #{game[side].probablePitcher.throws}HP
-											| #{game[side].probablePitcher.name}
+											a.text-muted(href='http://www.mlb.com/player/' + game[side].probablePitcher._id target='_blank')= game[side].probablePitcher.name
 										else
 											| TBD
 
