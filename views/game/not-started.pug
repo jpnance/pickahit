@@ -34,7 +34,7 @@ div.modal.fade#modal
 									if game[side].startingLineup.length > 0
 										div.batters.starting-lineup
 											table
-												tr: th(colspan='2'): Starting Lineup
+												tr: th(colspan='2') Starting Lineup
 												- var startingLineup = game[side].startingLineup.filter(player => player.position != 'P');
 												each player in startingLineup
 													+playerRow(game, player, alreadyPicked.includes(player._id))
@@ -42,7 +42,7 @@ div.modal.fade#modal
 									div.batters.bench
 										table
 											if game[side].startingLineup.length > 0
-												tr: th(colspan='2'): Bench
+												tr: th(colspan='2') Bench
 											- var bench = game[side].batters.filter(batter => !game[side].startingLineup.find(startingPlayer => batter._id == startingPlayer._id)).sort((a, b) => a.name.localeCompare(b.name));
 											each player in bench
 												+playerRow(game, player, alreadyPicked.includes(player._id))
