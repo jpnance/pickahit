@@ -15,4 +15,4 @@ block content
 				tr
 					td.text-center #{user.rank}
 					td.text-left: a(href='/picks/' + user.username) #{user.firstName} #{user.lastName}
-					td.text-center.table-active #{user.score}.#{user.tiebreaker}
+					td.text-center.table-active #{user.score}.#{user.tiebreaker.toString().padStart(2, '0')}
