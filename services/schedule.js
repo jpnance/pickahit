@@ -211,10 +211,10 @@ module.exports.showAllForDate = function(request, response) {
 					return user.isEligibleFor(process.env.SEASON);
 				}),
 				games: values[1].sort(function(a, b) {
-					if (a.isFinalAndCool() && !b.isFinalAndCool()) {
+					if (a.isFinal() && !b.isFinal()) {
 						return 1;
 					}
-					else if (!a.isFinalAndCool() && b.isFinalAndCool()) {
+					else if (!a.isFinal() && b.isFinal()) {
 						return -1;
 					}
 					else {
