@@ -215,14 +215,6 @@ a.team-button {
 	line-height: 0.9rem;
 }
 
-div.player-picks .player.correct {
-	color: green;
-}
-
-div.player-picks .player.incorrect {
-	color: red;
-}
-
 div.player-picks ul.users {
 	font-size: 80%;
 	list-style: none;

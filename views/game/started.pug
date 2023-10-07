@@ -1,6 +1,6 @@
 mixin playerPicks(playerPicks, isFinal)
 	div.player-picks
-		strong.player(class={ correct: playerPicks.correct, incorrect: isFinal && !playerPicks.correct }) #{playerPicks.player.name}
+		strong.player(class={ 'text-success': playerPicks.correct, 'text-danger': isFinal && !playerPicks.correct }) #{playerPicks.player.name}
 		ul.users
 			each user in playerPicks.users
 				li #{user}
