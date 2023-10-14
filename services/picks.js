@@ -23,6 +23,7 @@ module.exports.showPicksForUser = function(request, response) {
 
 		Promise.all(data).then(function(values) {
 			var responseData = {
+				session: session,
 				user: values[0],
 				gamePicks: [],
 				teams: values[2],
