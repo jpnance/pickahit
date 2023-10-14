@@ -17,7 +17,7 @@ block content
 					td
 						p.mb-0 #{gamePick.game.away.team.teamName} at #{gamePick.game.home.team.teamName}
 						p.mb-0: small #{gamePick.game.seriesDescription}, Game #{gamePick.game.seriesGameNumber}
-					td.align-middle
+					td.align-middle(class={ 'text-success': gamePick.correct, 'text-danger': gamePick.game.isFinal() && !gamePick.correct })
 						if gamePick.pick
 							span #{gamePick.pick.player.name}
 						else

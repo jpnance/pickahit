@@ -36,12 +36,29 @@ module.exports.showPicksForUser = function(request, response) {
 						return game.hasStarted();
 					})
 					.map(function(game) {
-						return {
-							game,
-							pick: game.picks.find(function(pick) {
-								return pick.user._id.toString() == responseData.user._id.toString();
-							})
-						};
+						var correct = false;
+
+						var pick = game.picks.find(function(pick) {
+							return pick.user._id.toString() == responseData.user._id.toString();
+						});
+
+						if (!pick) {
+							correct = false;
+						}
+						else {
+							var hit = game.hits.find(function(hit) {
+								return hit.player._id == pick.player._id;
+							});
+
+							if (hit) {
+								correct = true;
+							}
+							else {
+								correct = false;
+							}
+						}
+
+						return { game, pick, correct };
 					});
 
 			responseData.mappedTeams =
