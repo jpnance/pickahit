@@ -38,6 +38,11 @@ module.exports.showPicksForUser = function(request, response) {
 					.map(function(game) {
 						var correct = false;
 
+						var score = {
+							points: 0,
+							hits: 0
+						};
+
 						var pick = game.picks.find(function(pick) {
 							return pick.user._id.toString() == responseData.user._id.toString();
 						});
@@ -52,13 +57,16 @@ module.exports.showPicksForUser = function(request, response) {
 
 							if (hit) {
 								correct = true;
+
+								score.points = game.points;
+								score.hits = hit.hits;
 							}
 							else {
 								correct = false;
 							}
 						}
 
-						return { game, pick, correct };
+						return { game, pick, correct, score };
 					});
 
 			responseData.mappedTeams =
