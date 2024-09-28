@@ -35,6 +35,9 @@ teamSchema.methods.imageAbbreviation = function() {
 		else if (abbreviation.startsWith('LG')) {
 			abbreviation = 'MLB';
 		}
+		else if (abbreviation.match('/')) {
+			abbreviation = 'MLB';
+		}
 	}
 
 	return abbreviation.toLowerCase();
