@@ -3,7 +3,7 @@ ci:
 
 seed:
 	@echo "Use something like:"
-	@echo "docker exec -i pickahit-mongo sh -c \"mongorestore --drop --archive\" < data/pickahit.dump"
+	@echo "docker exec -i pickahit-mongo sh -c \"mongorestore --drop --archive\" < ~/backups/pickahit.dump"
 
 schedule:
 	docker exec pickahit-cron sh -c "cd /app/bin && node schedule.js"
