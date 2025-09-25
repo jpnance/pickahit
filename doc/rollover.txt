@@ -1,7 +1,7 @@
 vi .env
 # change SEASON to the appropriate year
 # change POSTSEASON_START_TIME and POSTSEASON_END_TIME to the appropriate times
-make seed # with the latest image of the data from last season
+make seed # dev only, probably; seed the latest image of the data from last season
 make reset # don't do this after games start
 make players
 make schedule
