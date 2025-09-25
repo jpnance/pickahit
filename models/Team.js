@@ -38,6 +38,12 @@ teamSchema.methods.imageAbbreviation = function() {
 		else if (abbreviation.match('/')) {
 			abbreviation = 'MLB';
 		}
+		else if (abbreviation.match('LOW')) {
+			abbreviation = 'MLB';
+		}
+		else if (abbreviation.match('HIGH')) {
+			abbreviation = 'MLB';
+		}
 	}
 
 	return abbreviation.toLowerCase();
