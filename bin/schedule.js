@@ -57,6 +57,7 @@ for (var i = 0; i <= days; i++) {
 					};
 
 					switch (game.seriesDescription) {
+						case 'Wild Card':
 						case 'Wild Card Game':
 							newGame.points = 1;
 							break;
