@@ -67,11 +67,11 @@ for (var i = 0; i <= days; i++) {
 							break;
 
 						case 'League Championship Series':
-							newGame.points = 4;
+							newGame.points = 3;
 							break;
 
 						case 'World Series':
-							newGame.points = 8;
+							newGame.points = 5;
 							break;
 
 						default: break;
