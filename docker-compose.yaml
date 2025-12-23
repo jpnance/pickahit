@@ -1,42 +1,42 @@
 version: '3.6'
 
 services:
-    web:
-        container_name: pickahit-web
-        profiles:
-            - main
-            - postseason
-        image: node:14-alpine
-        volumes:
-            - .:/app
-            - ../ssl:/ssl
-        working_dir: /app
-        ports:
-            - $PORT:$PORT
-        command: node index.js
+  web:
+    container_name: pickahit-web
+    profiles:
+      - main
+      - postseason
+    image: node:14-alpine
+    volumes:
+      - .:/app
+      - ../ssl:/ssl
+    working_dir: /app
+    ports:
+      - $PORT:$PORT
+    command: node index.js
 
-    mongo:
-        container_name: pickahit-mongo
-        profiles:
-            - main
-            - postseason
-        image: mongo:3.6.8
-        volumes:
-            - pickahit-data:/data/db
+  mongo:
+    container_name: pickahit-mongo
+    profiles:
+      - main
+      - postseason
+    image: mongo:3.6.8
+    volumes:
+      - pickahit-data:/data/db
 
-    cron:
-        container_name: pickahit-cron
-        profiles:
-            - main
-        image: node:14-alpine
-        volumes:
-            - .:/app
-        command: sh -c "crontab /app/etc/crontab && crond -f"
+  cron:
+    container_name: pickahit-cron
+    profiles:
+      - main
+    image: node:14-alpine
+    volumes:
+      - .:/app
+    command: sh -c "crontab /app/etc/crontab && crond -f"
 
 volumes:
-    pickahit-data:
-        name: pickahit-data
+  pickahit-data:
+    name: pickahit-data
 
 networks:
-    default:
-        name: coinflipper
+  default:
+    name: coinflipper
