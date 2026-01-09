@@ -336,12 +336,7 @@ module.exports.showAllForDate = function(request, response) {
 
 module.exports.showAllForTeam = function(request, response) {
 	Session.withActiveSession(request, function(error, session) {
-		Team.findOne({ abbreviation: request.params.teamAbbreviation }, function(error, team) {
-			if (error) {
-				response.sendStatus(500);
-				return;
-			}
-
+		Team.findOne({ abbreviation: request.params.teamAbbreviation }).then(function(team) {
 			if (!team || !team.isActualMlbTeam()) {
 				response.sendStatus(404);
 				return;
@@ -469,6 +464,9 @@ module.exports.showAllForTeam = function(request, response) {
 
 				response.render('schedule/team', responseData);
 			});
+		})
+		.catch(function(error) {
+			response.sendStatus(500);
 		});
 	});
 };
