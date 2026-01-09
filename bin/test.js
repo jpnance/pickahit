@@ -3,7 +3,6 @@ var Game = require('../models/Game');
 var Player = require('../models/Player');
 
 var mongoose = require('mongoose');
-mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGODB_URI);
 
 var dateFormat = require('dateformat');

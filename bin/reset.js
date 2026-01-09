@@ -3,9 +3,13 @@ var dotenv = require('dotenv').config({ path: '/app/.env' });
 var Player = require('../models/Player');
 
 var mongoose = require('mongoose');
-mongoose.Promise = global.Promise;
-mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
+mongoose.connect(process.env.MONGODB_URI);
 
-Player.updateMany({}, { active: false }, function(error, response) {
-	mongoose.disconnect();
-});
+Player.updateMany({}, { active: false })
+	.then(function(response) {
+		mongoose.disconnect();
+	})
+	.catch(function(error) {
+		console.error(error);
+		mongoose.disconnect();
+	});

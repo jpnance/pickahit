@@ -30,18 +30,19 @@ module.exports.pick = function(request, response) {
 			}
 			else if (game && !game.hasStarted() && (game.away.batters.indexOf(playerId) != -1 || game.home.batters.indexOf(playerId) != -1) && player) {
 				console.log('pick', session.user._id, game._id, player._id);
-				Game.findOneAndUpdate({ _id: gameId, 'picks.user': session.user._id }, { '$set': { 'picks.$.player': player._id } }).exec(function(error, game) {
-					if (!game) {
-						Game.findOneAndUpdate({ _id: gameId }, { '$push': { picks: { user: session.user._id, player: playerId } } }).exec(function(error, game) {
-							if (!error) {
-								response.send({ success: true, player: player });
-							}
-						});
-					}
-					else if (!error) {
+				Game.findOneAndUpdate({ _id: gameId, 'picks.user': session.user._id }, { '$set': { 'picks.$.player': player._id } }, { returnDocument: 'after' })
+					.then(function(game) {
+						if (!game) {
+							return Game.findOneAndUpdate({ _id: gameId }, { '$push': { picks: { user: session.user._id, player: playerId } } }, { returnDocument: 'after' });
+						}
+						return game;
+					})
+					.then(function(game) {
 						response.send({ success: true, player: player });
-					}
-				});
+					})
+					.catch(function(error) {
+						response.send({ success: false, error: error.message });
+					});
 			}
 			else {
 				response.send({ success: false, error: 'You are hacking. Please stop.' });

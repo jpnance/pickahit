@@ -25,22 +25,23 @@ module.exports.pick = function(request, response) {
 			var game = values[1];
 			var player = values[2];
 
-			if (user && game && (game.away.batters.indexOf(player._id) != -1 || game.home.batters.indexOf(player._id) != -1) && player) {
-				console.log('overridden pick', user._id, game._id, player._id);
+		if (user && game && (game.away.batters.indexOf(player._id) != -1 || game.home.batters.indexOf(player._id) != -1) && player) {
+			console.log('overridden pick', user._id, game._id, player._id);
 
-				Game.findOneAndUpdate({ _id: game._id, 'picks.user': user._id }, { '$set': { 'picks.$.player': player._id } }).exec(function(error, game) {
-					if (!game) {
-						Game.findOneAndUpdate({ _id: gameId }, { '$push': { picks: { user: user._id, player: player._id } } }).exec(function(error, game) {
-							if (!error) {
-								response.send({ success: true, player: player });
-							}
-						});
+			Game.findOneAndUpdate({ _id: game._id, 'picks.user': user._id }, { '$set': { 'picks.$.player': player._id } }, { returnDocument: 'after' })
+				.then(function(updatedGame) {
+					if (!updatedGame) {
+						return Game.findOneAndUpdate({ _id: gameId }, { '$push': { picks: { user: user._id, player: player._id } } }, { returnDocument: 'after' });
 					}
-					else if (!error) {
-						response.send({ success: true, player: player });
-					}
+					return updatedGame;
+				})
+				.then(function(updatedGame) {
+					response.send({ success: true, player: player });
+				})
+				.catch(function(error) {
+					response.send({ success: false, error: error.message });
 				});
-			}
+		}
 			else {
 				response.send({ success: false, error: 'You are hacking. Please stop.' });
 			}

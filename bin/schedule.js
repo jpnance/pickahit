@@ -6,8 +6,7 @@ var Game = require('../models/Game');
 var Team = require('../models/Team');
 
 var mongoose = require('mongoose');
-mongoose.Promise = global.Promise;
-mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
+mongoose.connect(process.env.MONGODB_URI);
 
 var dateRange = {
 	start: new Date(process.env.POSTSEASON_START_TIME),

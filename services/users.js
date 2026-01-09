@@ -36,18 +36,17 @@ module.exports.add = function(request, response) {
 module.exports.edit = function(request, response) {
 	Session.withActiveSession(request, function(error, session) {
 		if (session && (request.params.username == session.user.username || session.user.admin)) {
-			User.findOne({ username: request.params.username }).exec(function(error, user) {
-				var responseData = {
-					user: user,
-					session: session
-				};
-
-				if (error) {
+			User.findOne({ username: request.params.username })
+				.then(function(user) {
+					var responseData = {
+						user: user,
+						session: session
+					};
+					response.render('users/edit', responseData);
+				})
+				.catch(function(error) {
 					response.send(error);
-				}
-
-				response.render('users/edit', responseData);
-			});
+				});
 		}
 		else {
 			response.redirect('/users');
@@ -89,13 +88,12 @@ module.exports.signUp = function(request, response) {
 					user.makeUneligibleFor(process.env.SEASON);
 				}
 
-				user.save(function(error) {
-					if (!error) {
-						response.redirect('/users');
-					}
-					else {
-						response.status(400).send(error);
-					}
+			user.save()
+				.then(function() {
+					response.redirect('/users');
+				})
+				.catch(function(error) {
+					response.status(400).send(error);
 				});
 			}
 		}
@@ -132,13 +130,12 @@ module.exports.update = function(request, response) {
 				}
 			}
 
-			user.save(function(error) {
-				if (error) {
-					response.send(error);
-				}
-				else {
-					response.redirect('/users');
-				}
+		user.save()
+			.then(function() {
+				response.redirect('/users');
+			})
+			.catch(function(error) {
+				response.send(error);
 			});
 		});
 	});
