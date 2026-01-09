@@ -36,17 +36,16 @@ module.exports.add = function(request, response) {
 module.exports.edit = function(request, response) {
 	Session.withActiveSession(request, function(error, session) {
 		if (session && (request.params.username == session.user.username || session.user.admin)) {
-			User.findOne({ username: request.params.username })
-				.then(function(user) {
-					var responseData = {
-						user: user,
-						session: session
-					};
-					response.render('users/edit', responseData);
-				})
-				.catch(function(error) {
-					response.send(error);
-				});
+			User.findOne({ username: request.params.username }).then(function(user) {
+				var responseData = {
+					user: user,
+					session: session
+				};
+				response.render('users/edit', responseData);
+			})
+			.catch(function(error) {
+				response.send(error);
+			});
 		}
 		else {
 			response.redirect('/users');
