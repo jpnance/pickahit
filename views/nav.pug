@@ -3,7 +3,9 @@
 
 	navItems.push({ name: 'Schedule', href: '/' });
 	navItems.push({ name: 'Standings', href: '/standings' });
-	navItems.push({ name: 'Picks', href: '/picks' });
+	if (session) {
+		navItems.push({ name: 'Picks', href: '/picks' });
+	}
 	navItems.push({ name: 'Big Board', href: '/bigboard' });
 	navItems.push({ name: 'Rules', href: '/rules' });
 

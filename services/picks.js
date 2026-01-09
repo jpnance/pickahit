@@ -6,7 +6,12 @@ var Team = require('../models/Team');
 
 module.exports.showPicksForUser = function(request, response) {
 	Session.withActiveSession(request, function(error, session) {
-		var username = request.params.username || session.user.username;
+		var username = request.params.username || session?.user?.username;
+
+		if (!username) {
+			response.redirect('/');
+			return;
+		}
 
 		var data = [
 			User.findOne({ username: username }),
@@ -22,9 +27,16 @@ module.exports.showPicksForUser = function(request, response) {
 		];
 
 		Promise.all(data).then(function(values) {
+			var user = values[0];
+
+			if (!user) {
+				response.sendStatus(404);
+				return;
+			}
+
 			var responseData = {
 				session: session,
-				user: values[0],
+				user: user,
 				gamePicks: [],
 				teams: values[2],
 			};
