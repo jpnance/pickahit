@@ -38,4 +38,14 @@ else {
 	app.listen(process.env.PORT, function() { console.log('http, listening on port ' + process.env.PORT) });
 }
 
+process.on('SIGTERM', () => {
+	console.log('SIGTERM received, shutting down...');
+	server.close(() => {
+		mongoose.connection.close(false).then(() => {
+			console.log('Closed out remaining connections');
+			process.exit(0);
+		});
+	});
+});
+
 module.exports = app;
