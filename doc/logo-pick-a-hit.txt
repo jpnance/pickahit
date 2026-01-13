@@ -1,0 +1,40 @@
+Pick-a-Hit Logo Colors
+======================
+
+Primary Theme: Burgundy & Burnt Orange
+--------------------------------------
+Left segment:   #8B4513 (Burgundy/Saddle Brown)
+Right segment:  #D2691E (Burnt Orange/Chocolate)
+Hand/coin:      #FFFDE7 (Cream)
+
+File: logo-autumn.png
+
+
+Alternative Options (Higher Contrast)
+-------------------------------------
+
+Option 1: Deep Burgundy + Bright Orange
+  Left segment:   #722F37 (Wine/Deep Burgundy)
+  Right segment:  #FF6B35 (Bright Orange)
+  Hand/coin:      #FFFFFF (White)
+  File: logo-autumn-1.png
+
+Option 2: Dark Brown + Pumpkin
+  Left segment:   #5D4037 (Dark Brown)
+  Right segment:  #E64A19 (Pumpkin/Deep Orange)
+  Hand/coin:      #FFFFFF (White)
+  File: logo-autumn-2.png
+
+Option 3: Maroon + Golden Yellow
+  Left segment:   #4A2C2A (Dark Mahogany/Maroon)
+  Right segment:  #FF5722 (Golden Orange)
+  Hand/coin:      #FFFFFF (White)
+  File: logo-autumn-3.png
+
+
+Original Coinflipper Logo Reference
+-----------------------------------
+Left segment:   #26337A (Navy Blue)
+Right segment:  #FF0000 (Red)
+Hand/coin:      #FFFFFF (White)
+File: logo.png
