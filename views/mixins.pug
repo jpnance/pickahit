@@ -37,36 +37,25 @@ mixin gameCard(game)
 			classes.card.border.push('border-secondary');
 		}
 
-		if (game.hasStarted() && !game.isFinal()) {
-			classes.header.background.push('bg-primary');
-			classes.header.linkText.push('text-white');
-		}
-
-		if (game.hasStarted()) {
+		if (session && game.hasStarted()) {
 			classes.header.linkText.push('text-white');
 
-			if (session && !game.mappedPicks[session.user._id.toString()]) {
+			if (!game.mappedPicks[session.user._id.toString()]) {
 				classes.header.background.push('bg-danger');
 			}
-			else if (session && game.mappedPicks[session.user._id.toString()] && game.flatHits.indexOf(game.mappedPicks[session.user._id.toString()]._id) > -1) {
+			else if (game.flatHits.indexOf(game.mappedPicks[session.user._id.toString()]._id) > -1) {
 				classes.header.background.push('bg-success');
+			}
+			else if (game.isFinal()) {
+				classes.header.background.push('bg-danger');
 			}
 			else {
 				classes.header.background.push('bg-primary');
 			}
 		}
-
-		if (game.isFinal()) {
-			if (session && game.mappedPicks[session.user.id.toString()]) {
-				classes.header.linkText.push('text-white');
-			}
-
-			if (session && game.mappedPicks[session.user._id.toString()] && game.flatHits.indexOf(game.mappedPicks[session.user._id.toString()]._id) > -1) {
-				classes.header.background.push('bg-success');
-			}
-			else {
-				classes.header.background.push('bg-danger');
-			}
+		else if (!session && game.hasStarted() && !game.isFinal()) {
+			classes.header.linkText.push('text-white');
+			classes.header.background.push('bg-primary');
 		}
 
 	div.col-xs-12.col-sm-6.col-md-6.col-lg-4.mb-4(id='game-' + game._id)
