@@ -1,0 +1,6 @@
+#!/bin/bash
+
+container="pickahit-mongo"
+db="pickahit"
+
+docker exec -it ${container} mongosh ${db}
