@@ -5,8 +5,13 @@ var Player = require('../models/Player');
 module.exports.pick = function(request, response) {
 	var session = request.session;
 
-	if (!session || !request.params.gameId || !request.params.playerId) {
-		response.send({ success: false, redirect: '/' });
+	if (!session) {
+		response.status(401).send({ success: false, error: 'Your session has expired. Please <a href="/login">log in</a> again.' });
+		return;
+	}
+
+	if (!request.params.gameId || !request.params.playerId) {
+		response.status(400).send({ success: false, error: 'Invalid request.' });
 		return;
 	}
 
@@ -54,7 +59,7 @@ module.exports.showOne = function(request, response) {
 	var session = request.session;
 
 	if (!session) {
-		response.send({ success: false, redirect: '/' });
+		response.status(401).send({ success: false, error: 'Your session has expired. Please <a href="/login">log in</a> again.' });
 		return;
 	}
 

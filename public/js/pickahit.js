@@ -20,8 +20,11 @@ $(document).ready(function() {
 
 		$.post($(this).attr('href'), function(data) {
 			if (!data.success) {
-				if (data.redirect) {
-					window.location.href = data.redirect;
+				$('#modal').modal('hide');
+
+				if (data.error) {
+					$('#error-modal .modal-body').html(data.error);
+					$('#error-modal').modal('show');
 				}
 
 				return;
@@ -32,6 +35,11 @@ $(document).ready(function() {
 			$(`#game-${gameId} .card`).addClass('border-secondary');
 			$(`a.team-button[data-game-id=${gameId}]`).addClass('btn-secondary').addClass('text-white').removeClass('btn-outline-secondary');
 			$('a.team-button[data-game-id=' + gameId + '] span').text(data.player.name);
+		}).fail(function(error) {
+			$('#modal').modal('hide');
+			var message = error.responseJSON?.error || error.responseJSON?.message || 'An unexpected error occurred.';
+			$('#error-modal .modal-body').html(message);
+			$('#error-modal').modal('show');
 		});
 	});
 
