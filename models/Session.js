@@ -43,14 +43,16 @@ sessionSchema.statics.withActiveSession = function(request, callback) {
 			.post(process.env.LOGIN_SERVICE_INTERNAL + '/sessions/retrieve')
 			.send({ key: request.cookies.sessionKey })
 			.then(response => {
+				if (!response.body?.user) {
+					callback(null, null);
+					return;
+				}
+
 				User.findOne({
 					username: response.body.user.username
 				}).then(function(user) {
 					callback(null, { username: user.username, user: user });
 				});
-			})
-			.catch(error => {
-				callback(error, null);
 			});
 	}
 	else {
