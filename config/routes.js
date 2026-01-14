@@ -7,8 +7,6 @@ var standings = require('../services/standings');
 var picks = require('../services/picks');
 var override = require('../services/override');
 
-var Session = require('../models/Session');
-
 var preview = {
 	crossroads: function(request, response) {
 		if (request.cookies.preview) {
@@ -53,9 +51,7 @@ module.exports = function(app) {
 	app.get('/override/pick/:username/:gameId/:playerId', override.pick);
 
 	app.get('/rules', function(request, response) {
-		Session.withActiveSession(request, function(error, session) {
-			response.render('rules', { session: session });
-		});
+		response.render('rules', { session: request.session });
 	});
 
 	app.get('/bigboard', schedule.showAll);
