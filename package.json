@@ -15,7 +15,7 @@
     "dateformat": "^3.0.3",
     "dotenv": "^8.2.0",
     "express": "^4.21.0",
-    "mongoose": "^8.7.0",
+    "mongoose": "^8.22.1",
     "pug": "^3.0.2",
     "superagent": "^10.1.1"
   }
