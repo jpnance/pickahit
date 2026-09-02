@@ -29,8 +29,8 @@ var preview = {
 module.exports = function(app) {
 	app.get('/', schedule.showAllForDate);
 	app.get('/schedule/debug', schedule.debug);
-	app.get('/schedule/:date(\\d\\d\\d\\d-\\d\\d-\\d\\d)', schedule.showAllForDate);
-	app.get('/schedule/:teamAbbreviation(\\w+)', schedule.showAllForTeam);
+	app.get('/schedule/:date', schedule.showAllForDate);
+	app.get('/schedule/:teamAbbreviation', schedule.showAllForTeam);
 
 	app.get('/standings', standings.showStandings);
 

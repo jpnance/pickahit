@@ -162,6 +162,11 @@ module.exports.showAllForDate = function(request, response) {
 		dateTimeString = dateFormat(now, 'yyyy-mm-dd HH:MM:ss');
 	}
 	else {
+		if (!/^\d{4}-\d{2}-\d{2}$/.test(request.params.date)) {
+			response.sendStatus(404);
+			return;
+		}
+
 		dateTimeString = dateFormat(new Date(`${request.params.date} 00:00:00`), 'yyyy-mm-dd HH:MM:ss');
 	}
 
@@ -335,6 +340,11 @@ module.exports.showAllForDate = function(request, response) {
 
 module.exports.showAllForTeam = function(request, response) {
 	var session = request.session;
+
+	if (!/^\w+$/.test(request.params.teamAbbreviation)) {
+		response.sendStatus(404);
+		return;
+	}
 
 	Team.findOne({ abbreviation: request.params.teamAbbreviation }).then(function(team) {
 		if (!team || !team.isActualMlbTeam()) {
