@@ -1,4 +1,5 @@
 vi .env
+# change COMPOSE_PROFILES to "main"
 # change SEASON to the appropriate year
 # change POSTSEASON_START_TIME and POSTSEASON_END_TIME to the appropriate times
 make seed # dev only, probably; seed the latest image of the data from last season
