@@ -6,3 +6,4 @@ runt seed --prod # dev only, probably; seed the latest image of the data from la
 runt reset # don't do this after games start
 runt players
 runt schedule
+docker compose restart
