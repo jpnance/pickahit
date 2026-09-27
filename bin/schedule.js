@@ -63,10 +63,14 @@ for (var i = 0; i <= days; i++) {
 							newGame.points = 1;
 							break;
 
+						case 'AL Division Series':
+						case 'NL Division Series':
 						case 'Division Series':
 							newGame.points = 2;
 							break;
 
+						case 'AL Championship Series':
+						case 'NL Championship Series':
 						case 'League Championship Series':
 							newGame.points = 3;
 							break;
