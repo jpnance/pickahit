@@ -56,6 +56,8 @@ for (var i = 0; i <= days; i++) {
 					};
 
 					switch (game.seriesDescription) {
+						case 'AL Wild Card Series':
+						case 'NL Wild Card Series':
 						case 'Wild Card':
 						case 'Wild Card Game':
 							newGame.points = 1;
