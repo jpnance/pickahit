@@ -24,7 +24,7 @@ for (var i = 0; i <= days; i++) {
 	var month = date.getMonth();
 	var date = date.getDate();
 
-	var dateString = year + '-' + (month + 1) + '-' + (date < 10 ? '0' : '') + date;
+	var dateString = year + '-' + (month + 1 < 10 ? '0' : '') + (month + 1) + '-' + (date < 10 ? '0' : '') + date;
 
 	schedulePromises.push(new Promise(function(resolve, reject) {
 		var uri = 'https://statsapi.mlb.com/api/v1/schedule?sportId=1&date=' + dateString + '&hydrate=team';
