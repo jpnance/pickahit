@@ -26,11 +26,21 @@ var preview = {
 	}
 };
 
+function scheduleForParam(request, response) {
+	if (/^\d{4}-\d{2}-\d{2}$/.test(request.params.param)) {
+		request.params.date = request.params.param;
+		schedule.showAllForDate(request, response);
+		return;
+	}
+
+	request.params.teamAbbreviation = request.params.param;
+	schedule.showAllForTeam(request, response);
+}
+
 module.exports = function(app) {
 	app.get('/', schedule.showAllForDate);
 	app.get('/schedule/debug', schedule.debug);
-	app.get('/schedule/:date', schedule.showAllForDate);
-	app.get('/schedule/:teamAbbreviation', schedule.showAllForTeam);
+	app.get('/schedule/:param', scheduleForParam);
 
 	app.get('/standings', standings.showStandings);
 

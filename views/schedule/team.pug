@@ -1,7 +1,7 @@
 extends ../layout.pug
 
 block title
-	+title(dateFormat(today, 'mmmm d'), 'Schedule')
+	+title(team.teamName)
 
 block append scripts
 	script(src='/js/pickahit.js' type='text/javascript')
