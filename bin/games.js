@@ -15,10 +15,31 @@ Game.find({ season: process.env.SEASON }).sort('startTime')
 		games.forEach(function(game) {
 			gamePromises.push(new Promise(function(resolve, reject) {
 				request.get('https://statsapi.mlb.com/api/v1.1/game/' + game._id + '/feed/live', function(error, response) {
-					var data = JSON.parse(response.text);
+					if (error || !response || !response.text) {
+						resolve('error');
+						return;
+					}
+
+					var data;
+
+					try {
+						data = JSON.parse(response.text);
+					} catch (parseError) {
+						resolve('error');
+						return;
+					}
+
+					game.applyFeedLiveState(data);
 
 					if (!data.liveData || !data.liveData.boxscore || !data.liveData.boxscore.teams) {
-						resolve('fine');
+						game.save()
+							.then(function() {
+								resolve('good');
+							})
+							.catch(function(saveError) {
+								console.error(saveError);
+								resolve('error');
+							});
 						return;
 					}
 
@@ -82,8 +103,6 @@ Game.find({ season: process.env.SEASON }).sort('startTime')
 						}
 					}
 
-					game.status = data.gameData.status.statusCode;
-
 					if (awayTeam.battingOrder && awayTeam.battingOrder.length > 0) {
 						if (!game.away.startingLineup || game.away.startingLineup.length == 0) {
 							awayTeam.battingOrder.forEach(function(playerId) {
@@ -104,8 +123,8 @@ Game.find({ season: process.env.SEASON }).sort('startTime')
 						.then(function() {
 							resolve('good');
 						})
-						.catch(function(error) {
-							console.error(error);
+						.catch(function(saveError) {
+							console.error(saveError);
 							resolve('error');
 						});
 				});

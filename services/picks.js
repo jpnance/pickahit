@@ -45,7 +45,7 @@ module.exports.showPicksForUser = function(request, response) {
 		responseData.gamePicks =
 			games
 				.filter(function(game) {
-					return game.hasStarted();
+					return game.hasDefinitelyStarted();
 				})
 				.map(function(game) {
 					var correct = false;

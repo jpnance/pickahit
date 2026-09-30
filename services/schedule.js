@@ -62,11 +62,12 @@ module.exports.showAll = function(request, response) {
 		var userTiebreakers = {};
 
 		responseData.games.forEach(function(game) {
+			game.mappedPicks = {};
+			game.flatHits = [];
+
 			if (!game.picks) {
 				return;
 			}
-
-			game.mappedPicks = {};
 
 			game.picks.forEach(function(pick) {
 				if (!userScores[pick.user._id]) {
@@ -252,11 +253,12 @@ module.exports.showAllForDate = function(request, response) {
 		var userTiebreakers = {};
 
 		responseData.games.forEach(function(game) {
+			game.mappedPicks = {};
+			game.flatHits = [];
+
 			if (!game.picks) {
 				return;
 			}
-
-			game.mappedPicks = {};
 
 			game.picks.forEach(function(pick) {
 				if (!userScores[pick.user._id]) {
@@ -390,11 +392,12 @@ module.exports.showAllForTeam = function(request, response) {
 			var userTiebreakers = {};
 
 			responseData.games.forEach(function(game) {
+				game.mappedPicks = {};
+				game.flatHits = [];
+
 				if (!game.picks) {
 					return;
 				}
-
-				game.mappedPicks = {};
 
 				game.picks.forEach(function(pick) {
 					if (!userScores[pick.user._id]) {
@@ -510,7 +513,7 @@ module.exports.debug = function(request, response) {
 
 	const astros = {
 		team: {
-			_id: 143,
+			_id: 117,
 			name: 'Houston Astros',
 			abbreviation: 'HOU',
 			locationName: 'Houston',
@@ -533,26 +536,44 @@ module.exports.debug = function(request, response) {
 		startingLineup: [ 514888, 665161, 670541, 608324, 663656, 493329, 649557, 676801, 455117 ]
 	};
 
-	const fn = {
-		echo: (value) => () => value,
-	};
-
-	var game = {
+	var gameDefaults = {
 		_id: 123456,
 		season: 2022,
 		startTime: new Date('2022-10-30T00:03:00.000Z'),
-		away: { ...phillies },
-		home: { ...astros },
-		picks: [],
-		hits: [],
 		gameDescription: 'World Series Game 2',
 		seriesDescription: 'World Series',
 		seriesGameNumber: 2,
 		gamesInSeries: 7,
 		ifNecessary: 'N',
-		points: 8,
-		mappedPicks: {}
+		points: 8
 	};
+
+	function debugGame(overrides) {
+		var game = Game.hydrate(Object.assign({
+			status: 'S',
+			away: {
+				team: phillies.team._id,
+				batters: phillies.batters,
+				pitchers: phillies.pitchers,
+				startingLineup: phillies.startingLineup
+			},
+			home: {
+				team: astros.team._id,
+				batters: astros.batters,
+				pitchers: astros.pitchers,
+				startingLineup: astros.startingLineup
+			},
+			picks: [],
+			hits: []
+		}, gameDefaults, overrides));
+
+		game.away.team = phillies.team;
+		game.home.team = astros.team;
+		game.away.probablePitcher = phillies.probablePitcher;
+		game.home.probablePitcher = astros.probablePitcher;
+
+		return game;
+	}
 
 	var patrick = {
 		seasons: [ 2017, 2018, 2019, 2020, 2021, 2022 ],
@@ -578,75 +599,42 @@ module.exports.debug = function(request, response) {
 	};
 
 	var games = [
-		{
-			...game,
-			status: 'S',
-			hasStarted: fn.echo(false),
-			isFinal: fn.echo(false)
-		},
-		{
-			...game,
-			status: 'S',
-			picks: [ { user: patrick, player: yordan } ],
-			hits: [],
-			hasStarted: fn.echo(false),
-			isFinal: fn.echo(false)
-		},
-		{
-			...game,
+		debugGame({ status: 'S' }),
+		debugGame({ status: 'S', picks: [ { user: patrick, player: yordan } ] }),
+		debugGame({ status: 'I', inning: { number: 3, ordinal: '3rd', state: 'Middle', half: 'Bottom' } }),
+		debugGame({
 			status: 'I',
-			hasStarted: fn.echo(true),
-			isFinal: fn.echo(false)
-		},
-		{
-			...game,
+			inning: { number: 3, ordinal: '3rd', state: 'Middle', half: 'Bottom' },
+			picks: [ { user: patrick, player: yordan } ]
+		}),
+		debugGame({
 			status: 'I',
+			inning: { number: 3, ordinal: '3rd', state: 'Middle', half: 'Bottom' },
 			picks: [ { user: patrick, player: yordan } ],
-			hits: [],
-			hasStarted: fn.echo(true),
-			isFinal: fn.echo(false)
-		},
-		{
-			...game,
-			status: 'I',
-			picks: [ { user: patrick, player: yordan } ],
-			hits: [ { player: yordan, hits: 1 } ],
-			hasStarted: fn.echo(true),
-			isFinal: fn.echo(false)
-		},
-		{
-			...game,
+			hits: [ { player: yordan, hits: 1 } ]
+		}),
+		debugGame({ status: 'F', inning: { number: 9, ordinal: '9th' } }),
+		debugGame({
 			status: 'F',
-			hasStarted: fn.echo(true),
-			isFinal: fn.echo(true)
-		},
-		{
-			...game,
+			inning: { number: 9, ordinal: '9th' },
+			picks: [ { user: patrick, player: yordan } ]
+		}),
+		debugGame({
 			status: 'F',
+			inning: { number: 9, ordinal: '9th' },
 			picks: [ { user: patrick, player: yordan } ],
-			hits: [],
-			hasStarted: fn.echo(true),
-			isFinal: fn.echo(true)
-		},
-		{
-			...game,
-			status: 'F',
-			picks: [ { user: patrick, player: yordan } ],
-			hits: [ { player: yordan, hits: 1 } ],
-			hasStarted: fn.echo(true),
-			isFinal: fn.echo(true)
-		},
+			hits: [ { player: yordan, hits: 1 } ]
+		})
 	];
 
-	games.forEach(game => {
-		game.mappedPicks = game.picks.reduce((mappedPicks, pick) => {
-			return {
-				...mappedPicks,
-				[pick.user._id.toString()]: pick.player
-			};
-		}, {});
+	games.forEach(function(game) {
+		game.mappedPicks = {};
+		game.flatHits = [];
 
-		game.flatHits = game.hits.map(playerHits => { return playerHits.player._id });
+		game.picks.forEach(function(pick) {
+			game.mappedPicks[pick.user._id.toString()] = pick.player;
+			game.flatHits = game.hits.map(function(playerHits) { return playerHits.player._id; });
+		});
 	});
 
 	response.render('schedule/all', {

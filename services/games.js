@@ -2,6 +2,22 @@ var User = require('../models/User');
 var Game = require('../models/Game');
 var Player = require('../models/Player');
 
+function acceptPick(request, response, gameId, playerId, player) {
+	Game.findOneAndUpdate({ _id: gameId, 'picks.user': request.session.user._id }, { '$set': { 'picks.$.player': player._id } }, { returnDocument: 'after' })
+		.then(function(game) {
+			if (!game) {
+				return Game.findOneAndUpdate({ _id: gameId }, { '$push': { picks: { user: request.session.user._id, player: playerId } } }, { returnDocument: 'after' });
+			}
+			return game;
+		})
+		.then(function(game) {
+			response.send({ success: true, player: player });
+		})
+		.catch(function(error) {
+			response.send({ success: false, error: error.message });
+		});
+}
+
 module.exports.pick = function(request, response) {
 	var session = request.session;
 
@@ -15,7 +31,6 @@ module.exports.pick = function(request, response) {
 		return;
 	}
 
-	var userId = session.user._id;
 	var gameId = parseInt(request.params.gameId);
 	var playerId = parseInt(request.params.playerId);
 
@@ -32,26 +47,40 @@ module.exports.pick = function(request, response) {
 
 		if (collision.length > 0) {
 			response.send({ success: false, error: player.name + ' has already been picked by ' + session.user.username });
+			return;
 		}
-		else if (game && !game.hasStarted() && (game.away.batters.indexOf(playerId) != -1 || game.home.batters.indexOf(playerId) != -1) && player) {
-			console.log('pick', session.user._id, game._id, player._id);
-			Game.findOneAndUpdate({ _id: gameId, 'picks.user': session.user._id }, { '$set': { 'picks.$.player': player._id } }, { returnDocument: 'after' })
-				.then(function(game) {
-					if (!game) {
-						return Game.findOneAndUpdate({ _id: gameId }, { '$push': { picks: { user: session.user._id, player: playerId } } }, { returnDocument: 'after' });
-					}
-					return game;
-				})
-				.then(function(game) {
-					response.send({ success: true, player: player });
-				})
-				.catch(function(error) {
-					response.send({ success: false, error: error.message });
-				});
-		}
-		else {
+
+		if (!game || !player) {
 			response.send({ success: false, error: 'You are hacking. Please stop.' });
+			return;
 		}
+
+		var verificationPromises = [];
+
+		if (game.hasPotentiallyStarted() && !game.hasDefinitelyStarted()) {
+			verificationPromises.push(game.syncWithApi());
+		}
+
+		Promise.all(verificationPromises).then(function(syncResults) {
+			if (syncResults.length > 0) {
+				game = syncResults[0];
+			}
+
+			if (game.hasDefinitelyStarted() || game.hasBeenPostponed() || game.hasBeenCanceled()) {
+				response.send({ success: false, error: 'Picks are locked for this game.' });
+				return;
+			}
+
+			if (game.away.batters.indexOf(playerId) == -1 && game.home.batters.indexOf(playerId) == -1) {
+				response.send({ success: false, error: 'You are hacking. Please stop.' });
+				return;
+			}
+
+			console.log('pick', session.user._id, game._id, player._id);
+			acceptPick(request, response, gameId, playerId, player);
+		}).catch(function(error) {
+			response.send({ success: false, error: error.message || 'Could not verify game status.' });
+		});
 	});
 };
 
@@ -155,12 +184,32 @@ module.exports.showOne = function(request, response) {
 			});
 		});
 
-		if (!responseData.game.hasStarted()) {
-			response.render('game/not-started', responseData);
+		var game = responseData.game;
+		var verificationPromises = [];
+
+		if (game.hasPotentiallyStarted() && !game.hasDefinitelyStarted()) {
+			verificationPromises.push(game.syncWithApi());
 		}
-		else {
-			response.render('game/started', responseData);
-		}
+
+		Promise.all(verificationPromises).then(function(syncResults) {
+			if (syncResults.length > 0) {
+				responseData.game = syncResults[0];
+			}
+
+			if (!responseData.game.hasDefinitelyStarted()) {
+				response.render('game/not-started', responseData);
+			}
+			else {
+				response.render('game/started', responseData);
+			}
+		}).catch(function() {
+			if (!responseData.game.hasDefinitelyStarted()) {
+				response.render('game/not-started', responseData);
+			}
+			else {
+				response.render('game/started', responseData);
+			}
+		});
 	});
 };
 

@@ -37,7 +37,17 @@ mixin gameCard(game)
 			classes.card.border.push('border-secondary');
 		}
 
-		if (session && game.hasStarted()) {
+		if (game.isDelayed() || game.hasBeenSuspended() || game.hasBeenCanceled()) {
+			classes.header.background.push('bg-warning');
+			classes.header.linkText.push('text-dark');
+		}
+
+		if (game.hasBeenPostponed()) {
+			classes.header.background.push('bg-secondary');
+			classes.header.linkText.push('text-white');
+		}
+
+		if (session && game.hasDefinitelyStarted()) {
 			classes.header.linkText.push('text-white');
 
 			if (!game.mappedPicks[session.user._id.toString()]) {
@@ -53,7 +63,11 @@ mixin gameCard(game)
 				classes.header.background.push('bg-primary');
 			}
 		}
-		else if (!session && game.hasStarted() && !game.isFinal()) {
+		else if (!session && game.hasDefinitelyStarted() && !game.isFinal()) {
+			classes.header.linkText.push('text-white');
+			classes.header.background.push('bg-primary');
+		}
+		else if (game.hasDefinitelyStarted() && !game.isFinal()) {
 			classes.header.linkText.push('text-white');
 			classes.header.background.push('bg-primary');
 		}
@@ -64,14 +78,34 @@ mixin gameCard(game)
 				div.row.justify-content-center
 					div.col-10.text-center
 						a(href='https://www.mlb.com/gameday/' + game._id class=classes.header.linkText target='_blank')
-							if game.isFinal()
+							if game.isDelayed()
+								| Delayed
+							else if game.hasBeenPostponed()
+								| Postponed
+							else if game.hasBeenSuspended()
+								| Suspended
+							else if game.hasBeenCanceled()
+								| Canceled
+							else if !game.hasPotentiallyStarted()
+								if game.hasStartTime() && game.startTime.getMinutes() != 33
+									| #{dateFormat(game.startTime, 'h:MMtt')} ET
+								else
+									| TBD
+							else if game.isFinal()
 								| Final
-							else if game.hasStarted()
-								| In Progress
-							else if game.startTime.getMinutes() == 33
+								if game.inning && game.inning.number != 9
+									|
+									| (#{game.inning.number})
+							else if game.isOver()
+								| End of the #{game.inning.ordinal}
+							else if game.hasDefinitelyStarted()
+								| #{game.inning.state} of the #{game.inning.ordinal}
+							else if game.isWarmingUp()
+								| Warmup
+							else if !game.hasStartTime() || game.startTime.getMinutes() == 33
 								| TBD
 							else
-								| #{dateFormat(game.startTime, 'h:MMtt')} ET
+								| Starting Soon
 			ul.list-group.list-group-flush
 				li.list-group-item.py-1
 					div.row
@@ -91,7 +125,7 @@ mixin hitterButton(session, game)
 	-
 		var button = { classes: [], actionLink: null };
 
-		if (!game.hasStarted()) {
+		if (!game.hasDefinitelyStarted()) {
 			if (game.mappedPicks[session.user._id.toString()]) {
 				button.classes.push('btn-secondary');
 			}
@@ -119,7 +153,7 @@ mixin hitterButton(session, game)
 		}
 
 	a.team-button.text-center.btn.open-game(href=`/games/${game._id}` class=button.classes data-game-id=game._id)
-		if !game.hasStarted()
+		if !game.hasDefinitelyStarted()
 			if game.mappedPicks[session.user.id.toString()]
 				span #{game.mappedPicks[session.user._id.toString()].name}
 			else
