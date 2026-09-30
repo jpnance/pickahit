@@ -24,6 +24,7 @@ Game.find({ season: process.env.SEASON }).sort('startTime')
 
 					var awayTeam = data.liveData.boxscore.teams.away;
 					var homeTeam = data.liveData.boxscore.teams.home;
+					var rebuiltHits = [];
 
 					[ { team: awayTeam, name: 'away' }, { team: homeTeam, name: 'home' } ].forEach(tuple => {
 						var team = tuple.team;
@@ -44,12 +45,6 @@ Game.find({ season: process.env.SEASON }).sort('startTime')
 									if (game[name].batters.indexOf(playerId) == -1) {
 										game[name].batters.push(playerId);
 									}
-
-									if (parseInt(player.gameStats.batting.hits) > 0) {
-										if (game.hits.indexOf(playerId) == -1) {
-											game.hits.push(playerId);
-										}
-									}
 								}
 							}
 							else if (player.person) {
@@ -66,23 +61,17 @@ Game.find({ season: process.env.SEASON }).sort('startTime')
 									}
 
 									if (player.stats && player.stats.batting && parseInt(player.stats.batting.hits) > 0) {
-									//if ([599336, 599335].includes(game._id) && [519058, 669221].includes(playerId)) {
-										var playerHits = game.hits.find(playerHits => { return playerHits.player == playerId; });
-										//var lolHits = Math.floor(Math.random() * 9) + 1;
-
-										if (!playerHits) {
-											game.hits.push({ player: playerId, hits: player.stats.batting.hits });
-											//game.hits.push({ player: playerId, hits: lolHits });
-										}
-										else {
-											playerHits.hits = player.stats.batting.hits;
-											//playerHits.hits = lolHits;
-										}
+										rebuiltHits.push({
+											player: playerId,
+											hits: parseInt(player.stats.batting.hits, 10)
+										});
 									}
 								}
 							}
 						});
 					});
+
+					game.hits = rebuiltHits;
 
 					if (data.gameData.probablePitchers) {
 						if (data.gameData.probablePitchers.away) {
