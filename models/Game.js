@@ -105,6 +105,91 @@ gameSchema.methods.isOver = function() {
 	return this.status == 'O' || FINAL_STATUS_CODES.includes(this.status);
 };
 
+function teamRefId(teamRef) {
+	if (teamRef == null) {
+		return null;
+	}
+
+	if (typeof teamRef === 'object' && teamRef._id != null) {
+		return teamRef._id;
+	}
+
+	return teamRef;
+}
+
+gameSchema.methods.computeSeriesStandingLine = function(seasonGames) {
+	if (!seasonGames) {
+		return null;
+	}
+
+	var awayTeam = this.away && this.away.team;
+	var homeTeam = this.home && this.home.team;
+	var awayId = teamRefId(awayTeam);
+	var homeId = teamRefId(homeTeam);
+	var awayAbbr = awayTeam && awayTeam.abbreviation;
+	var homeAbbr = homeTeam && homeTeam.abbreviation;
+
+	if (!this.season || !this.seriesDescription || this.seriesGameNumber == null || awayId == null || homeId == null || !awayAbbr || !homeAbbr) {
+		return null;
+	}
+
+	var awayWins = 0;
+	var homeWins = 0;
+
+	seasonGames.forEach(function(prior) {
+		if (!prior.isFinal() || prior.seriesGameNumber == null || prior.seriesGameNumber >= this.seriesGameNumber) {
+			return;
+		}
+
+		if (prior.season !== this.season || prior.seriesDescription !== this.seriesDescription) {
+			return;
+		}
+
+		var pAwayId = teamRefId(prior.away && prior.away.team);
+		var pHomeId = teamRefId(prior.home && prior.home.team);
+
+		if (pAwayId == null || pHomeId == null) {
+			return;
+		}
+
+		var sameMatchup = (pAwayId === awayId && pHomeId === homeId) || (pAwayId === homeId && pHomeId === awayId);
+
+		if (!sameMatchup) {
+			return;
+		}
+
+		var a = prior.away.score;
+		var h = prior.home.score;
+
+		if (a == null || h == null || a === h) {
+			return;
+		}
+
+		var winnerId = a > h ? pAwayId : pHomeId;
+
+		if (winnerId === awayId) {
+			awayWins++;
+		}
+		else if (winnerId === homeId) {
+			homeWins++;
+		}
+	}, this);
+
+	if (awayWins === 0 && homeWins === 0) {
+		return 'Series tied 0-0';
+	}
+
+	if (awayWins > homeWins) {
+		return awayAbbr + ' leads ' + awayWins + '-' + homeWins;
+	}
+
+	if (homeWins > awayWins) {
+		return homeAbbr + ' leads ' + homeWins + '-' + awayWins;
+	}
+
+	return 'Series tied ' + awayWins + '-' + homeWins;
+};
+
 gameSchema.methods.applyFeedLiveState = function(data) {
 	if (!data || !data.gameData) {
 		return;

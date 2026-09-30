@@ -1,7 +1,6 @@
 var User = require('../models/User');
 var Game = require('../models/Game');
 var Team = require('../models/Team');
-
 var dateFormat = require('dateformat');
 
 module.exports.showAll = function(request, response) {
@@ -207,7 +206,9 @@ module.exports.showAllForDate = function(request, response) {
 			.populate('picks.player')
 			.populate('hits.player')
 			.populate('away.probablePitcher')
-			.populate('home.probablePitcher')
+			.populate('home.probablePitcher'),
+
+		Game.find({ season: process.env.SEASON })
 	];
 
 	Promise.all(data).then(function(values) {
@@ -248,6 +249,12 @@ module.exports.showAllForDate = function(request, response) {
 			tomorrow: tomorrow,
 			dateFormat: require('dateformat')
 		};
+
+		var seasonGames = values[2];
+
+		responseData.games.forEach(function(game) {
+			game.seriesStandingLine = game.computeSeriesStandingLine(seasonGames);
+		});
 
 		var userScores = {};
 		var userTiebreakers = {};
@@ -374,7 +381,9 @@ module.exports.showAllForTeam = function(request, response) {
 				.populate('picks.player')
 				.populate('hits.player')
 				.populate('away.probablePitcher')
-				.populate('home.probablePitcher')
+				.populate('home.probablePitcher'),
+
+			Game.find({ season: process.env.SEASON })
 		];
 
 		Promise.all(data).then(function(values) {
@@ -387,6 +396,12 @@ module.exports.showAllForTeam = function(request, response) {
 				team: team,
 				dateFormat: require('dateformat')
 			};
+
+			var seasonGames = values[2];
+
+			responseData.games.forEach(function(game) {
+				game.seriesStandingLine = game.computeSeriesStandingLine(seasonGames);
+			});
 
 			var userScores = {};
 			var userTiebreakers = {};
