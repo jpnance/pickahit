@@ -8,6 +8,17 @@ var Team = require('../models/Team');
 var mongoose = require('mongoose');
 mongoose.connect(process.env.MONGODB_URI);
 
+function removeGameIfUnnecessary(game) {
+	if (game.status !== 'X') {
+		return Promise.resolve(false);
+	}
+
+	return game.deleteOne().then(function() {
+		console.log('removed unnecessary game', game._id);
+		return true;
+	});
+}
+
 Game.find({ season: process.env.SEASON }).sort('startTime')
 	.then(function(games) {
 		var gamePromises = [];
@@ -31,100 +42,112 @@ Game.find({ season: process.env.SEASON }).sort('startTime')
 
 					game.applyFeedLiveState(data);
 
-					if (!data.liveData || !data.liveData.boxscore || !data.liveData.boxscore.teams) {
-						game.save()
-							.then(function() {
-								resolve('good');
-							})
-							.catch(function(saveError) {
-								console.error(saveError);
-								resolve('error');
+					removeGameIfUnnecessary(game)
+						.then(function(removed) {
+							if (removed) {
+								resolve('removed');
+								return;
+							}
+
+							if (!data.liveData || !data.liveData.boxscore || !data.liveData.boxscore.teams) {
+								game.save()
+									.then(function() {
+										resolve('good');
+									})
+									.catch(function(saveError) {
+										console.error(saveError);
+										resolve('error');
+									});
+								return;
+							}
+
+							var awayTeam = data.liveData.boxscore.teams.away;
+							var homeTeam = data.liveData.boxscore.teams.home;
+							var rebuiltHits = [];
+
+							[ { team: awayTeam, name: 'away' }, { team: homeTeam, name: 'home' } ].forEach(tuple => {
+								var team = tuple.team;
+								var name = tuple.name;
+
+								Object.keys(team.players).forEach(function(key) {
+									var player = team.players[key];
+
+									if (player.batterPitcher) {
+										var playerId = parseInt(player.id);
+
+										if (player.batterPitcher == 'p') {
+											if (game[name].pitchers.indexOf(playerId) == -1) {
+												game[name].pitchers.push(playerId);
+											}
+										}
+										else if (player.batterPitcher == 'b') {
+											if (game[name].batters.indexOf(playerId) == -1) {
+												game[name].batters.push(playerId);
+											}
+										}
+									}
+									else if (player.person) {
+										var playerId = parseInt(player.person.id);
+
+										if (player.position.code == '1') {
+											if (game[name].pitchers.indexOf(playerId) == -1) {
+												game[name].pitchers.push(playerId);
+											}
+										}
+										else if (player.position.code != '1') {
+											if (game[name].batters.indexOf(playerId) == -1) {
+												game[name].batters.push(playerId);
+											}
+
+											if (player.stats && player.stats.batting && parseInt(player.stats.batting.hits) > 0) {
+												rebuiltHits.push({
+													player: playerId,
+													hits: parseInt(player.stats.batting.hits, 10)
+												});
+											}
+										}
+									}
+								});
 							});
-						return;
-					}
 
-					var awayTeam = data.liveData.boxscore.teams.away;
-					var homeTeam = data.liveData.boxscore.teams.home;
-					var rebuiltHits = [];
+							game.hits = rebuiltHits;
 
-					[ { team: awayTeam, name: 'away' }, { team: homeTeam, name: 'home' } ].forEach(tuple => {
-						var team = tuple.team;
-						var name = tuple.name;
-
-						Object.keys(team.players).forEach(function(key) {
-							var player = team.players[key];
-
-							if (player.batterPitcher) {
-								var playerId = parseInt(player.id);
-
-								if (player.batterPitcher == 'p') {
-									if (game[name].pitchers.indexOf(playerId) == -1) {
-										game[name].pitchers.push(playerId);
-									}
+							if (data.gameData.probablePitchers) {
+								if (data.gameData.probablePitchers.away) {
+									game.away.probablePitcher = data.gameData.probablePitchers.away.id;
 								}
-								else if (player.batterPitcher == 'b') {
-									if (game[name].batters.indexOf(playerId) == -1) {
-										game[name].batters.push(playerId);
-									}
+								if (data.gameData.probablePitchers.home) {
+									game.home.probablePitcher = data.gameData.probablePitchers.home.id;
 								}
 							}
-							else if (player.person) {
-								var playerId = parseInt(player.person.id);
 
-								if (player.position.code == '1') {
-									if (game[name].pitchers.indexOf(playerId) == -1) {
-										game[name].pitchers.push(playerId);
-									}
-								}
-								else if (player.position.code != '1') {
-									if (game[name].batters.indexOf(playerId) == -1) {
-										game[name].batters.push(playerId);
-									}
-
-									if (player.stats && player.stats.batting && parseInt(player.stats.batting.hits) > 0) {
-										rebuiltHits.push({
-											player: playerId,
-											hits: parseInt(player.stats.batting.hits, 10)
-										});
-									}
+							if (awayTeam.battingOrder && awayTeam.battingOrder.length > 0) {
+								if (!game.away.startingLineup || game.away.startingLineup.length == 0) {
+									awayTeam.battingOrder.forEach(function(playerId) {
+										game.away.startingLineup.push(parseInt(playerId));
+									});
 								}
 							}
-						});
-					});
 
-					game.hits = rebuiltHits;
+							if (homeTeam.battingOrder && homeTeam.battingOrder.length > 0) {
+								if (!game.home.startingLineup || game.home.startingLineup.length == 0) {
+									homeTeam.battingOrder.forEach(function(playerId) {
+										game.home.startingLineup.push(parseInt(playerId));
+									});
+								}
+							}
 
-					if (data.gameData.probablePitchers) {
-						if (data.gameData.probablePitchers.away) {
-							game.away.probablePitcher = data.gameData.probablePitchers.away.id;
-						}
-						if (data.gameData.probablePitchers.home) {
-							game.home.probablePitcher = data.gameData.probablePitchers.home.id;
-						}
-					}
-
-					if (awayTeam.battingOrder && awayTeam.battingOrder.length > 0) {
-						if (!game.away.startingLineup || game.away.startingLineup.length == 0) {
-							awayTeam.battingOrder.forEach(function(playerId) {
-								game.away.startingLineup.push(parseInt(playerId));
-							});
-						}
-					}
-
-					if (homeTeam.battingOrder && homeTeam.battingOrder.length > 0) {
-						if (!game.home.startingLineup || game.home.startingLineup.length == 0) {
-							homeTeam.battingOrder.forEach(function(playerId) {
-								game.home.startingLineup.push(parseInt(playerId));
-							});
-						}
-					}
-
-					game.save()
-						.then(function() {
-							resolve('good');
+							game.save()
+								.then(function() {
+									resolve('good');
+								})
+								.catch(function(saveError) {
+									console.error(saveError);
+									resolve('error');
+								});
 						})
-						.catch(function(saveError) {
-							console.error(saveError);
+						.catch(function(removeError) {
+							console.error(removeError);
 							resolve('error');
 						});
 				});
