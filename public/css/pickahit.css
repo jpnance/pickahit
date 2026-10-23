@@ -39,6 +39,10 @@ form.login input {
 	padding: 4px;
 }
 
+table.table tr.my-row td:not(.table-active) {
+	background-color: #f6f6f6;
+}
+
 p.teams {
 	font-size: 120%;
 	line-height: 18px;
